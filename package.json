@@ -1,0 +1,36 @@
+{
+  "name": "lyricaltune",
+  "version": "0.0.1",
+  "description": "Lyrics transformed into music",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --config webpack.config.js --mode development --watch",
+    "build": "webpack --config webpack.config.js --mode production",
+    "server": "node ./server.js",
+    "server:hot": "node-hot --config webpack.config.server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HurricaneInteractive/lyricaltune.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HurricaneInteractive/lyricaltune/issues"
+  },
+  "homepage": "https://github.com/HurricaneInteractive/lyricaltune#readme",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "express": "^4.16.3",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
+  }
+}
