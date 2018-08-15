@@ -1,0 +1,34 @@
+const express = require('express')
+const mongoose = require('mongoose')
+const morgan = require('morgan')
+const bodyParser = require('body-parser')
+
+// Connect to mongo database
+mongoose.connect('mongodb+srv://ucdt_lyrical:' + process.env.DB_CLUSTER_PW + '@lyricaltune-alyu8.mongodb.net/db_lyrical?retryWrites=true', {
+    useNewUrlParser: true
+})
+
+// setup app settings
+var app = express()
+app.use(morgan('dev'))
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+
+// Routes will go here
+
+// Catch All Error
+app.use((req, res, next) => {
+    const error = new Error('Route not found')
+    error.status = 404
+    next(error)
+})
+
+app.use((error, req, res, next) => {
+    res.status(error.status || 500).json({
+        error: {
+            message: error.message
+        }
+    })
+})
+
+module.exports = app;
