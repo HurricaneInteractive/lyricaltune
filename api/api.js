@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 
+const userRoutes = require('./routes/users');
+
 // Connect to mongo database
 mongoose.connect('mongodb+srv://ucdt_lyrical:' + process.env.DB_CLUSTER_PW + '@lyricaltune-alyu8.mongodb.net/db_lyrical?retryWrites=true', {
     useNewUrlParser: true
@@ -15,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // Routes will go here
+app.use('/users', userRoutes)
 
 // Catch All Error
 app.use((req, res, next) => {
