@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/User')
+const UserController = require('../controllers/UserController')
 
 router.get('/', (req, res, next) => {
     User.find({ username: 'QuirkyTurtle' }).exec()
@@ -14,5 +15,7 @@ router.get('/', (req, res, next) => {
             next(error)
         })
 })
+
+router.post('/register', UserController.register_user)
 
 module.exports = router

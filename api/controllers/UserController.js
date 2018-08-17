@@ -1,7 +1,5 @@
-class UserController {
-    TestFunction() {
-        return {'message': 'hello'}
-    }
-}
+const RegisterUser = require('./User/RegisterUser')
 
-module.exports = UserController
+module.exports = {
+    register_user: RegisterUser
+}

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
-const UserController = require('../controllers/UserController')
+const UserHelper = require('../helpers/UserHelper')
 
 const userSchema = new Schema({
     _id: {
@@ -35,7 +35,7 @@ const userSchema = new Schema({
     timestamps: true
 })
 
-userSchema.loadClass(UserController)
+userSchema.loadClass(UserHelper)
 
 const User = mongoose.model('User', userSchema);
 
