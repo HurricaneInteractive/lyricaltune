@@ -4,7 +4,7 @@ const User = require('../models/User')
 const UserController = require('../controllers/UserController')
 
 router.get('/', (req, res, next) => {
-    User.find({ username: 'QuirkyTurtle' }).exec()
+    User.find().exec()
         .then(doc => {
             res.status(200).json(doc)
         })
