@@ -16,8 +16,17 @@ const UsernameFound = (next) => {
     next(error)
 }
 
+const UserCreated = (res, token) => {
+    res.status(201).json({
+        message: "User has successfully been created",
+        status: 201,
+        token: token
+    })
+}
+
 module.exports = {
     returnedError: ReturnedError,
     emailFound: EmailFound,
-    usernameFound: UsernameFound
+    usernameFound: UsernameFound,
+    userCreated: UserCreated
 }
