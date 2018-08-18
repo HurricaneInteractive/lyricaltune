@@ -36,5 +36,7 @@ router.get('/', (req, res, next) => {
 
 router.post('/register', UserController.registerUser)
 router.post('/login', UserController.loginUser)
+router.get('/:username', UserController.getUserByUsername)
+router.get('/id/:id', UserController.getUserById)
 
 module.exports = router

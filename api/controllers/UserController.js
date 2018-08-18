@@ -1,7 +1,6 @@
-const RegisterUser = require('./User/RegisterUser')
-const LoginUser = require('./User/LoginUser')
-
 module.exports = {
-    registerUser: RegisterUser,
-    loginUser: LoginUser
+    registerUser: require('./User/RegisterUser'),
+    loginUser: require('./User/LoginUser'),
+    getUserByUsername: require('./User/GetUserByUsername'),
+    getUserById: require('./User/GetUserById')
 }
