@@ -8,10 +8,11 @@ class Success {
         this._status = s
     }
     
-    dispatch(res, data) {
+    dispatch(res, data = {}) {
         let json = Object.assign(data, {
             status: this._status,
-            message: this._msg
+            message: this._msg,
+            error: null
         })
 
         res.status(this._status).json(json)
