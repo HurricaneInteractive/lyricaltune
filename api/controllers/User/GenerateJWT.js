@@ -1,5 +1,9 @@
 const jwt = require('jsonwebtoken')
 
+/**
+ * @deprecated
+ * @param {User} user 
+ */
 const JWTPayload = (user) => {
     return {
         _id: user._id,
@@ -9,8 +13,7 @@ const JWTPayload = (user) => {
 }
 
 const SignUserToken = (user, callback) => {
-    let payload = JWTPayload(user)
-    jwt.sign(payload, process.env.JWT_SECRET, { algorithm: 'HS256' }, (err, token) => {
+    jwt.sign(user, process.env.JWT_SECRET, { algorithm: 'HS256' }, (err, token) => {
         return callback(err, token);
     })
 }
