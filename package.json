@@ -1,0 +1,24 @@
+{
+  "name": "lyricaltune",
+  "version": "1.0.0",
+  "description": "Project built for a university assignment.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd api && yarn start\" \"cd frontend && yarn start\"",
+    "start:electron": "concurrently \"cd api && yarn start\" \"cd frontend && yarn start\" \"electron ./frontend/main.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HurricaneInteractive/lyricaltune.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HurricaneInteractive/lyricaltune/issues"
+  },
+  "homepage": "https://github.com/HurricaneInteractive/lyricaltune#readme",
+  "dependencies": {
+    "concurrently": "^3.6.1"
+  }
+}
