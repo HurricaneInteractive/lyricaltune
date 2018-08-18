@@ -1,3 +1,5 @@
+const Success = require('../classes/Success')
+
 const ReturnedError = (res, err) => {
     res.status(500).json({
         error: err
@@ -16,17 +18,28 @@ const UsernameFound = (next) => {
     next(error)
 }
 
-const UserCreated = (res, token) => {
-    res.status(201).json({
-        message: "User has successfully been created",
-        status: 201,
-        token: token
-    })
+const LoginFailed = (next) => {
+    let error = new Error('Email and Password combination is not vaild')
+    error.status = 422
+    next(error)
+}
+
+const UserCreated = (res, data) => {
+    let response = new Success("Your account has successfully been created")
+    response.status = 201
+    response.dispatch(res, data)
+}
+
+const LoginSuccessful = (res, data) => {
+    let response = new Success("You have been logged in successfully")
+    response.dispatch(res, data)
 }
 
 module.exports = {
     returnedError: ReturnedError,
     emailFound: EmailFound,
     usernameFound: UsernameFound,
-    userCreated: UserCreated
+    loginFailed: LoginFailed,
+    userCreated: UserCreated,
+    loginSuccessful: LoginSuccessful
 }
