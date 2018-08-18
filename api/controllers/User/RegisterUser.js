@@ -58,7 +58,10 @@ module.exports = (req, res, next) => {
                                                     ResponseHelper.returnedError(res, error)
                                                 }
                                                 else {
-                                                    ResponseHelper.userCreated(res, token)
+                                                    ResponseHelper.userCreated(res, {
+                                                        token: token,
+                                                        current_user: createdUser.prepareResponse()
+                                                    })
                                                 }
                                             })
                                         })
