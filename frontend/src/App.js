@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Header from './components/Header'
+import Home from './pages/Home'
 import './App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+	componentDidMount() {
+		fetch('/users')
+			.then(res => res.json())
+			.then(j => console.log(j))
+			.catch(e => console.error(e))
+	}
+
+	render() {
+		return (
+			<div className="App">
+				<Header />
+				<Home />
+			</div>
+		);
+	}
 }
 
 export default App;
