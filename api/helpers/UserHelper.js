@@ -9,8 +9,13 @@ class UserHelper {
      * @memberof UserHelper
      */
     prepareResponse() {
+        let protected_keys = ['password'];
         let user = this.toObject();
-        delete user.password
+        
+        protected_keys.forEach(key => {
+            delete user[key]
+        })
+        
         return user
     }
 }
