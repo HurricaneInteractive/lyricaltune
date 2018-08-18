@@ -45,7 +45,8 @@ module.exports = (req, res, next) => {
                                         email: email,
                                         password: hash,
                                         name: req.body.name,
-                                        username: username
+                                        username: username,
+                                        role: "author"
                                     })
 
                                     // Saves the user to the database

@@ -42,5 +42,5 @@ module.exports = (req, res, next) => {
             }
         })
         // Return error object
-        .catch(e => Response.returnedError(e))
+        .catch(e => Response.returnedError(res, e))
 }
