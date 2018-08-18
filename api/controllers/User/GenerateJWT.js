@@ -15,6 +15,11 @@ const SignUserToken = (user, callback) => {
     })
 }
 
+const DecodeToken = (token) => {
+    return jwt.decode(token)
+}
+
 module.exports = {
-    signUserToken: SignUserToken
+    signUserToken: SignUserToken,
+    decodeToken: DecodeToken
 }
