@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../models/User')
 const UserController = require('../controllers/UserController')
+const CheckAuthentication = require('../middleware/CheckAuthentication')
 
 router.get('/', (req, res, next) => {
     User.find().exec()
@@ -34,9 +35,13 @@ router.get('/', (req, res, next) => {
 //         })
 // })
 
-router.post('/register', UserController.registerUser)
-router.post('/login', UserController.loginUser)
+// GET
 router.get('/:username', UserController.getUserByUsername)
 router.get('/id/:id', UserController.getUserById)
+
+// POST
+router.post('/register', UserController.registerUser)
+router.post('/login', UserController.loginUser)
+router.post('/follow', CheckAuthentication, UserController.followUser)
 
 module.exports = router
