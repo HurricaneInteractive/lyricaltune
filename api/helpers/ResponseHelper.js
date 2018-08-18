@@ -53,6 +53,24 @@ const UserFound = (res, data) => {
     response.dispatch(res, data)
 }
 
+const AlreadyFollowingUser = (next) => {
+    let error = new Error('You are already following this user')
+    error.status = 422
+    next(error)
+}
+
+const FollowingFailed = (next) => {
+    let error = new Error('Following request could not be processed, please try again')
+    error.status = 422
+    next(error)
+}
+
+const FollowingSucceed = (res, data) => {
+    let response = new Success('You have successfully followed the user')
+    response.status = 200
+    response.dispatch(res, data)
+}
+
 module.exports = {
     returnedError: ReturnedError,
     emailFound: EmailFound,
@@ -62,5 +80,8 @@ module.exports = {
     loginSuccessful: LoginSuccessful,
     noUserWithUsername: NoUserWithUsername,
     noUserWithId: NoUserWithId,
-    userFound: UserFound
+    userFound: UserFound,
+    alreadyFollowingUser: AlreadyFollowingUser,
+    followingFailed: FollowingFailed,
+    followingSucceed: FollowingSucceed
 }
