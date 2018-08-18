@@ -1,5 +1,7 @@
 const RegisterUser = require('./User/RegisterUser')
+const LoginUser = require('./User/LoginUser')
 
 module.exports = {
-    register_user: RegisterUser
+    registerUser: RegisterUser,
+    loginUser: LoginUser
 }
