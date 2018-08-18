@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const User = require('../../models/User')
 const ResponseHelper = require('../../helpers/ResponseHelper')
+const SignUserToken = require('./GenerateJWT').signUserToken
 
 /**
  * Handle User Registration
@@ -51,9 +52,14 @@ module.exports = (req, res, next) => {
                                     newUser.save()
                                         .then(createdUser => {
                                             // Respond if created successfully
-                                            // TODO: Create and Send JWT
-                                            res.status(200).json({
-                                                message: 'User Created'
+                                            // Creates a JWT token and returns either an error or a success response
+                                            SignUserToken(createdUser, (error, token) => {
+                                                if (error) {
+                                                    ResponseHelper.returnedError(res, error)
+                                                }
+                                                else {
+                                                    ResponseHelper.userCreated(res, token)
+                                                }
                                             })
                                         })
                                         .catch(e => {
