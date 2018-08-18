@@ -25,8 +25,8 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    followers: [String],
-    following: [String],
+    followers: [Schema.Types.ObjectId],
+    following: [Schema.Types.ObjectId],
     websites: {
         type: Map,
         of: String
