@@ -18,7 +18,8 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        lowercase: true
+        lowercase: true,
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email address']
     },
     password: {
         type: String,
@@ -26,7 +27,10 @@ const userSchema = new Schema({
     },
     followers: [String],
     following: [String],
-    websites: [String],
+    websites: {
+        type: Map,
+        of: String
+    },
     role: {
         type: String,
         default: 'author'
