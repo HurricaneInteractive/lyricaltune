@@ -54,7 +54,7 @@ module.exports = (req, res, next) => {
                                         .then(createdUser => {
                                             // Respond if created successfully
                                             // Creates a JWT token and returns either an error or a success response
-                                            SignUserToken(createdUser, (error, token) => {
+                                            SignUserToken(createdUser.prepareResponse(), (error, token) => {
                                                 if (error) {
                                                     ResponseHelper.returnedError(res, error)
                                                 }

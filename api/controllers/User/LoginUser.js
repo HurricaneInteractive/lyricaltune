@@ -23,7 +23,7 @@ module.exports = (req, res, next) => {
                         }
                         else {
                             // Create a Token
-                            SignUserToken(user, (error, token) => {
+                            SignUserToken(user.prepareResponse(), (error, token) => {
                                 if (error) {
                                     ResponseHelper.returnedError(res, error)
                                 }
