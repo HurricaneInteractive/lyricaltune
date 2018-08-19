@@ -10,7 +10,7 @@ class UserHelper {
      */
     prepareResponse() {
         let protected_keys = ['password'];
-        let user = this.toObject();
+        let user = this.toJSON();
         
         protected_keys.forEach(key => {
             delete user[key]
