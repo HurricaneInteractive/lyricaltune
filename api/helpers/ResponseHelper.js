@@ -80,6 +80,11 @@ const UnfollowSucceed = (res, data) => {
     response.dispatch(res, data)
 }
 
+const LogoutSuccess = (res, data) => {
+    let response = new Success('Account successfully logged out')
+    response.dispatch(res, data)
+}
+
 module.exports = {
     returnedError: ReturnedError,
     emailFound: EmailFound,
@@ -94,5 +99,6 @@ module.exports = {
     followingFailed: FollowingFailed,
     followingSucceed: FollowingSucceed,
     unfollowSucceed: UnfollowSucceed,
-    notFollowingUser: NotFollowingUser
+    notFollowingUser: NotFollowingUser,
+    logoutSuccess: LogoutSuccess
 }

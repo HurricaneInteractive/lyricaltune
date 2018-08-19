@@ -13,7 +13,10 @@ const JWTPayload = (user) => {
 }
 
 const SignUserToken = (user, callback) => {
-    jwt.sign(user, process.env.JWT_SECRET, { algorithm: 'HS256' }, (err, token) => {
+    jwt.sign(user, process.env.JWT_SECRET, {
+        algorithm: 'HS256',
+        expiresIn: '2h',
+    }, (err, token) => {
         return callback(err, token);
     })
 }

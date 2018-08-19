@@ -44,5 +44,6 @@ router.post('/register', UserController.registerUser)
 router.post('/login', UserController.loginUser)
 router.post('/follow', CheckAuthentication, UserController.followUser)
 router.post('/unfollow', CheckAuthentication, UserController.unfollowUser)
+router.post('/logout', CheckAuthentication, UserController.logoutUser)
 
 module.exports = router
