@@ -49,12 +49,17 @@ const NoUserWithId = (id, next) => {
 
 const UserFound = (res, data) => {
     let response = new Success()
-    response.status = 200
     response.dispatch(res, data)
 }
 
 const AlreadyFollowingUser = (next) => {
     let error = new Error('You are already following this user')
+    error.status = 422
+    next(error)
+}
+
+const NotFollowingUser = (next) => {
+    let error = new Error('You are not currently following this user')
     error.status = 422
     next(error)
 }
@@ -67,7 +72,11 @@ const FollowingFailed = (next) => {
 
 const FollowingSucceed = (res, data) => {
     let response = new Success('You have successfully followed the user')
-    response.status = 200
+    response.dispatch(res, data)
+}
+
+const UnfollowSucceed = (res, data) => {
+    let response = new Success('You have successfully unfollowed the user')
     response.dispatch(res, data)
 }
 
@@ -83,5 +92,7 @@ module.exports = {
     userFound: UserFound,
     alreadyFollowingUser: AlreadyFollowingUser,
     followingFailed: FollowingFailed,
-    followingSucceed: FollowingSucceed
+    followingSucceed: FollowingSucceed,
+    unfollowSucceed: UnfollowSucceed,
+    notFollowingUser: NotFollowingUser
 }
