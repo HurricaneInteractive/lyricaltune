@@ -46,4 +46,7 @@ router.post('/follow', CheckAuthentication, UserController.followUser)
 router.post('/unfollow', CheckAuthentication, UserController.unfollowUser)
 router.post('/logout', CheckAuthentication, UserController.logoutUser)
 
+// PATCH
+router.patch('/update', CheckAuthentication, UserController.updateUser)
+
 module.exports = router
