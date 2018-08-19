@@ -3,5 +3,6 @@ module.exports = {
     loginUser: require('./User/LoginUser'),
     getUserByUsername: require('./User/GetUserByUsername'),
     getUserById: require('./User/GetUserById'),
-    followUser: require('./User/FollowUser')
+    followUser: require('./User/FollowUser'),
+    unfollowUser: require('./User/UnfollowUser')
 }
