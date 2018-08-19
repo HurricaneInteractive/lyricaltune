@@ -29,7 +29,8 @@ const userSchema = new Schema({
     following: [Schema.Types.ObjectId],
     websites: {
         type: Map,
-        of: String
+        of: String,
+        default: {}
     },
     role: {
         type: String,
