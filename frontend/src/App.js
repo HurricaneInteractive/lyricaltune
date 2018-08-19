@@ -20,8 +20,13 @@ class App extends Component {
 		// 	.catch(e => console.error(e))
 
 		// this.props.UserStore.getUserData('TheQuirkyTurtle')
-
-		this.props.UserStore.authenticateUser('abc3@abc.com', 'password');
+		let token = window.sessionStorage.getItem('auth_token');
+		if (token === null || token === '') {
+			this.props.UserStore.authenticateUser('abc3@abc.com', 'password');
+		}
+		else {
+			this.props.UserStore.getCurrentUser(token)
+		}
 	}
 
 	render() {
@@ -30,7 +35,7 @@ class App extends Component {
 				<div className="App">
 					<Header />
 					<p>Authenticated: { this.props.UserStore.current_user === null ? 'No' : 'Yes' }</p>
-					<p>Token: {this.props.UserStore.auth_token}</p>
+					{ this.props.UserStore.current_user !== null ? (<p>Username: {this.props.UserStore.current_user.username}</p>) : ('') }
 					
 					<Route exact path="/" component={Home} />
 					<Route path="/about" component={About} />

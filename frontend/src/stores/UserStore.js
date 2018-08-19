@@ -77,6 +77,16 @@ class UserStore {
         return response
     }
 
+    @action 
+    async getCurrentUser(token = this.auth_token) {
+        let headers = { 'Authorization': `Bearer ${token}` }
+        const response = await this.fetchUserApiData('/current', headers)
+
+        runInAction(() => {
+            this.current_user = response.current_user
+        })
+    }
+
     @action
     async authenticateUser(email, password) {
         try {
