@@ -85,6 +85,11 @@ const LogoutSuccess = (res, data) => {
     response.dispatch(res, data)
 }
 
+const UpdateUserSuccessful = (res, data) => {
+    let response = new Success('Account has been successfully updated')
+    response.dispatch(res, data)
+}
+
 module.exports = {
     returnedError: ReturnedError,
     emailFound: EmailFound,
@@ -100,5 +105,6 @@ module.exports = {
     followingSucceed: FollowingSucceed,
     unfollowSucceed: UnfollowSucceed,
     notFollowingUser: NotFollowingUser,
-    logoutSuccess: LogoutSuccess
+    logoutSuccess: LogoutSuccess,
+    updateUserSuccessful: UpdateUserSuccessful
 }
