@@ -36,8 +36,9 @@ router.get('/', (req, res, next) => {
 // })
 
 // GET
-router.get('/:username', UserController.getUserByUsername)
+router.get('/username/:username', UserController.getUserByUsername)
 router.get('/id/:id', UserController.getUserById)
+router.get('/current', CheckAuthentication, UserController.getCurrentUser)
 
 // POST
 router.post('/register', UserController.registerUser)

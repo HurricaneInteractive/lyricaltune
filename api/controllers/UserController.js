@@ -6,5 +6,6 @@ module.exports = {
     followUser: require('./User/FollowUser'),
     unfollowUser: require('./User/UnfollowUser'),
     logoutUser: require('./User/LogoutUser'),
-    updateUser: require('./User/UpdateUser')
+    updateUser: require('./User/UpdateUser'),
+    getCurrentUser: require('./User/GetCurrentUser')
 }
