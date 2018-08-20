@@ -8,11 +8,9 @@ import {
 import Header from './components/Header'
 import Home from './pages/Home'
 import About from './pages/About'
+import SecondChanceAuth from './components/Auth/SecondChanceAuth'
+
 import './App.css';
-
-import Form from './components/Form/Form'
-
-import { validatePassword } from './helpers/forms'
 
 @inject('UserStore')
 @observer
@@ -26,16 +24,6 @@ class App extends Component {
 		}
 	}
 
-	componentDidMount() {
-		let token = window.sessionStorage.getItem('auth_token');
-		if (token === null || token === '') {
-			this.props.UserStore.authenticateUser('abc3@abc.com', 'password');
-		}
-		else {
-			this.props.UserStore.getCurrentUser(token)
-		}
-	}
-
 	onChange = (e) => {
 		this.setState({
 			[e.target.name]: e.target.value
@@ -43,49 +31,16 @@ class App extends Component {
 	}
 
 	render() {
-        const fields = [
-            {
-                type: 'text',
-                name: 'username',
-				value: this.state.username
-			},
-			{
-                type: 'number',
-                name: 'number_counter',
-				value: this.state.number_counter,
-				attributes: {
-					step: 5
-				}
-			},
-			{
-				type: 'select',
-				name: 'select',
-				value: this.state.select,
-				options: [
-					'adriaan',
-					'luke_secomb',
-					'tim_andrew_knott'
-				]
-			}
-		]
-
+		const { UserStore } = this.props;
 		return (
 			<Router>
 				<div className="App">
+					{ UserStore.second_chance !== null && typeof UserStore.second_chance !== 'undefined' ? <SecondChanceAuth UserStore={UserStore} second_chance={UserStore.second_chance} /> : '' }
 					<Header />
-					<p>Authenticated: { this.props.UserStore.current_user === null ? 'No' : 'Yes' }</p>
-					{ this.props.UserStore.current_user !== null ? (<p>Username: {this.props.UserStore.current_user.username}</p>) : ('') }
+					<p>Authenticated: { UserStore.current_user === null || typeof UserStore.current_user === 'undefined' ? 'No' : 'Yes' }</p>
 					
 					<Route exact path="/" component={Home} />
 					<Route path="/about" component={About} />
-
-					<Form 
-						fields={fields} 
-						onChange={(e) => this.onChange(e)}
-						onSubmit={() => console.log(validatePassword(this.state.username))}
-					>
-						<h2>Hello World</h2>
-					</Form>
 				</div>
 			</Router>
 		);
