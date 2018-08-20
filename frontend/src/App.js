@@ -19,7 +19,8 @@ class App extends Component {
 		super()
 		this.state = {
 			username: '',
-			number: "0"
+			number_counter: "0",
+			select: ''
 		}
 	}
 
@@ -48,12 +49,22 @@ class App extends Component {
 			},
 			{
                 type: 'number',
-                name: 'number',
-				value: this.state.number,
+                name: 'number_counter',
+				value: this.state.number_counter,
 				attributes: {
 					step: 5
 				}
-            }
+			},
+			{
+				type: 'select',
+				name: 'select',
+				value: this.state.select,
+				options: [
+					'adriaan',
+					'luke_secomb',
+					'tim_andrew_knott'
+				]
+			}
 		]
 
 		return (
