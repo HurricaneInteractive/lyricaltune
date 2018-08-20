@@ -12,6 +12,8 @@ import './App.css';
 
 import Form from './components/Form/Form'
 
+import { validatePassword } from './helpers/forms'
+
 @inject('UserStore')
 @observer
 class App extends Component {
@@ -80,7 +82,7 @@ class App extends Component {
 					<Form 
 						fields={fields} 
 						onChange={(e) => this.onChange(e)}
-						onSubmit={() => alert('Form Submitted')}
+						onSubmit={() => console.log(validatePassword(this.state.username))}
 					>
 						<h2>Hello World</h2>
 					</Form>
