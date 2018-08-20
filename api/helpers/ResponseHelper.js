@@ -20,7 +20,7 @@ const UsernameFound = (next) => {
 
 const LoginFailed = (next) => {
     let error = new Error('Email and Password combination is not vaild')
-    error.status = 401
+    error.status = 422
     next(error)
 }
 

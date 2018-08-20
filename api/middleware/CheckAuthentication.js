@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
     catch (error) {
         res.status(401).json({
             error: {
-                message: "Authentication Failed",
+                message: "Invalid token",
                 status: 401,
                 error: error
             }
