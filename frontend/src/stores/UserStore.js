@@ -59,9 +59,9 @@ class UserStore {
     }
 
     @action
-    async getCurrentUser(token = this.auth_token) {
+    async getCurrentUser(token = this.auth_token, secondChance = false) {
         let headers = { 'Authorization': `Bearer ${token}` }
-        const response = await fetchApiData(`${this.prefix}/current`, headers, 'GET', true, this)
+        const response = await fetchApiData(`${this.prefix}/current`, headers, 'GET', secondChance, this)
 
         console.log(response)
         runInAction(() => {
