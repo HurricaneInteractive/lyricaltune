@@ -1,5 +1,6 @@
 import { action, observable, runInAction, configure } from 'mobx'
-import axios from 'axios'
+
+import { performAxiosCall, fetchApiData } from '../helpers/api'
 
 configure({ enforceActions: true })
 
@@ -9,8 +10,6 @@ configure({ enforceActions: true })
  * @class UserStore
  */
 class UserStore {
-    @observable users = null
-    
     /**
      * Object containing the current user
      *
@@ -26,7 +25,12 @@ class UserStore {
      */
     @observable auth_token = window.sessionStorage.getItem('auth_token')
 
-    @observable second_chance = null
+    /**
+     * Checks if store is giving user a second chance to log in
+     *
+     * @memberof UserStore
+     */
+    @observable second_chance = false
 
     /**
      * API route prefix
@@ -35,6 +39,11 @@ class UserStore {
      */
     prefix = '/users'
 
+    /**
+     * Default headers for axios calls
+     *
+     * @memberof UserStore
+     */
     axios_headers = {
         'Content-Type': 'application/json'
     }
@@ -45,73 +54,16 @@ class UserStore {
     }
 
     @action
-    resetSecondChance() {
-        this.second_chance = null
-    }
-
-    @action
-    async performAPIcall(route, data = {}, method = 'GET', headers = {}) {
-        const axiosHeaders = Object.assign(
-            {},
-            this.axios_headers,
-            headers
-        )
-
-        const axios_config = {
-            method: method,
-            url: `${this.prefix}/${route}`,
-            data: data,
-            headers: axiosHeaders
-        }
-
-        return await axios(axios_config)
-            .then(response => response)
-            .catch(error => {
-                let data = error.response.data.error
-                if (data.status === 401) {
-                    runInAction(() => {
-                        this.second_chance = true
-                    })
-                    return false
-                }
-                else {
-                    return error.response
-                }
-            })
-    }
-
-    @action
-    async fetchUserApiData(route, headers = {}, method = 'GET') {
-        const fetchHeaders = headers;
-        const init = {
-            method: method,
-            headers: fetchHeaders
-        }
-
-        const response = await fetch(`${this.prefix}/${route}`, init)
-            .then(res => res.json())
-            .catch(error => error)
-
-        if (response.error !== null) {
-            if (typeof response.error.status !== 'undefined') {
-                if (response.error.status === 401) {
-                    runInAction(() => {
-                        this.second_chance = true
-                    })
-                    return false
-                }
-            }
-        }
-        else {
-            return response
-        }
+    set__secondChance(state) {
+        this.second_chance = state
     }
 
     @action
     async getCurrentUser(token = this.auth_token) {
         let headers = { 'Authorization': `Bearer ${token}` }
-        const response = await this.performAPIcall('current', {}, 'GET', headers)
+        const response = await fetchApiData(`${this.prefix}/current`, headers, 'GET', true, this)
 
+        console.log(response)
         runInAction(() => {
             this.current_user = response.current_user
         })
@@ -120,10 +72,10 @@ class UserStore {
     @action
     async authenticateUser(email, password) {
         try {
-            const response = await this.performAPIcall('login', {
+            const response = await performAxiosCall(`${this.prefix}/login`, {
                 email: email,
                 password: password
-            }, 'post')
+            }, 'post', this.axios_headers)
             
             console.log('Axios Response', response)
 
@@ -141,21 +93,6 @@ class UserStore {
             })
 
             return error
-        }
-    }
-
-    @action
-    async getUserData(username) {
-        try {
-            const users = await this.fetchUserApiData(username)
-            runInAction(() => {
-                this.users = users
-            })
-        }
-        catch (error) {
-            runInAction(() => {
-                console.error('User Store Error fetching users')
-            })
         }
     }
 }
