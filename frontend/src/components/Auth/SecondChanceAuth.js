@@ -10,7 +10,7 @@ export default class SecondChanceAuth extends React.Component {
             .then(response => {
                 if (response.data.error === null) {
                     alert('You are now logged in')
-                    UserStore.resetSecondChance()
+                    UserStore.set__secondChance(false)
                 }
             })
             .catch(e => {

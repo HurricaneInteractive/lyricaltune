@@ -35,7 +35,7 @@ class App extends Component {
 		return (
 			<Router>
 				<div className="App">
-					{ UserStore.second_chance !== null && typeof UserStore.second_chance !== 'undefined' ? <SecondChanceAuth UserStore={UserStore} second_chance={UserStore.second_chance} /> : '' }
+					{ UserStore.second_chance !== false ? <SecondChanceAuth UserStore={UserStore} second_chance={UserStore.second_chance} /> : '' }
 					<Header />
 					<p>Authenticated: { UserStore.current_user === null || typeof UserStore.current_user === 'undefined' ? 'No' : 'Yes' }</p>
 					
