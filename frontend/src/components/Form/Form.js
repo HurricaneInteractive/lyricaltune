@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import Input from './InputTypes/Input'
 import NumberInput from './InputTypes/Number'
+import SelectBox from './InputTypes/SelectBox'
 
 export default class Form extends Component {
     constructor() {
@@ -13,7 +14,8 @@ export default class Form extends Component {
     renderFormContents(fields) {
         const fieldTypes = {
             text: Input,
-            number: NumberInput
+            number: NumberInput,
+            select: SelectBox
         }
 
         return fields.map((field, i) => {
