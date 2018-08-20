@@ -26,6 +26,8 @@ class UserStore {
      */
     @observable auth_token = window.sessionStorage.getItem('auth_token')
 
+    @observable second_chance = null
+
     /**
      * API route prefix
      *
@@ -43,6 +45,11 @@ class UserStore {
     }
 
     @action
+    resetSecondChance() {
+        this.second_chance = null
+    }
+
+    @action
     async performAPIcall(route, data = {}, method = 'GET', headers = {}) {
         const axiosHeaders = Object.assign(
             {},
@@ -50,23 +57,34 @@ class UserStore {
             headers
         )
 
-        const response = await axios({
+        const axios_config = {
             method: method,
             url: `${this.prefix}/${route}`,
             data: data,
             headers: axiosHeaders
-        })
-        .then(response => response)
-        .catch(error => error)
+        }
 
-        return response
+        return await axios(axios_config)
+            .then(response => response)
+            .catch(error => {
+                let data = error.response.data.error
+                if (data.status === 401) {
+                    runInAction(() => {
+                        this.second_chance = true
+                    })
+                    return false
+                }
+                else {
+                    return error.response
+                }
+            })
     }
 
     @action
-    async fetchUserApiData(route, headers = {}) {
+    async fetchUserApiData(route, headers = {}, method = 'GET') {
         const fetchHeaders = headers;
         const init = {
-            method: 'GET',
+            method: method,
             headers: fetchHeaders
         }
 
@@ -74,13 +92,25 @@ class UserStore {
             .then(res => res.json())
             .catch(error => error)
 
-        return response
+        if (response.error !== null) {
+            if (typeof response.error.status !== 'undefined') {
+                if (response.error.status === 401) {
+                    runInAction(() => {
+                        this.second_chance = true
+                    })
+                    return false
+                }
+            }
+        }
+        else {
+            return response
+        }
     }
 
-    @action 
+    @action
     async getCurrentUser(token = this.auth_token) {
         let headers = { 'Authorization': `Bearer ${token}` }
-        const response = await this.fetchUserApiData('/current', headers)
+        const response = await this.performAPIcall('current', {}, 'GET', headers)
 
         runInAction(() => {
             this.current_user = response.current_user
@@ -94,17 +124,23 @@ class UserStore {
                 email: email,
                 password: password
             }, 'post')
+            
+            console.log('Axios Response', response)
 
             runInAction(() => {
                 let data = response.data
                 this.current_user = data.current_user
                 this.set__authToken(data.token)
             })
+
+            return response
         }
         catch (error) {
             runInAction(() => {
                 console.error('User Authentication failed', error)
             })
+
+            return error
         }
     }
 
