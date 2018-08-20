@@ -1,5 +1,13 @@
 import axios from 'axios'
 
+/**
+ * If a request returns a 401, it will set the second_chance variable to true,
+ * otherwise it will simply return the error response
+ * 
+ * @param {Store} store MobX Store to access
+ * @param {object} response axios/fetch request response object
+ * @param {string} type fetch type - defaults to `axios`
+ */
 export const enableSecondChance = (store, response, type = 'axios') => {
     let status = null;
     switch(type) {
@@ -25,6 +33,16 @@ export const enableSecondChance = (store, response, type = 'axios') => {
     }
 }
 
+/**
+ * Performs a axios request method
+ * 
+ * @param {string} route Endpoint url
+ * @param {object} data Data to pass to the endpoint - defaults to `{}`
+ * @param {string} method Request method - defaults to `GET`
+ * @param {object} headers Request headers - defaults to `{}`
+ * @param {boolean} secondChance Whether the request should give the user a second chance to login - defaults to `false`
+ * @param {Store} store MobX Store reference - defaults to `null`
+ */
 export const performAxiosCall = async (route, data = {}, method = 'GET', headers = {}, secondChance = false, store = null) => {
     const config = {
         method: method,
@@ -45,6 +63,15 @@ export const performAxiosCall = async (route, data = {}, method = 'GET', headers
         })
 }
 
+/**
+ * Performs a fetch request
+ * 
+ * @param {string} route Endpoint url
+ * @param {object} headers Request headers - defaults to `{}`
+ * @param {string} method Request method - defaults to `GET`
+ * @param {boolean} secondChance Whether the request should give the user a second chance to login - defaults to `false`
+ * @param {Store} store MobX Store reference - defaults to `null`
+ */
 export const fetchApiData = async (route, headers = {}, method = 'GET', secondChance = false, store = null) => {
     const init = {
         method: method,
