@@ -13,6 +13,7 @@ import SecondChanceAuth from './components/Auth/SecondChanceAuth'
 import './App.css';
 
 @inject('UserStore')
+@inject('GlobalStore')
 @observer
 class App extends Component {
 	constructor() {
@@ -24,6 +25,10 @@ class App extends Component {
 		}
 	}
 
+	componentDidMount() {
+		this.props.UserStore.getCurrentUser()
+	}
+
 	onChange = (e) => {
 		this.setState({
 			[e.target.name]: e.target.value
@@ -31,11 +36,11 @@ class App extends Component {
 	}
 
 	render() {
-		const { UserStore } = this.props;
+		const { UserStore, GlobalStore } = this.props;
 		return (
 			<Router>
 				<div className="App">
-					{ UserStore.second_chance !== false ? <SecondChanceAuth UserStore={UserStore} second_chance={UserStore.second_chance} /> : '' }
+					{ GlobalStore.second_chance !== false ? <SecondChanceAuth UserStore={UserStore} GlobalStore={GlobalStore} second_chance={GlobalStore.second_chance} /> : '' }
 					<Header />
 					<p>Authenticated: { UserStore.current_user === null || typeof UserStore.current_user === 'undefined' ? 'No' : 'Yes' }</p>
 					
