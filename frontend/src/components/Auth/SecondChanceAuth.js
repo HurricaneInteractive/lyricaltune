@@ -21,9 +21,10 @@ export default class SecondChanceAuth extends React.Component {
     render() {
         return (
             <div className="second-chance-auth">
-                <p><button onClick={() => window.location = '/'}>Close</button> Closing will redirect you to the homepage</p>
-                <Login overrideSubmit={(state) => this.onSubmit(state)} />
-                <hr />
+                <div className="inner-wrapper">
+                    <p><button onClick={() => window.location = '/'}>Close</button> Closing will redirect you to the homepage</p>
+                    <Login overrideSubmit={(state) => this.onSubmit(state)} />
+                </div>
             </div>
         )
     }
