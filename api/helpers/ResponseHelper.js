@@ -24,13 +24,13 @@ const LoginFailed = (next) => {
     next(error)
 }
 
-const UserCreated = (res, data) => {
+const UserCreated = (res, data = {}) => {
     let response = new Success("Your account has successfully been created")
     response.status = 201
     response.dispatch(res, data)
 }
 
-const LoginSuccessful = (res, data) => {
+const LoginSuccessful = (res, data = {}) => {
     let response = new Success("You have been logged in successfully")
     response.dispatch(res, data)
 }
@@ -47,7 +47,7 @@ const NoUserWithId = (id, next) => {
     next(error)
 }
 
-const UserFound = (res, data) => {
+const UserFound = (res, data = {}) => {
     let response = new Success()
     response.dispatch(res, data)
 }
@@ -70,24 +70,40 @@ const FollowingFailed = (next) => {
     next(error)
 }
 
-const FollowingSucceed = (res, data) => {
+const FollowingSucceed = (res, data = {}) => {
     let response = new Success('You have successfully followed the user')
     response.dispatch(res, data)
 }
 
-const UnfollowSucceed = (res, data) => {
+const UnfollowSucceed = (res, data = {}) => {
     let response = new Success('You have successfully unfollowed the user')
     response.dispatch(res, data)
 }
 
-const LogoutSuccess = (res, data) => {
+const LogoutSuccess = (res, data = {}) => {
     let response = new Success('Account successfully logged out')
     response.dispatch(res, data)
 }
 
-const UpdateUserSuccessful = (res, data) => {
+const UpdateUserSuccessful = (res, data = {}) => {
     let response = new Success('Account has been successfully updated')
     response.dispatch(res, data)
+}
+
+const PhraseSavedSuccessfully = (res, name, data = {}) => {
+    let response = new Success(`${name} has succesfully been created`)
+    response.dispatch(res, data)
+}
+
+const UserPhrasesSuccess = (res, data = {}) => {
+    let response = new Success('User phrases successfully found')
+    response.dispatch(res, data)
+}
+
+const RequestingDifferentUserPhrases = (next) => {
+    let error = new Error('You are not able to access different users phrases')
+    error.status = 400
+    next(error)
 }
 
 module.exports = {
@@ -106,5 +122,8 @@ module.exports = {
     unfollowSucceed: UnfollowSucceed,
     notFollowingUser: NotFollowingUser,
     logoutSuccess: LogoutSuccess,
-    updateUserSuccessful: UpdateUserSuccessful
+    updateUserSuccessful: UpdateUserSuccessful,
+    phraseSavedSuccessfully: PhraseSavedSuccessfully,
+    userPhrasesSuccess: UserPhrasesSuccess,
+    requestingDifferentUserPhrases: RequestingDifferentUserPhrases
 }
