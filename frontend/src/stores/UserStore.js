@@ -2,6 +2,8 @@ import { action, observable, runInAction, configure } from 'mobx'
 
 import { performAxiosCall, fetchApiData } from '../helpers/api'
 
+import globalStore from './GlobalStore'
+
 configure({ enforceActions: true })
 
 /**
@@ -26,13 +28,6 @@ class UserStore {
     @observable auth_token = window.sessionStorage.getItem('auth_token')
 
     /**
-     * Checks if store is giving user a second chance to log in
-     *
-     * @memberof UserStore
-     */
-    @observable second_chance = false
-
-    /**
      * API route prefix
      *
      * @memberof UserStore
@@ -48,20 +43,19 @@ class UserStore {
         'Content-Type': 'application/json'
     }
 
+    constructor(globalStore) {
+        this.global_store = globalStore
+    }
+
     set__authToken(token) {
         this.auth_token = token
         window.sessionStorage.setItem('auth_token', token)
     }
 
     @action
-    set__secondChance(state) {
-        this.second_chance = state
-    }
-
-    @action
     async getCurrentUser(token = this.auth_token, secondChance = false) {
         let headers = { 'Authorization': `Bearer ${token}` }
-        const response = await fetchApiData(`${this.prefix}/current`, headers, 'GET', secondChance, this)
+        const response = await fetchApiData(`${this.prefix}/current`, headers, 'GET', secondChance, this.global_store)
 
         console.log(response)
         runInAction(() => {
@@ -97,4 +91,4 @@ class UserStore {
     }
 }
 
-export default new UserStore()
+export default new UserStore(globalStore)

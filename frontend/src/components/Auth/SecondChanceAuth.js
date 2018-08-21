@@ -5,12 +5,12 @@ import Login from '../WebForms/Login'
 export default class SecondChanceAuth extends React.Component {
 
     onSubmit = (state) => {
-        const { UserStore } = this.props
+        const { UserStore, GlobalStore } = this.props
         UserStore.authenticateUser(state.email, state.password)
             .then(response => {
                 if (response.data.error === null) {
                     alert('You are now logged in')
-                    UserStore.set__secondChance(false)
+                    GlobalStore.setSecondChance(false)
                 }
             })
             .catch(e => {
