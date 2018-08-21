@@ -12,7 +12,7 @@ export const enableSecondChance = (store, response, type = 'axios') => {
     let status = null;
     switch(type) {
         case 'fetch':
-            if (response.error !== null) {
+            if (response.error !== null && typeof response.error !== 'undefined') {
                 if (typeof response.error.status !== 'undefined') {
                     status = response.error.status
                 }
@@ -25,7 +25,7 @@ export const enableSecondChance = (store, response, type = 'axios') => {
     }
 
     if (status === 401) {
-        store.set__secondChance(true)
+        store.setSecondChance(true)
         return false
     }
     else {
