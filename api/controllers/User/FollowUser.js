@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
             .then(target_user => {
                 if (target_user === null) {
                     // Could not find target user
-                    ResponseHelper.NoUserWithId(id, next)
+                    ResponseHelper.noUserWithId(id, next)
                 }
                 else {
                     // Updates the current user following array
