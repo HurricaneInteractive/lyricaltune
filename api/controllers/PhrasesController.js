@@ -1,4 +1,5 @@
 module.exports = {
     createPhrase: require('./Phrases/CreatePhrase'),
-    userPhrases: require('./Phrases/UserPhrases')
+    userPhrases: require('./Phrases/UserPhrases'),
+    deletePhrase: require('./Phrases/DeletePhrase')
 }

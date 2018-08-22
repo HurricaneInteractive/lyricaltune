@@ -9,4 +9,7 @@ router.post('/create', CheckAuthentication, PhrasesController.createPhrase)
 // GET
 router.get('/user/:id', CheckAuthentication, PhrasesController.userPhrases)
 
+// DELETE
+router.delete('/delete', CheckAuthentication, PhrasesController.deletePhrase)
+
 module.exports = router
