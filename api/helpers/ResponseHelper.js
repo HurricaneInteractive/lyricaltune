@@ -106,6 +106,17 @@ const RequestingDifferentUserPhrases = (next) => {
     next(error)
 }
 
+const PhraseDeletedSuccessfully = (res, data = {}) => {
+    let response = new Success('Requested phrase was successfully deleted')
+    response.dispatch(res, data)
+}
+
+const PhraseNotFound = (next) => {
+    let error = new Error('Phrase does not exist')
+    error.status = 422
+    next(error)
+}
+
 module.exports = {
     returnedError: ReturnedError,
     emailFound: EmailFound,
@@ -125,5 +136,7 @@ module.exports = {
     updateUserSuccessful: UpdateUserSuccessful,
     phraseSavedSuccessfully: PhraseSavedSuccessfully,
     userPhrasesSuccess: UserPhrasesSuccess,
-    requestingDifferentUserPhrases: RequestingDifferentUserPhrases
+    requestingDifferentUserPhrases: RequestingDifferentUserPhrases,
+    phraseDeletedSuccessfully: PhraseDeletedSuccessfully,
+    phraseNotFound: PhraseNotFound
 }
