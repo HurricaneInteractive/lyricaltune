@@ -88,8 +88,6 @@ const uniqueArrayEntries = (array) => {
  * @param {string} words[] Selected words
  */
 export const keygen = (lyrics, words) => {
-    console.log(lyrics)
-
     // Throws an error if an empty array is provided
     if (words.length < 1) {
         throw new Error('You require at least one item in the words array')
@@ -118,8 +116,6 @@ export const keygen = (lyrics, words) => {
         })) / 2),
         count = 0,
         ratio = 100 / 12
-
-    console.log(clean_lyrics)
 
     words.forEach(word => {
         count += findCount(clean_lyrics, word)
