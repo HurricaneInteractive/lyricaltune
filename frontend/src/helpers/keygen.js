@@ -9,11 +9,9 @@ const minor_scales = require('./data/minor_scales')
  */
 const cleanLyrics = (song) => {
     const regex = [
-        { match: /\\n/g, replace: ' '},
-        { match: /\n/g, replace: ' ' },
-        { match: /\\"/g, replace: '' },
-        { match: /[^a-zA-z0-9 \0]/g, replace: '' },
+        { match: /(\\n|\n)/g, replace: ' ' },
         { match: /\s\s/g, replace: ' ' },
+        { match: /(\\"|[^a-zA-z0-9 \0])/g, replace: '' },
         { match: /N W A/, replace: 'nwa' }
     ]
     let cleaned = song
@@ -90,6 +88,7 @@ const uniqueArrayEntries = (array) => {
  * @param {string} words[] Selected words
  */
 export const keygen = (lyrics, words) => {
+    console.log(lyrics)
 
     // Throws an error if an empty array is provided
     if (words.length < 1) {
@@ -119,6 +118,8 @@ export const keygen = (lyrics, words) => {
         })) / 2),
         count = 0,
         ratio = 100 / 12
+
+    console.log(clean_lyrics)
 
     words.forEach(word => {
         count += findCount(clean_lyrics, word)
