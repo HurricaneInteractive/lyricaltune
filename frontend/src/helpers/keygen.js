@@ -1,7 +1,12 @@
 const major_scales = require('./data/major_scales')
 const minor_scales = require('./data/minor_scales')
-const lyrics = require('./data/lyrics')
 
+/**
+ * Removes all unwanted symbols, characters and spaces from the provided lyrics
+ * 
+ * @param {string} song 
+ * @returns {string}
+ */
 const cleanLyrics = (song) => {
     const regex = [
         { match: /\\n/g, replace: ' '},
@@ -20,6 +25,12 @@ const cleanLyrics = (song) => {
     return cleaned.trim().toLowerCase();
 }
 
+/**
+ * Finds the number of times a word occurs in the lyrics
+ * 
+ * @param {string} song Song Lyrics
+ * @param {string} word Selected word
+ */
 const findCount = (song, word) => {
     if (word.split(' ').length > 1) {
         throw new Error('Please supply only one word')
@@ -36,57 +47,91 @@ const findCount = (song, word) => {
     return word_count
 }
 
-const getHighestOccuringWord = (song_lyrics) => {
+/**
+ * Finds the 5 most occuring words
+ * 
+ * @param {string} song_lyrics Song Lyrics
+ */
+const getHighestOccuringWords = (song_lyrics) => {
     let count = -1,
-        words = [];
+        words = [],
+        numbers = []
 
     song_lyrics.split(' ').forEach(word => {
         if (words.indexOf(word) < 0) {
             words.push(word)
-            let re = new RegExp(` ${word} `, 'gm')
-            let matches = song_lyrics.match(re) !== null ? song_lyrics.match(re).length : 0
+            let re = new RegExp(` ${word} `, 'gm'),
+                matches = song_lyrics.match(re) !== null ? song_lyrics.match(re).length : 0
+            
             count = matches > count ? matches : count;
+            
+            if (numbers.indexOf(matches) < 0) {
+                numbers.push(matches)
+            }
         }
     })
 
-    return count;
+    return numbers.sort((a, b) => b - a).slice(0, 5);
 }
 
-export const keygen = () => {
+/**
+ * Returns an array without duplicates
+ * 
+ * @param {*} array[] Array to filter
+ */
+const uniqueArrayEntries = (array) => {
+    return Array.from(new Set(array))
+}
+
+/**
+ * Returns the scale and key/notes pair based on the lyrics and provided words
+ * 
+ * @param {string} lyrics Song Lyrics
+ * @param {string} words[] Selected words
+ */
+export const keygen = (lyrics, words) => {
+
+    // Throws an error if an empty array is provided
+    if (words.length < 1) {
+        throw new Error('You require at least one item in the words array')
+    }
+
+    // Throws an error is the words var isn't an array
+    if (typeof words !== 'object') {
+        throw new Error('You must pass an array of words')
+    }
+
+    // Ensures only 5 words are passed & removes all duplicates
+    words = uniqueArrayEntries(words)
+    words = words.slice(0, 5)
+
     let key_pairs = {
         "major": major_scales.major,
         "minor": minor_scales.minor
     }
-        
-    let clean_lyrics = cleanLyrics(lyrics.rap_god) + ' ',
-        most = getHighestOccuringWord(clean_lyrics),
-        half = Math.floor((most / 2)),
-        count = findCount(clean_lyrics, 'a'),
-        scale = count >= half ? 'major' : 'minor',
-        ratio = 100 / 12,
+    
+    // Calculates the variables needed for the scale and index equation
+    let num_of_words = words.length,
+        clean_lyrics = cleanLyrics(lyrics) + ' ',
+        most = getHighestOccuringWords(clean_lyrics),
+        half = Math.floor((most.reduce((accumulator, currentValue, index) => {
+            return index < num_of_words ? accumulator + currentValue : accumulator
+        })) / 2),
+        count = 0,
+        ratio = 100 / 12
+
+    words.forEach(word => {
+        count += findCount(clean_lyrics, word)
+    })
+
+    // Gets the scale and index
+    let scale = count >= half ? 'major' : 'minor',
         index = ( ( ((count / 2) / half) * 100 ) / ratio ) - 1
         index = index < 0 ? 0 : Math.round(index)
-    
-    console.log('Scale', scale)
-    console.log('Index', index)
-    console.log('Key & notes', key_pairs[scale][index])
-
-    return key_pairs[scale][index]
+ 
+    // Returns the scale and key/notes values
+    return {
+        "scale": scale,
+        "key_pairs": key_pairs[scale][index]
+    }
 }
-
-// f = +(Math.round( ((word_count / song_length) * 100) + "e+4" ) + "e-4")
-// special 120
-// f = (occurs / total_words) x 100
-// p = 120 / f of highest occuring word
-// < 60 = Minor Scale
-// > 60 = Major Scale
-// scale = (f x p)
-// key = (scale / 2) - 1
-// 0 - 4 = index 0, 5 - 9 = index 1 etc etc
-
-// half = hightest occuring / 2
-// count < half = minor
-// count > half = major
-// p = ((count / 2) / half) x 100
-// ratio = 100 / 12
-// index = ((p / ration) x 100) - 1
