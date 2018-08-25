@@ -13,4 +13,7 @@ router.get('/:id', CheckAuthentication, PhrasesController.getPhrase)
 // DELETE
 router.delete('/delete', CheckAuthentication, PhrasesController.deletePhrase)
 
+// PATCH
+router.patch('/update/:id', CheckAuthentication, PhrasesController.updatePhrase)
+
 module.exports = router
