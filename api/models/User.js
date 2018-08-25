@@ -37,7 +37,8 @@ const userSchema = new Schema({
         default: 'author'
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    strict: true
 })
 
 userSchema.loadClass(UserHelper)
