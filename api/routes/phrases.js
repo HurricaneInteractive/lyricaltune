@@ -8,6 +8,7 @@ router.post('/create', CheckAuthentication, PhrasesController.createPhrase)
 
 // GET
 router.get('/user/:id', CheckAuthentication, PhrasesController.userPhrases)
+router.get('/:id', CheckAuthentication, PhrasesController.getPhrase)
 
 // DELETE
 router.delete('/delete', CheckAuthentication, PhrasesController.deletePhrase)
