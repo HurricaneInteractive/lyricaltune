@@ -122,6 +122,11 @@ const PhraseFound = (res, data = {}) => {
     response.dispatch(res, data)
 }
 
+const PhraseUpdateSuccess = (res, data = {}) => {
+    let response = new Success('Phrase was successfully updated')
+    response.dispatch(res, data)
+}
+
 module.exports = {
     returnedError: ReturnedError,
     emailFound: EmailFound,
@@ -144,5 +149,6 @@ module.exports = {
     requestingDifferentUserPhrases: RequestingDifferentUserPhrases,
     phraseDeletedSuccessfully: PhraseDeletedSuccessfully,
     phraseNotFound: PhraseNotFound,
-    phraseFound: PhraseFound
+    phraseFound: PhraseFound,
+    phraseUpdateSuccess: PhraseUpdateSuccess
 }
