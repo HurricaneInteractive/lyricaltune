@@ -117,6 +117,11 @@ const PhraseNotFound = (next) => {
     next(error)
 }
 
+const PhraseFound = (res, data = {}) => {
+    let response = new Success('Phrase was successfully found')
+    response.dispatch(res, data)
+}
+
 module.exports = {
     returnedError: ReturnedError,
     emailFound: EmailFound,
@@ -138,5 +143,6 @@ module.exports = {
     userPhrasesSuccess: UserPhrasesSuccess,
     requestingDifferentUserPhrases: RequestingDifferentUserPhrases,
     phraseDeletedSuccessfully: PhraseDeletedSuccessfully,
-    phraseNotFound: PhraseNotFound
+    phraseNotFound: PhraseNotFound,
+    phraseFound: PhraseFound
 }
