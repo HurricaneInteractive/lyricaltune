@@ -1,4 +1,4 @@
-const %UP_MODEL% = require('../../models/%UP_MODEL%.js')
+const %UP_MODEL% = require('../../models/%UP_MODEL%')
 
 module.exports = (req, res, next) => {
     let id = req.params.id
