@@ -3,15 +3,15 @@ const router = express.Router()
 const %UP_MODEL%Controller = require('../controllers/%UP_MODEL%Controller')
 
 // POST
-router.post('/create', %UP_MODEL%Controller.createPhrase)
+router.post('/create', %UP_MODEL%Controller.create%UP_MODEL%)
 
 // GET
-router.get('/:id', %UP_MODEL%Controller.getPhrase)
+router.get('/:id', %UP_MODEL%Controller.get%UP_MODEL%)
 
 // DELETE
-router.delete('/delete', %UP_MODEL%Controller.deletePhrase)
+router.delete('/delete', %UP_MODEL%Controller.delete%UP_MODEL%)
 
 // PATCH
-router.patch('/update/:id', %UP_MODEL%Controller.updatePhrase)
+router.patch('/update/:id', %UP_MODEL%Controller.update%UP_MODEL%)
 
 module.exports = router
