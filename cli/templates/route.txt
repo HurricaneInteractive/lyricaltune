@@ -1,0 +1,17 @@
+const express = require('express')
+const router = express.Router()
+const %UP_MODEL%Controller = require('../controllers/%UP_MODEL%Controller')
+
+// POST
+router.post('/create', %UP_MODEL%Controller.createPhrase)
+
+// GET
+router.get('/:id', %UP_MODEL%Controller.getPhrase)
+
+// DELETE
+router.delete('/delete', %UP_MODEL%Controller.deletePhrase)
+
+// PATCH
+router.patch('/update/:id', %UP_MODEL%Controller.updatePhrase)
+
+module.exports = router

@@ -1,0 +1,21 @@
+{
+  "name": "lyrical-cli",
+  "version": "0.0.1",
+  "description": "CLI tool to easily create new api route structures",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "lyrical-cli": "./index.js"
+  },
+  "dependencies": {
+    "async": "^2.6.1",
+    "chalk": "^2.4.1",
+    "commander": "^2.17.1",
+    "get-installed-path": "^4.0.8",
+    "node-emoji": "^1.8.1"
+  }
+}

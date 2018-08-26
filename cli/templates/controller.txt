@@ -1,0 +1,6 @@
+module.exports = {
+    create%UP_MODEL%: require('./%UP_MODEL%/Create%UP_MODEL%.js'),
+    get%UP_MODEL%: require('./%UP_MODEL%/Get%UP_MODEL%.js'),
+    update%UP_MODEL%: require('./%UP_MODEL%/Update%UP_MODEL%.js'),
+    delete%UP_MODEL%: require('./%UP_MODEL%/Delete%UP_MODEL%.js')
+}

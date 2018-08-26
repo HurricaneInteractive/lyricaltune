@@ -1,0 +1,23 @@
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const %UP_MODEL%Helper = require('../helpers/%UP_MODEL%Helper')
+
+const %LOW_MODEL%Schema = new Schema({
+    _id: {
+        type: Schema.Types.ObjectId,
+        default: mongoose.Types.ObjectId
+    }
+}, {
+    timestamps: true,
+    strict: true
+})
+
+%LOW_MODEL%Schema.loadClass(%UP_MODEL%Helper)
+
+const %UP_MODEL% = mongoose.model('%UP_MODEL%', %LOW_MODEL%Schema)
+
+%UP_MODEL%.init().then((Event) => {
+    console.log('%UP_MODEL% finished building')
+})
+
+module.exports = %UP_MODEL%;

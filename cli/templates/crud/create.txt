@@ -1,0 +1,13 @@
+const %UP_MODEL% = require('../../models/%UP_MODEL%.js')
+
+module.exports = (req, res, next) => {
+    const %LOW_MODEL% = new %UP_MODEL%({
+        // Add contents here
+    })
+
+    %LOW_MODEL%.save()
+        .then(created%UP_MODEL% => {
+            // Handle success
+        })
+        .catch(e => console.error(e))
+}

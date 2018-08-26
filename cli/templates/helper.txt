@@ -1,0 +1,5 @@
+class %UP_MODEL%Helper {
+
+}
+
+module.exports = %UP_MODEL%Helper
