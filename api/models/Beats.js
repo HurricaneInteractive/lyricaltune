@@ -16,11 +16,18 @@ const beatsSchema = new Schema({
         type: Map,
         of: Schema.Types.Mixed
     },
-    beat: {
-        type: Map,
-        of: Object
-    },
-    author: Schema.Types.ObjectId
+    beat: [
+        {
+            row: String,
+            sample_pack: String,
+            pattern: [String]
+        }
+    ],
+    author: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        index: true
+    }
 }, {
     timestamps: true,
     strict: true
