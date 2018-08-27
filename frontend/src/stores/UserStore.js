@@ -89,6 +89,25 @@ class UserStore {
             return error
         }
     }
+
+    @action
+    async followUser(id) {
+        try {
+            let headers = this.axios_headers
+            if (this.auth_token !== '' && this.auth_token !== null) {
+                headers['Authorization'] = `Bearer ${this.auth_token}`
+            }
+
+            const response = await performAxiosCall(`${this.prefix}/unfollow`, {
+                id: id
+            }, 'post', headers, false, this.global_store)
+
+            console.log(response)
+        }
+        catch (error) {
+            this.global_store.setResponseError(error)
+        }
+    }
 }
 
 export default new UserStore(globalStore)
