@@ -32,7 +32,7 @@ module.exports = (req, res, next) => {
                         beat: beat
                     }
                 }, { new: true }).exec().then(response =>  {
-                    ResponseHelper.phraseUpdateSuccess(res, { updated: response.toJSON() })
+                    ResponseHelper.beatUpdateSuccess(res, { updated: response.toJSON() })
                 })
                 .catch(e => ResponseHelper.returnedError(res, e) )
             }
