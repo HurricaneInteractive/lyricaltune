@@ -34,7 +34,7 @@ const createFiles = (files, name) => {
     
             fs.writeFile(filename, data, (err) => {
                 if (err) throw err
-                log(chalk.green( emoji.emojify(':white_check_mark:  ' + file.success )))
+                log(chalk.green( emoji.emojify(':fire:  ' + file.success )))
             })
         })
     }, function(err) {
