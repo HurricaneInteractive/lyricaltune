@@ -71,6 +71,12 @@ const FollowingFailed = (next) => {
     next(error)
 }
 
+const TryingToFollowCurrentUser = (next) => {
+    let error = new Error('You are not able to follow your own account')
+    error.status = 422
+    next(error)
+}
+
 const FollowingSucceed = (res, data = {}) => {
     let response = new Success('You have successfully followed the user')
     response.dispatch(res, data)
@@ -179,6 +185,7 @@ module.exports = {
     alreadyFollowingUser: AlreadyFollowingUser,
     followingFailed: FollowingFailed,
     followingSucceed: FollowingSucceed,
+    tryingToFollowCurrentUser: TryingToFollowCurrentUser,
     unfollowSucceed: UnfollowSucceed,
     notFollowingUser: NotFollowingUser,
     logoutSuccess: LogoutSuccess,

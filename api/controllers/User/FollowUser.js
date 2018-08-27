@@ -6,6 +6,10 @@ module.exports = (req, res, next) => {
     let current_user = req.jwt_user,
         id = req.body.id
 
+    if (current_user._id === id) {
+        ResponseHelper.tryingToFollowCurrentUser(next)
+    }
+
     // Checks if the current users following contains the target user id
     if (current_user.following.indexOf(id) === -1) {
         // Attempts to find the target user
