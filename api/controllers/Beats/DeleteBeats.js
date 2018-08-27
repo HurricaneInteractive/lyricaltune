@@ -1,16 +1,26 @@
+const User = require('../../models/User')
 const Beats = require('../../models/Beats')
+const ResponseHelper = require('../../helpers/ResponseHelper')
 
 module.exports = (req, res, next) => {
-    let id = req.body.id
+    let current_user = req.jwt_user
 
-    Beats.findByIdAndRemove(id).exec()
-        .then(doc => {
-            if (doc === null) {
-                // Handle no document found
+    User.findOne({ _id: current_user._id }).exec()
+        .then(user => {
+            if (user === null) {
+                ResponseHelper.noUserWithId(current_user._id, next)
             }
-            else {
-                // Handle delete success
-            }
+
+            Beats.findByIdAndRemove(req.body.id).exec()
+                .then(doc => {
+                    if (doc === null) {
+                        ResponseHelper.beatNotFound(next)
+                    }
+                    else {
+                        ResponseHelper.beatDeletedSuccessfully(res, { removed: doc.toJSON() })
+                    }
+                })
+                .catch(e => ResponseHelper.returnedError(res, e))
         })
-        .catch(e => console.error(e))
+        .catch(e => ResponseHelper.returnedError(res, e))
 }
