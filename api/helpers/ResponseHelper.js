@@ -156,6 +156,11 @@ const BeatDeletedSuccessfully = (res, data = {}) => {
     response.dispatch(res, data)
 }
 
+const UserBeatsSuccess = (res, data = {}) => {
+    let response = new Success('User beats successfully found')
+    response.dispatch(res, data)
+}
+
 module.exports = {
     returnedError: ReturnedError,
     emailFound: EmailFound,
@@ -184,5 +189,6 @@ module.exports = {
     requestingDifferentUserBeats: RequestingDifferentUserBeats,
     beatNotFound: BeatNotFound,
     beatFound: BeatFound,
-    beatDeletedSuccessfully: BeatDeletedSuccessfully
+    beatDeletedSuccessfully: BeatDeletedSuccessfully,
+    userBeatsSuccess: UserBeatsSuccess
 }
