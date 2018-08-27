@@ -98,7 +98,7 @@ class UserStore {
                 headers['Authorization'] = `Bearer ${this.auth_token}`
             }
 
-            const response = await performAxiosCall(`${this.prefix}/unfollow`, {
+            const response = await performAxiosCall(`${this.prefix}/follow`, {
                 id: id
             }, 'post', headers, false, this.global_store)
 
