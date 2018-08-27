@@ -1,6 +1,7 @@
 const Success = require('../classes/Success')
 
 const ReturnedError = (res, err) => {
+    console.log(err)
     res.status(500).json({
         error: err
     })
@@ -92,6 +93,7 @@ const UpdateUserSuccessful = (res, data = {}) => {
 
 const PhraseSavedSuccessfully = (res, name, data = {}) => {
     let response = new Success(`${name} has succesfully been created`)
+    response.status = 201
     response.dispatch(res, data)
 }
 
@@ -127,6 +129,38 @@ const PhraseUpdateSuccess = (res, data = {}) => {
     response.dispatch(res, data)
 }
 
+const BeatCreated = (res, data = {}) => {
+    let response = new Success('Beat was successfully created')
+    response.status = 201
+    response.dispatch(res, data)
+}
+
+const RequestingDifferentUserBeats = (next) => {
+    let error = new Error('You are not able to access different users beats')
+    error.status = 400
+    next(error)
+}
+const BeatNotFound = (next) => {
+    let error = new Error('Beat does not exist')
+    error.status = 422
+    next(error)
+}
+
+const BeatFound = (res, data = {}) => {
+    let response = new Success('Beat was successfully found')
+    response.dispatch(res, data)
+}
+
+const BeatDeletedSuccessfully = (res, data = {}) => {
+    let response = new Success('Requested beat was successfully deleted')
+    response.dispatch(res, data)
+}
+
+const UserBeatsSuccess = (res, data = {}) => {
+    let response = new Success('User beats successfully found')
+    response.dispatch(res, data)
+}
+
 module.exports = {
     returnedError: ReturnedError,
     emailFound: EmailFound,
@@ -150,5 +184,11 @@ module.exports = {
     phraseDeletedSuccessfully: PhraseDeletedSuccessfully,
     phraseNotFound: PhraseNotFound,
     phraseFound: PhraseFound,
-    phraseUpdateSuccess: PhraseUpdateSuccess
+    phraseUpdateSuccess: PhraseUpdateSuccess,
+    beatCreated: BeatCreated,
+    requestingDifferentUserBeats: RequestingDifferentUserBeats,
+    beatNotFound: BeatNotFound,
+    beatFound: BeatFound,
+    beatDeletedSuccessfully: BeatDeletedSuccessfully,
+    userBeatsSuccess: UserBeatsSuccess
 }

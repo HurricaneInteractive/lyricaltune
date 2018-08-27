@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 
 const userRoutes = require('./routes/users')
 const phrasesRoutes = require('./routes/phrases')
+const beatRoutes = require('./routes/beats')
 
 // Connect to mongo database
 mongoose.connect('mongodb+srv://ucdt_lyrical:' + process.env.DB_CLUSTER_PW + '@lyricaltune-alyu8.mongodb.net/db_lyrical?retryWrites=true', {
@@ -20,6 +21,7 @@ app.use(bodyParser.json())
 // Routes will go here
 app.use('/users', userRoutes)
 app.use('/phrases', phrasesRoutes)
+app.use('/beats', beatRoutes)
 
 // Catch All Error
 app.use((req, res, next) => {
