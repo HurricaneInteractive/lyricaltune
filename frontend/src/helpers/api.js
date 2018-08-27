@@ -9,18 +9,21 @@ import axios from 'axios'
  * @param {string} type fetch type - defaults to `axios`
  */
 export const enableSecondChance = (store, response, type = 'axios') => {
-    let status = null;
+    let status = null,
+        error = null
     switch(type) {
         case 'fetch':
             if (response.error !== null && typeof response.error !== 'undefined') {
                 if (typeof response.error.status !== 'undefined') {
                     status = response.error.status
+                    error = response.error
                 }
             }
             break;
         case 'axios':
         default:
             status = response.data.error.status
+            error = response.data.error
             break
     }
 
@@ -29,7 +32,12 @@ export const enableSecondChance = (store, response, type = 'axios') => {
         return false
     }
     else {
-        return response
+        if (error !== null) {
+            store.setResponseError(error)
+            return false
+        } else {
+            return response
+        }
     }
 }
 
@@ -54,11 +62,15 @@ export const performAxiosCall = async (route, data = {}, method = 'GET', headers
     return await axios(config)
         .then(response => response)
         .catch(error => {
-            if (store !== null) {
-                return secondChance ? enableSecondChance(store, error.response, 'axios') : error.response
+            if (store !== null && secondChance === true) {
+                return enableSecondChance(store, error.response, 'axios')
             }
             else {
-                return error.response
+                // error checking and set store response errors to errors
+                console.log(error.response)
+                let errors = error.response.data.error
+                store.setResponseError(errors)
+                return false
             }
         })
 }
@@ -82,10 +94,11 @@ export const fetchApiData = async (route, headers = {}, method = 'GET', secondCh
         .then(res => res.json())
         .catch(error => error)
 
-    if (store !== null) {
-        return secondChance ? enableSecondChance(store, response, 'fetch') : response
+    if (store !== null && secondChance === true) {
+        return enableSecondChance(store, response, 'fetch')
     }
     else {
+        // error checking and set store response errors to errors
         return response
     }
 }
