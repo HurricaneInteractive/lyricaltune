@@ -7,6 +7,7 @@ const CheckAuthentication = require('../middleware/CheckAuthentication')
 router.post('/create', CheckAuthentication, BeatsController.createBeats)
 
 // GET
+router.get('/user/:id', CheckAuthentication, BeatsController.userBeats)
 router.get('/:id', CheckAuthentication, BeatsController.getBeats)
 
 // DELETE
