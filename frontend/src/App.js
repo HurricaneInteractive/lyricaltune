@@ -29,9 +29,6 @@ class App extends Component {
 
 	render() {
 		const { UserStore, GlobalStore } = this.props;
-		if (GlobalStore.response_error !== null) {
-			console.log('Global Error', GlobalStore.response_error.message)
-		}
 		return (
 			<Router>
 				<div className="App">
@@ -42,7 +39,7 @@ class App extends Component {
 					}
 					{
 						GlobalStore.response_error !== null ? (
-							<ErrorPopup errors={GlobalStore.errors} />
+							<ErrorPopup errors={GlobalStore.errors} dismiss={() => GlobalStore.dismissResponseError()} />
 						) : ('')
 					}
 					<Header />

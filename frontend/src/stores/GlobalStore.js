@@ -1,4 +1,5 @@
-import { action, observable, computed } from 'mobx'
+import { action, observable, configure, computed } from 'mobx'
+configure({ enforceActions: true })
 
 class GlobalStore {
     @observable second_chance = false
@@ -11,7 +12,6 @@ class GlobalStore {
 
     @action
     setResponseError(error) {
-        console.log(error)
         this.response_error = error
     }
 

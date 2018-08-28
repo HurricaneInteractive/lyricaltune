@@ -1,9 +1,8 @@
 import React from 'react'
 import { errorClass } from '../helpers/errors'
 
-const ErrorPopup = ({ errors }) => {
-    console.log('Popup', errors)
-    let message = 'There was an errors with the request, please check your information and try again.',
+const ErrorPopup = ({ errors, dismiss }) => {
+    let message = 'We are experiencing some difficulties, please check your information and try again.',
         status = 500,
         errorclass = typeof errors.status !== 'undefined' && errors.status !== null ? errorClass(errors.status) : errorClass(status)
 
@@ -21,6 +20,7 @@ const ErrorPopup = ({ errors }) => {
     return (
         <div className={`error-popup ${errorclass}`}>
             <p>{ message }</p>
+            <button onClick={(e) => { e.preventDefault(); dismiss() }}>Dismiss</button>
         </div>
     )
 }
