@@ -11,6 +11,8 @@ import About from './pages/About'
 import SecondChanceAuth from './components/Auth/SecondChanceAuth'
 import ErrorPopup from './components/ErrorPopup'
 
+import SongGrid from './components/Creation/SongGrid'
+
 import './App.css';
 
 @inject('UserStore')
@@ -42,16 +44,9 @@ class App extends Component {
 							<ErrorPopup errors={GlobalStore.errors} dismiss={() => GlobalStore.dismissResponseError()} />
 						) : ('')
 					}
-					<Header />
-					<p>Authenticated: { UserStore.current_user === null || typeof UserStore.current_user === 'undefined' ? 'No' : 'Yes' }</p>
-					
 					<Route exact path="/" component={Home} />
 					<Route path="/about" component={About} />
-
-					<button onClick={(e) => {
-						e.preventDefault();
-						UserStore.followUser('5b7816566903fd1b5dbd7a95')
-					}}>Follow 123</button>
+					<Route path="/create" component={SongGrid} />
 				</div>
 			</Router>
 		);
