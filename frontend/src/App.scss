@@ -1,4 +1,6 @@
 @import 'scss/variables';
+@import 'scss/default';
 
 // components
-@import 'scss/components/auth/second_chance_auth'
+@import 'scss/components/auth/second_chance_auth';
+@import 'scss/components/creation/song-grid'

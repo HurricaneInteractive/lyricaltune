@@ -1,0 +1,42 @@
+.song-grid {
+    display: grid;
+    grid-template-columns: 200px auto;
+    grid-column-gap: 20px;
+    height: 100vh;
+    .store {
+        background: #fafafa;
+        padding: 5px;
+        .draggable:not(:first-child) {
+            margin-top: 5px;
+        }
+    }
+    .draggable {
+        width: auto;
+        display: block;
+        padding: 25px;
+        background: #eee;
+    }
+    .grid {
+        .row {
+            display: grid;
+            grid-template-columns: 30px auto;
+            .row-label {
+                background: black;
+                color: white;
+                text-align: center;
+            }
+            .droppable {
+                background: #fafafa;
+                .draggable {
+                    float: left;
+                    border: 1px solid black;
+                }
+                &:after {
+                    content: '';
+                    display: table;
+                    clear: both;
+                }
+            }
+        }
+    }
+}
