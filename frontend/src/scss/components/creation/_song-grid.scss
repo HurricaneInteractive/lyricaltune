@@ -15,6 +15,32 @@
         display: block;
         padding: 25px;
         background: #eee;
+        transition: transform 250ms ease-in-out, background 250ms ease-in-out;
+        &.hovered {
+            background: darken(#eee, 10%);
+            &.insert-after {
+                transform: perspective(1000px) rotateX(-20deg) rotateY(0deg);
+                background: linear-gradient(to top, darken(#eee, 20%) 0%, darken(#eee, 10%) 100%);
+            }
+            &.insert-before {
+                transform: perspective(1000px) rotateX(20deg) rotateY(0deg);
+                background: linear-gradient(to bottom, darken(#eee, 20%) 0%, darken(#eee, 10%) 100%);
+            }
+        }
+    }
+    .droppable:not(.store) {
+        .draggable {
+            &.hovered {
+                &.insert-after {
+                    transform: perspective(1000px) rotateX(0deg) rotateY(20deg);
+                    background: linear-gradient(to left, darken(#eee, 20%) 0%, darken(#eee, 10%) 100%);
+                }
+                &.insert-before {
+                    transform: perspective(1000px) rotateX(0deg) rotateY(-20deg);
+                    background: linear-gradient(to right, darken(#eee, 20%) 0%, darken(#eee, 10%) 100%);
+                }
+            }
+        }
     }
     .grid {
         .row {
