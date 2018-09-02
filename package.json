@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/HurricaneInteractive/lyricaltune#readme",
   "dependencies": {
-    "concurrently": "^3.6.1"
+    "@types/number-to-words": "^1.2.0",
+    "concurrently": "^3.6.1",
+    "number-to-words": "^1.2.4"
   }
 }
