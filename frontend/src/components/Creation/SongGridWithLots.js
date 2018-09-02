@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+const converter = require('number-to-words');
 
 const Draggable = (props) => (
     <div
@@ -17,22 +18,22 @@ export default class SongGridWithLots extends Component {
     constructor() {
         super()
 
+        this.creationSettings = {
+            octaves: 1,
+            bars: 4,
+            rows_per_octave: 8
+        }
+
+        let available_rows = this.generateRows();
+
         let rows = {
             store: [],
-            one: {
-                lots: []
-            },
-            two: {
-                lots: []
-            },
-            three: {
-                lots: []
-            }
+            ...available_rows
         }
 
         Object.keys(rows).forEach(key => {
             if (key !== 'store') {
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < (this.creationSettings.bars * 8); i++) {
                     rows[key].lots.push('')
                 }
             }
@@ -42,15 +43,27 @@ export default class SongGridWithLots extends Component {
             phrases: [
                 { id: '45', name: '1', row: 'store', lot: -1 },
                 { id: '46', name: '4', row: 'store', lot: -1 },
-                { id: '70', name: '2', row: 'one', lot: 1 },
-                { id: '12', name: '3', row: 'one', lot: 2 },
-                { id: '15', name: '5', row: 'one', lot: 3 },
-                { id: '16', name: '6', row: 'one', lot: 4 }
+                { id: '70', name: '2', row: 'store', lot: -1 },
+                { id: '12', name: '3', row: 'store', lot: -1 },
+                { id: '15', name: '5', row: 'store', lot: -1 },
+                { id: '16', name: '6', row: 'store', lot: -1 }
             ],
             rows: rows
         }
 
         this.lots = 5
+    }
+
+    generateRows = () => {
+        let rows = {}
+        for (let i = 0; i < this.creationSettings.octaves; i++) {
+            for (let x = 0; x < this.creationSettings.rows_per_octave; x++) {
+                let key = converter.toWords(x + 1)
+                rows[key] = { lots: [] }
+            }
+        }
+
+        return rows
     }
 
     componentDidMount() {
