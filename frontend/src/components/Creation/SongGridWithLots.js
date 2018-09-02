@@ -24,12 +24,15 @@ export default class SongGridWithLots extends Component {
             },
             two: {
                 lots: []
+            },
+            three: {
+                lots: []
             }
         }
 
         Object.keys(rows).forEach(key => {
             if (key !== 'store') {
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < 10; i++) {
                     rows[key].lots.push('')
                 }
             }
@@ -37,9 +40,12 @@ export default class SongGridWithLots extends Component {
 
         this.state = {
             phrases: [
-                { id: '45', name: '1', row: 'store', lot: 0 },
+                { id: '45', name: '1', row: 'store', lot: -1 },
+                { id: '46', name: '4', row: 'store', lot: -1 },
                 { id: '70', name: '2', row: 'one', lot: 1 },
-                { id: '12', name: '3', row: 'store', lot: 2 }
+                { id: '12', name: '3', row: 'one', lot: 2 },
+                { id: '15', name: '5', row: 'one', lot: 3 },
+                { id: '16', name: '6', row: 'one', lot: 4 }
             ],
             rows: rows
         }
@@ -79,36 +85,80 @@ export default class SongGridWithLots extends Component {
             }
         })
 
-        console.log(rows);
-
         this.setState({
             rows: rows
         })
     }
 
+    /**
+     * Gets the index of a object based on a key
+     *
+     * @memberof SongGridWithLots
+     * @param {object} target - Object to search through
+     * @param {string} key - key to search for
+     * @param {string|number} value - value of the object key
+     */
     findIndexByKey = (target, key, value) => {
-        console.log({
-            't': target,
-            'v': value,
-            'k': key
-        })
         return target.findIndex(item => item[key] === value)
     }
 
+    /**
+     * Gets the bounding client rect of either a draggable element or lot based on the target row
+     *
+     * @memberof SongGridWithLots
+     * @param {string} item_row - Row key
+     * @param {number} index - Index position of element
+     */
     getElementCoords = (item_row, index) => {
-        let elements = document.querySelectorAll(`.${item_row} .draggable`)
+        let elements = item_row === 'store' ? document.querySelectorAll(`.${item_row} .draggable`) : this.getRowLots(item_row)
         return elements[index].getBoundingClientRect()
     }
 
+    /**
+     * Determines the orientation of the row
+     *
+     * @memberof SongGridWithLots
+     * @param {string} item_row - Row key
+     */
     getProps = (item_row) => {
         return item_row !== 'store' ? { size: 'width', dir: 'x' } : { size: 'height', dir: 'y' }
     }
 
+    /**
+     * Returns the array that contains all the row data based on row key
+     *
+     * @memberof SongGridWithLots
+     * @param {string} item_row_key - Row key
+     */
+    getRowTarget = (item_row_key) => {
+        let { rows } = this.state;
+        return rows[item_row_key].hasOwnProperty('lots') ? rows[item_row_key].lots : rows[item_row_key]
+    }
+
+    /**
+     * Gets all the lot elements based on the row key
+     *
+     * @memberof SongGridWithLots
+     * @param {string} item_row_key - Row key
+     */
+    getRowLots = (item_row_key) => {
+        return document.querySelectorAll(`.${item_row_key} .lot`)
+    }
+
+    /**
+     * Finds the closest lot or item based on where the item is dropped
+     *
+     * @memberof SongGridWithLots
+     * @param {object} dropped - coordinates of where the item is dropped in the row
+     * @param {string} item_row - Row key
+     * @param {string} id - id of the phrase
+     */
     closest = (dropped, item_row, id) => {
         let closest = null,
-            prop = this.getProps(item_row)
+            prop = this.getProps(item_row),
+            row_items = this.getRowTarget(item_row)
 
-        for (const [i, li] of this.state.rows[item_row].entries()) {
+        for (const [i, li] of row_items.entries()) {
             if (li.key === id) continue;
 
             let coords = this.getElementCoords(item_row, i)
@@ -122,6 +172,14 @@ export default class SongGridWithLots extends Component {
         return closest
     }
 
+    /**
+     * Determine if the element is being dropped before or after a item
+     *
+     * @memberof SongGridWithLots
+     * @param {string} item_row - Row key
+     * @param {object} dropped - coordinates of where the item is dropped in the row
+     * @param {number} closest - closest element to dropped item
+     */
     determineDropPosition = (item_row, dropped, closest) => {
         let coords = this.getElementCoords(item_row, closest),
             prop = this.getProps(item_row),
@@ -130,6 +188,11 @@ export default class SongGridWithLots extends Component {
         return dropped[prop.dir] <= zone ? 'before' : 'after'
     }
 
+    /**
+     * Removes all hover related classes from draggable items
+     *
+     * @memberof SongGridWithLots
+     */
     resetDraggableElems = () => {
         let allDraggable = document.querySelectorAll('.droppable .draggable')
         allDraggable.forEach(elem => {
@@ -137,132 +200,207 @@ export default class SongGridWithLots extends Component {
         })
     }
 
+    /**
+     * Swaps the row content with a destination
+     *
+     * @memberof SongGridWithLots
+     * @param {string} item_row - Row key
+     * @param {string|number} cur_index - Index of the dragged element in its current row
+     * @param {number} closest - closest element to dropped item
+     * @param {string} id - id of the phrase
+     * @param {string} row - row key of the destination row
+     */
+    swapRowItems = (item_row_key, cur_index, closest, id, row) => {
+        let { rows, phrases } = this.state,
+            phrase_index = this.findIndexByKey(phrases, 'id', id)
+
+        if (rows[row].hasOwnProperty('lots')) {
+            let lots = this.getRowLots(row),
+                old_closest = closest
+            
+            if (lots[closest].getAttribute('data-occupied') === 'true') {
+                for (let x = closest; x < lots.length; x++) {
+                    if (lots[x].getAttribute('data-occupied') === 'false') {
+                        closest = x
+                        break
+                    }
+                }
+                if (closest === old_closest) {
+                    alert('No available positions')
+                    return false;
+                }
+            }
+
+            let removed = item_row_key !== 'store' ? rows[item_row_key].lots.splice(cur_index, 1, []) : rows[item_row_key].splice(cur_index, 1)
+
+            rows[row].lots[closest] = removed[0]
+        }
+        else {
+            let removed = item_row_key !== 'store' ? rows[item_row_key].lots.splice(cur_index, 1, []) : rows[item_row_key].splice(cur_index, 1)
+            rows[row].push(removed[0])
+        }
+        
+        phrases[phrase_index].lot = closest
+        phrases[phrase_index].row = row
+
+        return {
+            rows: rows,
+            phrases: phrases
+        }
+    }
+
+    /**
+     * Gets a phrase element based on its id
+     *
+     * @memberof SongGridWithLots
+     * @param {string} id - id of the phrase
+     */
     getItemById = (id) => {
         return this.state.phrases.filter(p => p.id === id)
     }
     
+    /**
+     * Event triggered when entering a droppable element
+     *
+     * @memberof SongGridWithLots
+     * @param {object} ev - Drag event
+     */
     onDragEnter = (ev) => {}
 
+    /**
+     * Event triggered when leaving a droppable element
+     *
+     * @memberof SongGridWithLots
+     * @param {object} ev - Drag event
+     */
     onDragLeave = (ev) => {
         this.resetDraggableElems()
     }
 
+    /**
+     * Event triggered when hovering over a droppable element
+     *
+     * @memberof SongGridWithLots
+     * @param {object} ev - Drag event
+     */
     onDragOver = (ev) => {
         ev.preventDefault()
-        let target = ev.target
-        if (target && !target.classList.contains('dragged')) {
-            let draggedElem = document.querySelector('.droppable .draggable.dragged')
-            target.classList.add('hovered')
-            let dropped = { x: ev.clientX, y: ev.clientY },
-                id = draggedElem.getAttribute('data-id'),
-                item = this.getItemById(id),
-                closest = this.closest(dropped, item[0].row, id)
+        // let target = ev.target
+        // if (target && !target.classList.contains('dragged')) {
+        //     let draggedElem = document.querySelector('.droppable .draggable.dragged')
+        //     target.classList.add('hovered')
+        //     let dropped = { x: ev.clientX, y: ev.clientY },
+        //         id = draggedElem.getAttribute('data-id'),
+        //         item = this.getItemById(id),
+        //         closest = this.closest(dropped, item[0].row, id)
 
-            if (closest !== null) {
-                let dropPos = this.determineDropPosition(item[0].row, dropped, closest)
-                switch (dropPos) {
-                    case 'before':
-                        target.classList.add('insert-before')
-                        target.classList.remove('insert-after')
-                        break
-                    case 'after':
-                    default:
-                        target.classList.add('insert-after')
-                        target.classList.remove('insert-before')
-                        break
-                }
-            }
-        }
+        //     if (closest !== null) {
+        //         let dropPos = this.determineDropPosition(item[0].row, dropped, closest)
+        //         switch (dropPos) {
+        //             case 'before':
+        //                 target.classList.add('insert-before')
+        //                 target.classList.remove('insert-after')
+        //                 break
+        //             case 'after':
+        //             default:
+        //                 target.classList.add('insert-after')
+        //                 target.classList.remove('insert-before')
+        //                 break
+        //         }
+        //     }
+        // }
     }
 
+    /**
+     * Sets the id to the element id when the drag is initiated
+     *
+     * @memberof SongGridWithLots
+     * @param {object} ev - Drag event
+     * @param {string|number} id - Draggable id
+     */
     onDragStart = (ev, id) => {
         ev.dataTransfer.setData('id', id)
         ev.target.classList.add('dragged')
     }
 
+    /**
+     * Event triggered when dropped a droppable element
+     * Changes the order or moves elements to a destination row
+     *
+     * @memberof SongGridWithLots
+     * @param {object} ev - Drag event
+     * @param {string} row - row key of the destination row
+     */
     onDrop = (ev, row) => {
         this.resetDraggableElems()
-        
         let dragged = document.querySelector('.draggable.dragged')
         dragged.classList.remove('dragged')
 
         let { rows, phrases } = this.state,
             id = ev.dataTransfer.getData('id'),
-            item = this.getItemById(id),
-            item_row_key = item[0].row,
-            item_row = rows[item_row_key],
+            item = phrases.filter(p => p.id === id),
+            item_row = item[0].row,
             dropped = { x: ev.clientX, y: ev.clientY }
 
-        if (item_row_key === row && row === 'store') {
-            let curIndex = this.findIndexByKey(item_row, 'key', id),
-                closest = this.closest(dropped, item_row_key, id)
+        // If dropping the element in the same row
+        if (item_row === row) {
+            let row_target = this.getRowTarget(item_row),
+                curIndex = this.findIndexByKey(row_target, 'key', id),
+                closest = this.closest(dropped, item_row, id)
 
-            if (closest !== null) {
-                let dropPos = this.determineDropPosition(item_row_key, dropped, closest)
-
-                switch (dropPos) {
-                    case 'before':
-                        item_row.splice(closest, 0, item_row[curIndex])
-                        item_row.splice((curIndex + 1), 1)
-                        break
-                    case 'after':
-                    default:
-                        item_row.splice((closest + 1), 0, item_row[curIndex])
-                        item_row.splice(curIndex, 1)
-                        break
-                }
-            }
-        }
-        else {
-            if (row === 'store') {
-                let index = this.findIndexByKey(item_row.lots, 'key', item[0].id),
-                    p_index = this.findIndexByKey(phrases, 'id', id),
-                    removed = item_row.lots.splice(index, 1, [])
-
-                console.log(removed)
+            
+            // If the current items row is the store
+            // reorder the elements based on how it is dropped
+            if (item_row === 'store') {
+                if (closest !== null) {
+                    let dropPos = this.determineDropPosition(item_row, dropped, closest)
     
-                phrases[p_index].row = row
-                rows[row].push(removed[0])
-            }
-            else {
-                let row_elem = document.querySelector(`.row .droppable.${row}`)
-
-                if (row_elem !== null) {
-                    let lots = row_elem.querySelectorAll('.lot')
-                    let prop = this.getProps(row)
-                    let closest = null
-
-                    for (const [i, lot] of lots.entries()) {
-                        // if (lot.key === id) continue;
-                        // let coords = this.getElementCoords(item_row, i)
-                        let coords = lot.getBoundingClientRect()
-                        
-                        if (dropped[prop.dir] > coords[prop.dir] && dropped[prop.dir] < (coords[prop.dir] + coords[prop.size])) {
-                            closest = i
-                            break;
-                        }
-                    }
-
-                    if (closest !== null) {
-                        let lot = lots[closest]
-                        if (lot.getAttribute('data-occupied') === 'true') {
-                            console.log('Find next lot to fill')
-                            return false;
-                        }
-                        else {
-                            let index = this.findIndexByKey(item_row, 'key', item[0].id),
-                                p_index = this.findIndexByKey(phrases, 'id', id),
-                                removed = item_row.splice(index, 1, [])
-
-                            phrases[p_index].row = row
-                            phrases[p_index].lot = closest
-                            rows[row].lots[closest] = removed[0]
-                        }
+                    switch (dropPos) {
+                        case 'before':
+                            rows[item_row].splice(closest, 0, rows[item_row][curIndex])
+                            rows[item_row].splice((curIndex + 1), 1)
+                            break
+                        case 'after':
+                        default:
+                            rows[item_row].splice((closest + 1), 0, rows[item_row][curIndex])
+                            rows[item_row].splice(curIndex, 1)
+                            break
                     }
                 }
             }
+            // If it isn't the store
+            else {
+                // if there is a closest element
+                if (closest !== null) {
+                    // Update the row order
+                    let updated_rows = this.swapRowItems(item_row, curIndex, closest, id, row)
+                    if (updated_rows === false) return false
+                    rows = updated_rows.rows
+                    phrases = updated_rows.phrases
+                }
+            }
+        }
+        // If it is being dropped in a different row
+        else {
+            // determine index and closest
+            let row_target = this.getRowTarget(item_row),
+                index = this.findIndexByKey(row_target, 'key', id),
+                closest = this.closest(dropped, row, id)
+
+            // if the target row is the store, set closest to 0 (it will be ignored)
+            if (row === 'store') closest = 0;
+
+            // if there is a closest element
+            if (closest !== null) {
+                // Update the rows to reflect the new elements
+                let updated_rows = this.swapRowItems(item_row, index, closest, id, row)
+                if (updated_rows === false) return false
+                rows = updated_rows.rows
+                phrases = updated_rows.phrases
+            }
         }
 
+        // Set the component state to trigger a re-render
         this.setState({
             rows: rows,
             phrases: phrases
