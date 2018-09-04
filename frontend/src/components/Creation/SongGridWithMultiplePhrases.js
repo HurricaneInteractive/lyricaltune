@@ -26,7 +26,6 @@ export default class SongGridWithMultiplePhrases extends Component {
 
         this.rows = this.generateRows()
         this.lots = this.creationSettings.bars * 8
-        let rows = this.generateRows()
 
         this.state = {
             phrases: [
@@ -285,14 +284,11 @@ export default class SongGridWithMultiplePhrases extends Component {
      * @param {string|number} id - Draggable id
      */
     onDragStart = (ev, id, row, index) => {
-        // ev.dataTransfer.setData('id', id)
-        // ev.dataTransfer.setData('row', row)
         ev.dataTransfer.setData('data', JSON.stringify({
             'id': id,
             'item_row': row,
             'lot_index': index
         }))
-        ev.target.classList.add('dragged')
     }
 
     /**
@@ -304,10 +300,6 @@ export default class SongGridWithMultiplePhrases extends Component {
      * @param {string} row - row key of the destination row
      */
     onDrop = (ev, row) => {
-        this.resetDraggableElems()
-        let dragged = document.querySelector('.draggable.dragged')
-        dragged.classList.remove('dragged')
-
         let { phrases } = this.state,
             { id, item_row, lot_index } = JSON.parse(ev.dataTransfer.getData('data')),
             item = phrases.filter(p => p.id === id),
@@ -315,11 +307,7 @@ export default class SongGridWithMultiplePhrases extends Component {
             closest = this.closest(dropped, row, id),
             phrase_index = this.findIndexByKey(phrases, 'id', id)
 
-        console.log('index', phrases[phrase_index])
-        console.log('row', row)
-
         if (item_row === 'store') {
-            // console.log('C', closest)
             closest = this.checkLotAvailability(row, closest)
             if (closest !== null) {
                 phrases[phrase_index].rows[row].push(closest)
@@ -352,44 +340,33 @@ export default class SongGridWithMultiplePhrases extends Component {
             { phrases } = this.state
 
         for (let i = 0; i < this.lots; i++) {
-            let hasPhrase = false
-            // for (const [idx, phrase] of phrases.entries()) {
-            //     if (phrases[idx].rows[row].indexOf(i) > -1) {
-            //         hasPhrase = phrase
-            //         break
-            //     }
-            // }
+            let lot_phrase = false
 
-            for (const [idx, phrase] of phrases.entries()) {
-                if (phrase.rows[row].length > 0 && phrase.rows[row].includes(i)) {
-                    hasPhrase = phrase
+            for (const phrase of phrases) {
+                if (phrase.rows[row].length === 0) continue;
+
+                if (phrase.rows[row].includes(i)) {
+                    lot_phrase = phrase
                     break
                 }
             }
 
-            console.log('hp', hasPhrase)
-            // if (hasPhrase !== false) console.log(phrases[hasPhrase])
-
-            if (hasPhrase === false) {
-                lots.push(
-                    <div className="lot" key={i} data-occupied='false' />
-                )
-            }
-            else {
-                let p = hasPhrase
-                lots.push(
-                    <div className="lot" key={i} data-occupied='true'>
-                        <Draggable
-                            id={p.id}
-                            name={p.name}
-                            onDragStart={(e, id) => this.onDragStart(e, id, row, i)}
-                            onDragEnter={(e) => this.onDragEnter(e)}
-                            onDragLeave={(e) => this.onDragLeave(e)}
-                            onDragOver={(e) => this.onDragOver(e)}
-                        />
-                    </div>
-                )
-            }
+            lots.push(
+                <div className="lot" key={i} data-occupied={ lot_phrase === false ? 'false' : true }>
+                    {
+                        lot_phrase !== false ? (
+                            <Draggable
+                                id={lot_phrase.id}
+                                name={lot_phrase.name}
+                                onDragStart={(e, id) => this.onDragStart(e, id, row, i)}
+                                onDragEnter={(e) => this.onDragEnter(e)}
+                                onDragLeave={(e) => this.onDragLeave(e)}
+                                onDragOver={(e) => this.onDragOver(e)}
+                            />
+                        ) : ('')
+                    }
+                </div>
+            )
         }
 
         return lots
@@ -425,8 +402,6 @@ export default class SongGridWithMultiplePhrases extends Component {
                 <div className="grid">
                     {
                         Object.keys(this.rows).map((key, i) => {
-                            if (key === 'store') return ''
-
                             return (
                                 <div className="row" key={key}>
                                     <span className="row-label">{i + 1}</span>
