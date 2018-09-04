@@ -47,6 +47,12 @@ export default class SongGridWithMultiplePhrases extends Component {
         })
     }
 
+    /**
+     * Generates a row object which contains an empty array of all the rows needed
+     *
+     * @memberof SongGridWithMultiplePhrases
+     * @return {object} - row object
+     */
     generateRows = () => {
         let rows = {}
         for (let i = 0; i < this.creationSettings.octaves; i++) {
@@ -88,6 +94,8 @@ export default class SongGridWithMultiplePhrases extends Component {
      *
      * @memberof SongGridWithLots
      * @param {string} item_row - Row key
+     *
+     * @deprecated
      */
     getProps = (item_row) => {
         return item_row !== 'store' ? { size: 'width', dir: 'x' } : { size: 'height', dir: 'y' }
@@ -98,6 +106,8 @@ export default class SongGridWithMultiplePhrases extends Component {
      *
      * @memberof SongGridWithLots
      * @param {string} item_row_key - Row key
+     * 
+     * @deprecated
      */
     getRowTarget = (item_row_key) => {
         let { rows } = this.state;
@@ -148,6 +158,8 @@ export default class SongGridWithMultiplePhrases extends Component {
      * @param {string} item_row - Row key
      * @param {object} dropped - coordinates of where the item is dropped in the row
      * @param {number} closest - closest element to dropped item
+     * 
+     * @deprecated
      */
     determineDropPosition = (item_row, dropped, closest) => {
         let coords = this.getElementCoords(item_row, closest),
@@ -178,6 +190,8 @@ export default class SongGridWithMultiplePhrases extends Component {
      * @param {number} closest - closest element to dropped item
      * @param {string} id - id of the phrase
      * @param {string} row - row key of the destination row
+     * 
+     * @deprecated
      */
     swapRowItems = (item_row_key, cur_index, closest, id, row) => {
         let { rows, phrases } = this.state,
@@ -218,6 +232,15 @@ export default class SongGridWithMultiplePhrases extends Component {
         }
     }
 
+    /**
+     * Checks the avaiablity of the destination lot and attempts to
+     * adjust to be placed before or after the target destination if needed
+     *
+     * @memberof SongGridWithMultiplePhrases
+     * @param {string} target_row - Row that the phrase is being dropped in
+     * @param {number} closest - Closest lot of dropped element
+     * @return {number|null} - closest avaiable spot
+     */
     checkLotAvailability = (target_row, closest) => {
         let lot_elems = this.getRowLots(target_row)
         if (lot_elems[closest].getAttribute('data-occupied') === 'true') {
@@ -243,9 +266,36 @@ export default class SongGridWithMultiplePhrases extends Component {
      *
      * @memberof SongGridWithLots
      * @param {string} id - id of the phrase
+     * 
+     * @deprecated
      */
     getItemById = (id) => {
         return this.state.phrases.filter(p => p.id === id)
+    }
+
+    /**
+     * Get the current index of the lot in the rows array
+     *
+     * @memberof SongGridWithMultiplePhrases
+     * @param {string} id - id of phrase
+     * @param {string} row - Row that the phrase is being dropped in
+     * @param {number} index - Index of lot element
+     * @return {number} - index of lot number in rows array
+     */
+    getCurrentLotIndex = (id, row, index) => {
+        let { phrases } = this.state,
+            phrase_index = this.findIndexByKey(phrases, 'id', id)
+
+        return phrases[phrase_index].rows[row].indexOf(index)
+    }
+
+    /**
+     * Message to 
+     *
+     * @memberof SongGridWithMultiplePhrases
+     */
+    noClosestLots = () => {
+        alert('No lots available to fill')
     }
     
     /**
@@ -302,7 +352,6 @@ export default class SongGridWithMultiplePhrases extends Component {
     onDrop = (ev, row) => {
         let { phrases } = this.state,
             { id, item_row, lot_index } = JSON.parse(ev.dataTransfer.getData('data')),
-            item = phrases.filter(p => p.id === id),
             dropped = { x: ev.clientX, y: ev.clientY },
             closest = this.closest(dropped, row, id),
             phrase_index = this.findIndexByKey(phrases, 'id', id)
@@ -312,29 +361,48 @@ export default class SongGridWithMultiplePhrases extends Component {
             if (closest !== null) {
                 phrases[phrase_index].rows[row].push(closest)
             }
+            else {
+                this.noClosestLots()
+                return false
+            }
         }
         else if (row !== 'store') {
-            if (item_row === row) {
-                closest = this.checkLotAvailability(item_row, closest)
+            closest = item_row === row ? this.checkLotAvailability(item_row, closest) : this.checkLotAvailability(row, closest)
+            let target_row = item_row === row ? row : item_row,
+                cur_lot_index = this.getCurrentLotIndex(id, target_row, lot_index)
 
-                if (closest !== null) {
-                    let cur_lot_index = phrases[phrase_index].rows[row].indexOf(lot_index)
+            if (closest !== null) {
+                if (item_row === row) {
                     phrases[phrase_index].rows[row].splice(cur_lot_index, 1)
                     phrases[phrase_index].rows[row].push(closest)
                 }
                 else {
-                    alert('No avaiable spaces')
+                    phrases[phrase_index].rows[item_row].splice(cur_lot_index, 1)
+                    phrases[phrase_index].rows[row].push(closest)
                 }
             }
+            else {
+                this.noClosestLots()
+                return false
+            }
         }
-
-        // console.log('C', closest)
+        else if (item_row !== 'store' && row === 'store') {
+            let cur_lot_index = this.getCurrentLotIndex(id, item_row, lot_index)
+            phrases[phrase_index].rows[item_row].splice(cur_lot_index, 1)
+        }
 
         this.setState({
             phrases: phrases
         })
     }
 
+    /**
+     * Renders the phrase item in its row
+     *
+     * @memberof SongGridWithMultiplePhrases
+     * @param {string} row - current row
+     * @return {array} - Array of dom elements to render
+     */
     renderLots = (row) => {
         let lots = [],
             { phrases } = this.state
