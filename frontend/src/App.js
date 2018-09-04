@@ -11,7 +11,7 @@ import About from './pages/About'
 import SecondChanceAuth from './components/Auth/SecondChanceAuth'
 import ErrorPopup from './components/ErrorPopup'
 
-import SongGrid from './components/Creation/SongGrid'
+import SongGridWithMultiplePhrases from './components/Creation/SongGridWithMultiplePhrases'
 
 import './App.css';
 
@@ -46,7 +46,7 @@ class App extends Component {
 					}
 					<Route exact path="/" component={Home} />
 					<Route path="/about" component={About} />
-					<Route path="/create" component={SongGrid} />
+					<Route path="/create" component={SongGridWithMultiplePhrases} />
 				</div>
 			</Router>
 		);
