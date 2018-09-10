@@ -19,8 +19,25 @@ import './App.css';
 @inject('GlobalStore')
 @observer
 class App extends Component {
+	constructor() {
+		super()
+
+		this.state = {
+			current_user: null
+		}
+	}
+
 	componentDidMount() {
+		const that = this
 		this.props.UserStore.getCurrentUser()
+			.then(res => {
+				if (res.hasOwnProperty('current_user')) {
+					that.setState({
+						current_user: res.current_user
+					})
+				}
+			})
+			.catch(e => console.error(e))
 	}
 
 	onChange = (e) => {
@@ -31,6 +48,10 @@ class App extends Component {
 
 	render() {
 		const { UserStore, GlobalStore } = this.props;
+		if (this.state.current_user === null) {
+			return <h1>Loading</h1>
+		}
+
 		return (
 			<Router>
 				<div className="App">
@@ -46,7 +67,9 @@ class App extends Component {
 					}
 					<Route exact path="/" component={Home} />
 					<Route path="/about" component={About} />
-					<Route path="/create" component={SongGridWithMultiplePhrases} />
+					<Route path="/create" render={() => (
+						<SongGridWithMultiplePhrases GlobalStore={GlobalStore} UserStore={UserStore} current_user={this.state.current_user} />
+					)} />
 				</div>
 			</Router>
 		);

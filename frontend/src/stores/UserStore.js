@@ -57,10 +57,11 @@ class UserStore {
         let headers = { 'Authorization': `Bearer ${token}` }
         const response = await fetchApiData(`${this.prefix}/current`, headers, 'GET', secondChance, this.global_store)
 
-        console.log(response)
         runInAction(() => {
             this.current_user = response.current_user
         })
+        
+        return response
     }
 
     @action

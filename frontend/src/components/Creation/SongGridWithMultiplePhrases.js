@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { performAxiosCall } from '../../helpers/api'
 const converter = require('number-to-words');
 
 const Draggable = (props) => (
@@ -15,8 +16,8 @@ const Draggable = (props) => (
 )
 
 export default class SongGridWithMultiplePhrases extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
 
         this.creationSettings = {
             octaves: 1,
@@ -28,23 +29,31 @@ export default class SongGridWithMultiplePhrases extends Component {
         this.lots = this.creationSettings.bars * 8
 
         this.state = {
-            phrases: [
-                { id: '45', name: '1', rows: this.generateRows() },
-                { id: '46', name: '4', rows: this.generateRows() },
-                { id: '70', name: '2', rows: this.generateRows() },
-                { id: '12', name: '3', rows: this.generateRows() },
-                { id: '15', name: '5', rows: this.generateRows() },
-                { id: '16', name: '6', rows: this.generateRows() }
-            ]
+            current_user: this.props.current_user,
+            phrases: []
         }
     }
 
     componentDidMount() {
-        let { phrases } = this.state
+        if (this.state.current_user !== null) {
+            performAxiosCall(
+                `/phrases/user/${this.props.current_user._id}`,
+                {},
+                'GET',
+                { 'Authorization': `Bearer ${this.props.UserStore.auth_token}` }
+            )
+            .then(res => {
+                console.log(res)
+                res.data.forEach(phrase => {
+                    phrase.rows = this.generateRows()
+                })
 
-        this.setState({
-            phrases: phrases
-        })
+                this.setState({
+                    phrases: res.data
+                })
+            })
+            .catch(e => console.error(e))
+        }
     }
 
     /**
@@ -195,7 +204,7 @@ export default class SongGridWithMultiplePhrases extends Component {
      */
     swapRowItems = (item_row_key, cur_index, closest, id, row) => {
         let { rows, phrases } = this.state,
-            phrase_index = this.findIndexByKey(phrases, 'id', id)
+            phrase_index = this.findIndexByKey(phrases, '_id', id)
 
         if (rows[row].hasOwnProperty('lots')) {
             let lots = this.getRowLots(row),
@@ -270,7 +279,7 @@ export default class SongGridWithMultiplePhrases extends Component {
      * @deprecated
      */
     getItemById = (id) => {
-        return this.state.phrases.filter(p => p.id === id)
+        return this.state.phrases.filter(p => p._id === id)
     }
 
     /**
@@ -284,7 +293,7 @@ export default class SongGridWithMultiplePhrases extends Component {
      */
     getCurrentLotIndex = (id, row, index) => {
         let { phrases } = this.state,
-            phrase_index = this.findIndexByKey(phrases, 'id', id)
+            phrase_index = this.findIndexByKey(phrases, '_id', id)
 
         return phrases[phrase_index].rows[row].indexOf(index)
     }
@@ -354,7 +363,7 @@ export default class SongGridWithMultiplePhrases extends Component {
             { id, item_row, lot_index } = JSON.parse(ev.dataTransfer.getData('data')),
             dropped = { x: ev.clientX, y: ev.clientY },
             closest = this.closest(dropped, row, id),
-            phrase_index = this.findIndexByKey(phrases, 'id', id)
+            phrase_index = this.findIndexByKey(phrases, '_id', id)
 
         if (item_row === 'store') {
             closest = this.checkLotAvailability(row, closest)
@@ -424,7 +433,7 @@ export default class SongGridWithMultiplePhrases extends Component {
                     {
                         lot_phrase !== false ? (
                             <Draggable
-                                id={lot_phrase.id}
+                                id={lot_phrase._id}
                                 name={lot_phrase.name}
                                 onDragStart={(e, id) => this.onDragStart(e, id, row, i)}
                                 onDragEnter={(e) => this.onDragEnter(e)}
@@ -454,10 +463,10 @@ export default class SongGridWithMultiplePhrases extends Component {
                         phrases.map(phrase => {
                             return (
                                 <Draggable
-                                    key={phrase.id}
-                                    id={phrase.id}
+                                    key={phrase._id}
+                                    id={phrase._id}
                                     name={phrase.name}
-                                    onDragStart={(e) => this.onDragStart(e, phrase.id, 'store', -1)}
+                                    onDragStart={(e) => this.onDragStart(e, phrase._id, 'store', -1)}
                                     onDragEnter={(e) => this.onDragEnter(e)}
                                     onDragLeave={(e) => this.onDragLeave(e)}
                                     onDragOver={(e) => this.onDragOver(e)}
