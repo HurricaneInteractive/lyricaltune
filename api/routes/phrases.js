@@ -7,7 +7,7 @@ const PhrasesController = require('../controllers/PhrasesController')
 router.post('/create', CheckAuthentication, PhrasesController.createPhrase)
 
 // GET
-router.get('/user/:id', CheckAuthentication, PhrasesController.userPhrases)
+router.get('/user/:id', PhrasesController.userPhrases)
 router.get('/:id', CheckAuthentication, PhrasesController.getPhrase)
 
 // DELETE
