@@ -14,7 +14,8 @@ module.exports = (req, res, next) => {
 
             const body = {...req.body}
             body.author = user._id
-        
+            body.author_username = user.username
+
             const phrase = new Phrase(body)
         
             phrase.save()
