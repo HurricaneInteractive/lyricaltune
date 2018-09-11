@@ -16,6 +16,10 @@ const phrasesSchema = new Schema({
     notes: [String],
     author: {
         type: Schema.Types.ObjectId,
+        required: true
+    },
+    author_username: {
+        type: String,
         required: true,
         index: true
     },
@@ -28,16 +32,20 @@ const phrasesSchema = new Schema({
     words_selected: [String],
     selected_artist: {
         type: String,
-        lowercase: true
+        lowercase: true,
+        index: true
     },
     selected_song: {
         type: String,
-        lowercase: true
+        lowercase: true,
+        index: true
     },
     effects: {
         type: Map,
         of: Schema.Types.Mixed
-    }
+    },
+    beat: String,
+    album_cover: String
 }, {
     timestamps: true,
     strict: true
