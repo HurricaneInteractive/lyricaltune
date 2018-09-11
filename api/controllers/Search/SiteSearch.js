@@ -1,12 +1,13 @@
 const User = require('../../models/User')
 const Phrase = require('../../models/Phrases')
 const ResponseHelper = require('../../helpers/ResponseHelper')
+const escapeStringRegexp = require('escape-string-regexp');
 
 module.exports = (req, res, next) => {
     let { type, term } = req.body
 
     let promises = []
-    let regexTerm = new RegExp(`.*${term}.*`, 'gmi')
+    let regexTerm = new RegExp(`.*${escapeStringRegexp(term)}.*`, 'gmi')
 
     switch (type) {
         case 'user':
