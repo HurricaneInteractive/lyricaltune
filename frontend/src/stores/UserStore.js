@@ -59,7 +59,9 @@ class UserStore {
 
         console.log(response)
         runInAction(() => {
-            this.current_user = response.current_user
+            if (response.error === null || typeof response.error === 'undefined') {
+                this.current_user = response.current_user
+            }
         })
     }
 
