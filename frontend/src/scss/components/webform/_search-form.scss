@@ -1,0 +1,32 @@
+.search-form {
+    max-width: 450px;
+    width: 100%;
+    form {
+        display: flex;
+        .btn,
+        input, select {
+            border-radius: 0;
+            border-width: 0 0 1px 0;
+        }
+        .form-actions {
+            margin: 0;
+            padding: 0;
+            border: none;
+            .btn {
+                position: relative;
+                height: 100%;
+                width: 51px;
+                padding: 0;
+            }
+        }
+        .input-group {
+            margin: 0;
+            &:nth-child(2) {
+                flex-grow: 2;
+            }
+        }
+        label {
+            display: none;
+        }
+    }
+}
