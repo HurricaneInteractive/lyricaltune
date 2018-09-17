@@ -1,1 +1,49 @@
-// Add variables
+$font-family: 'PT Sans', sans-serif;
+
+$w-normal: normal;
+$w-bold: bold;
+
+$base-font-size: 16px;
+$page-heading: 44px;
+$title: 34px;
+$sub-title: 26px;
+$caption: 14px;
+$label: 14px;
+
+$headings: (
+    'h1': $page-heading,
+    'h2': $title,
+    'h3': $sub-title,
+    'h4': 24px,
+    'h5': 21px,
+    'h6': 18px
+);
+
+$button-padding-v: 10px;
+$button-padding-h: 35px;
+$button-font: 16px;
+
+$border-radius: 5px;
+
+$colours: (
+    'transparent': transparent,
+    'background': #182637,
+    'white': #FFFFFF,
+    'grey-blue': #233245,
+    'footer': rgba(255, 255, 255, 0.1),
+    'black': #000000,
+    'dark-blue': #182637,
+    'border': rgba(255, 255, 255, 0.1)
+);
+
+$transition-time: 300ms;
+$transition-easing: ease-in-out;
+
+$container: 1100px;
+$container-padding: 20px;
+
+$modal-width: 600px;
+$modal-padding: 30px;
+
+$input-padding-v: 15px;
+$input-padding-h: 15px;

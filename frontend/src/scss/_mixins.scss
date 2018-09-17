@@ -1,0 +1,62 @@
+// Calc based on the current context of element. First arg is PX value you want to set
+// on the element, second arg is the PX value of the element font size.
+@function calc-em($target-px, $context) {
+    @return ($target-px / $context) * 1em;
+}
+// Simple conversion in global base font scope. Using base font size as default context.
+@function em($pixels, $context: $base-font-size) {
+    @return ($pixels / $context) * 1em;
+}
+
+@function get-heading-size($h: 'h3') {
+    @return map-get($headings, $h);
+}
+
+@function get-colour($c: 'white') {
+    @return map-get($colours, $c);
+}
+
+@mixin clearfix() {
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+.clearfix{ @include clearfix(); }
+
+@mixin heading($type, $colour: 'white', $margin-top: 30px, $margin-bottom: 20px) {
+    font-size: calc-em(get-heading-size($type), $base-font-size);
+    color: get-colour($colour);
+    margin-top: calc-em($margin-top, get-heading-size($type));
+    margin-bottom: calc-em($margin-bottom, get-heading-size($type));
+    line-height: 1.2;
+}
+
+@mixin button($colour: 'white', $bg: 'background', $border: 'background') {
+    color: get-colour($colour);
+    background-color: get-colour($bg);
+    border-color: get-colour($border);
+    &:hover {
+        background-color: lighten(get-colour($bg), 5%);
+        border-color: lighten(get-colour($border), 5%);
+    }
+}
+
+@mixin hide-element() {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px,1px,1px,1px);
+}
+.hide-element{ @include hide-element(); }
+
+@mixin hide-text() {
+    overflow: hidden;
+    text-indent: -99999px;
+    font-size: 1px;
+    color: transparent;
+    position: absolute;
+}
+.hide-text{ @include hide-text(); }

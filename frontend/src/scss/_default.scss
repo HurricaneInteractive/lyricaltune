@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-size: $base-font-size;
+    font-family: $font-family;
+    font-weight: $w-normal;
+    color: get-colour('white');
+    background: get-colour('background');
+}
+
+* {
+    box-sizing: border-box;
+}
+
+@each $key, $size in $headings {
+    #{$key} {
+        @include heading($key);
+    }
+}
+
+a {
+    color: get-colour('white');
+}
+
+img {
+    max-width: 100%;
+    display: block;
+    height: auto;
+}
