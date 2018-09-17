@@ -1,0 +1,18 @@
+button,
+.btn {
+    color: get-colour('white');
+    background-color: get-colour('transparent');
+    border-color: get-colour('white');
+    border-width: 1px;
+    border-style: solid;
+    border-radius: $border-radius;
+    padding: calc-em($button-padding-v, $button-font) calc-em($button-padding-h, $button-font);
+    font-size: calc-em($button-font, $base-font-size);
+    text-decoration: none;
+    box-shadow: none;
+    font-weight: $w-normal;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    transition: background-color $transition-time $transition-easing, border-color $transition-time $transition-easing;
+}

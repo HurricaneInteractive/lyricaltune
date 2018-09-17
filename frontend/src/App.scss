@@ -1,4 +1,14 @@
 @import 'scss/variables';
+@import 'scss/mixins';
+@import 'scss/default';
+
+// globals
+@import 'scss/components/grid';
+@import 'scss/components/buttons';
+@import 'scss/components/header';
+@import 'scss/components/modal';
 
 // components
-@import 'scss/components/auth/second_chance_auth'
+@import 'scss/components/auth/second_chance_auth';
+
+@import 'scss/components/webform/input';

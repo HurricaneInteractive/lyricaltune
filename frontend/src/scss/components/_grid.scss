@@ -1,0 +1,8 @@
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: calc-em($container-padding, $base-font-size);
+    padding-right: calc-em($container-padding, $base-font-size);
+    width: 100%;
+    max-width: calc(#{calc-em($container, $base-font-size)} + (#{calc-em($container-padding, $base-font-size)} * 2));
+}
