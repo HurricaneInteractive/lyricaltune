@@ -6,8 +6,11 @@ import {
 } from 'react-router-dom'
 
 import Header from './components/Header'
+
 import Home from './pages/Home'
 import About from './pages/About'
+import Discover from './pages/Discover'
+
 import SecondChanceAuth from './components/Auth/SecondChanceAuth'
 import ErrorPopup from './components/ErrorPopup'
 
@@ -50,6 +53,7 @@ class App extends Component {
 					
 					<Route exact path="/" component={Home} />
 					<Route path="/about" component={About} />
+					<Route path="/discover" component={Discover} />
 				</div>
 			</Router>
 		);
