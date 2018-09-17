@@ -53,7 +53,10 @@ Form.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     onChange: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    submitButtonText: PropTypes.string
+    submitButtonText: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.node
+    ])
 }
 
 Form.defaultProps = {
