@@ -1,16 +1,29 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import Logo from './Branding/Logo'
+import MainMenu from './Navigation/MainMenu'
 
 export default class Header extends React.PureComponent {
     render() {
         return (
             <header>
-                Lyrical Tune Nav
-                <ul>
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/about">About</Link></li>
-                </ul>
+                <div className="container">
+                    <Logo />
+                    <MainMenu
+                        authenticated={this.props.authenticated}
+                        UserStore={this.props.UserStore}
+                    />
+                </div>
             </header>
         )
     }
+}
+
+Header.propTypes = {
+    authenticated: PropTypes.bool,
+    UserStore: PropTypes.any.isRequired
+}
+
+Header.defaultProps = {
+    authenticated: false
 }
