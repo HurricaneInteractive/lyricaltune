@@ -32,7 +32,7 @@ export default class SearchForm extends Component {
                 value: this.state.search,
                 attributes: {
                     placeholder: 'Search...',
-                    autocomplete: 'off'
+                    autoComplete: 'off'
                 }
             }
         ]
