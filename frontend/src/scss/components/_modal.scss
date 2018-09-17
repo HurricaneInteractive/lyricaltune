@@ -1,0 +1,48 @@
+.popup-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(get-colour('black'), 0.5);
+        cursor: pointer;
+    }
+    .modal {
+        position: relative;
+        z-index: 2;
+        background: get-colour('white');
+        border-radius: $border-radius;
+        width: 100%;
+        max-width: em($modal-width);
+        padding: em($modal-padding);
+        color: get-colour('dark-blue');
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            @include hide-text();
+            width: 25px;
+            height: 25px;
+            background: red;
+        }
+        input {
+            border-color: get-colour('dark-blue');
+        }
+        .form-actions {
+            border-top-color: rgba(get-colour('dark-blue'), 0.1);
+            .btn {
+                @include button('white', 'dark-blue', 'dark-blue');
+            }
+        }
+    }
+}
