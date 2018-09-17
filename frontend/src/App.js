@@ -29,6 +29,7 @@ class App extends Component {
 
 	render() {
 		const { UserStore, GlobalStore } = this.props;
+		console.log(UserStore.current_user)
 		return (
 			<Router>
 				<div className="App">
@@ -42,16 +43,13 @@ class App extends Component {
 							<ErrorPopup errors={GlobalStore.errors} dismiss={() => GlobalStore.dismissResponseError()} />
 						) : ('')
 					}
-					<Header />
-					<p>Authenticated: { UserStore.current_user === null || typeof UserStore.current_user === 'undefined' ? 'No' : 'Yes' }</p>
+					<Header
+						authenticated={ UserStore.current_user === null ? false : true }
+						UserStore={UserStore}
+					/>
 					
 					<Route exact path="/" component={Home} />
 					<Route path="/about" component={About} />
-
-					<button onClick={(e) => {
-						e.preventDefault();
-						UserStore.followUser('5b7816566903fd1b5dbd7a95')
-					}}>Follow 123</button>
 				</div>
 			</Router>
 		);
