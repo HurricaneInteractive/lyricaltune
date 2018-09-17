@@ -14,6 +14,7 @@ export default class Form extends Component {
     renderFormContents(fields) {
         const fieldTypes = {
             text: Input,
+            password: Input,
             number: NumberInput,
             select: SelectBox
         }
