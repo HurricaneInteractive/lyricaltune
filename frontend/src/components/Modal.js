@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import { X } from 'react-feather'
 
 export default class Modal extends PureComponent {
     render() {
@@ -11,7 +12,7 @@ export default class Modal extends PureComponent {
                         href="#close" 
                         className="close-modal"
                         onClick={(e) => this.props.close(e)}
-                    >Close</a>
+                    ><X stroke={'#182637'} /><span className="hide-text">Close</span></a>
                     { this.props.children }
                 </div>
             </div>

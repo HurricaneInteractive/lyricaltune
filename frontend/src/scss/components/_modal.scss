@@ -28,12 +28,10 @@
         color: get-colour('dark-blue');
         .close-modal {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            @include hide-text();
-            width: 25px;
-            height: 25px;
-            background: red;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
         }
         input {
             border-color: get-colour('dark-blue');
