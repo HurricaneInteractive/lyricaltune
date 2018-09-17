@@ -1,4 +1,5 @@
-input {
+input,
+select {
     display: block;
     width: 100%;
     border-radius: $border-radius;
@@ -7,6 +8,19 @@ input {
     color: inherit;
     border: 1px solid get-colour('white');
     padding: calc-em($input-padding-v, $base-font-size) calc-em($input-padding-h, $base-font-size);
+    -webkit-appearance: none;
+    background: transparent;
+    outline: none;
+    &::placeholder {
+        color: get-colour('grey-blue');
+    }
+}
+
+select {
+    background-image: url('./images/chevron-down.svg');
+    background-repeat: no-repeat;
+    background-position: top 50% right 0;
+    padding-right: calc-em(30px, $base-font-size);
 }
 
 label {
