@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import Form from '../Form/Form'
 
-export default class Login extends React.Component {
+export default class Login extends Component {
     constructor() {
 		super()
 		this.state = {
@@ -17,18 +17,36 @@ export default class Login extends React.Component {
 			[e.target.name]: e.target.value
 		})
     }
+
+    defaultSubmit = (e) => {
+        e.preventDefault();
+        if (this.props.UserStore !== null) {
+            this.props.UserStore.authenticateUser(this.state.email, this.state.password)
+                .then((res) => {
+                    console.log('res', res)
+                })
+                .catch(e => console.error('Login error', e))
+        }
+    }
     
     render() {
         const fields = [
             {
                 type: 'text',
                 name: 'email',
-                value: this.state.email
+                value: this.state.email,
+                attributes: {
+                    placeholder: 'Email Address'
+                }
             },
             {
                 type: 'text',
                 name: 'password',
-                value: this.state.password
+                value: this.state.password,
+                attributes: {
+                    placeholder: 'Password',
+                    type: 'password'
+                }
             }
         ]
 
@@ -43,9 +61,11 @@ export default class Login extends React.Component {
 }
 
 Login.propTypes = {
-    overrideSubmit: PropTypes.func
+    overrideSubmit: PropTypes.func,
+    UserStore: PropTypes.any
 }
 
 Login.defaultProps = {
-    overrideSubmit: null
+    overrideSubmit: null,
+    UserStore: null
 }
