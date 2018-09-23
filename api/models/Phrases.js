@@ -45,7 +45,17 @@ const phrasesSchema = new Schema({
         of: Schema.Types.Mixed
     },
     beat: String,
-    album_cover: String
+    album_cover: String,
+    meta: {
+        likes: {
+            type: Number,
+            default: 0
+        },
+        users_who_liked: {
+            type: [Schema.Types.ObjectId],
+            default: []
+        }
+    }
 }, {
     timestamps: true,
     strict: true
