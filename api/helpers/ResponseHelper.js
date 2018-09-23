@@ -135,6 +135,11 @@ const PhraseUpdateSuccess = (res, data = {}) => {
     response.dispatch(res, data)
 }
 
+const PhraseLikeCompleted = (res, data = {}) => {
+    let response = new Success('Phrase like has been completed')
+    response.dispatch(res, data)
+}
+
 const BeatCreated = (res, data = {}) => {
     let response = new Success('Beat was successfully created')
     response.status = 201
@@ -203,5 +208,6 @@ module.exports = {
     beatFound: BeatFound,
     beatDeletedSuccessfully: BeatDeletedSuccessfully,
     userBeatsSuccess: UserBeatsSuccess,
-    beatUpdateSuccess: BeatUpdateSuccess
+    beatUpdateSuccess: BeatUpdateSuccess,
+    phraseLikeCompleted: PhraseLikeCompleted
 }
