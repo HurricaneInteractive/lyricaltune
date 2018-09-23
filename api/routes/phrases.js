@@ -5,6 +5,7 @@ const PhrasesController = require('../controllers/PhrasesController')
 
 // POST
 router.post('/create', CheckAuthentication, PhrasesController.createPhrase)
+router.post('/like', CheckAuthentication, PhrasesController.likePhrase)
 
 // GET
 router.get('/user/:id', PhrasesController.userPhrases)
