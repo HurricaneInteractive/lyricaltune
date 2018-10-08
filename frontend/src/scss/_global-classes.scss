@@ -1,0 +1,29 @@
+@each $name, $val in $colours {
+    .c-#{$name} {
+        color: $val;
+    }
+    .bg-#{$name} {
+        background-color: $val;
+    }
+}
+
+.text {
+    &--bold {
+        font-weight: $w-bold;
+    }
+    &--normal {
+        font-weight: $w-normal;
+    }
+    &--center {
+        text-align: center;
+    }
+    &--left {
+        text-align: left;
+    }
+    &--right {
+        text-align: right;
+    }
+    &--uppercase {
+        text-transform: uppercase;
+    }
+}

@@ -60,3 +60,25 @@
     position: absolute;
 }
 .hide-text{ @include hide-text(); }
+
+@mixin grid($justify: 'flex-start', $align: 'middle') {
+    display: grid;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+@mixin grid-column($cols: 2, $gap: $container-padding) {
+    grid-template-columns: repeat($cols, 1fr);
+    grid-column-gap: calc-em($gap, $base-font-size);
+}
+
+@mixin grid-row($rows: auto, $gap: $container-padding) {
+    grid-template-rows: $rows;
+    grid-row-gap: calc-em($gap, $base-font-size);
+}
+
+@mixin breakpoint($size: small) {
+    @media screen and (min-width: #{map-get($breakpoints, $size)}) {
+        @content;
+    }
+}
