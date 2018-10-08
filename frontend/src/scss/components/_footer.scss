@@ -1,0 +1,49 @@
+footer {
+    padding-top: em(45px);
+    padding-bottom: em(45px);
+    background: get-colour('footer');
+    > .container {
+        @include grid();
+        @include grid-column();
+        .col {
+            &.menu-container {
+                @include grid();
+                @include grid-column();
+                ul {
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                    li {
+                        margin-bottom: em(10px);
+                        a {
+                            text-decoration: none;
+                        }
+                    }
+                }
+                .main-menu {
+                    ul {
+                        column-count: 2;
+                    }
+                }
+                .user-menu {
+                    ul {
+                        ul {
+                            margin-top: em(10px);
+                        }
+                    }
+                }
+                .social-media {
+                    margin-top: em(40px);
+                    li {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+            &.credit {
+                p {
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
