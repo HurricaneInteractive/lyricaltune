@@ -1,11 +1,13 @@
 @import 'scss/variables';
 @import 'scss/mixins';
 @import 'scss/default';
+@import 'scss/global-classes';
 
 // globals
 @import 'scss/components/grid';
 @import 'scss/components/buttons';
 @import 'scss/components/header';
+@import 'scss/components/footer';
 @import 'scss/components/modal';
 
 // components
@@ -16,3 +18,5 @@
 
 @import 'scss/components/pages/page-wrapper';
 @import 'scss/components/pages/page-title';
+
+@import 'scss/components/branding/social-media';

@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 
 import Header from './components/Header'
+import Footer from './components/Footer'
 
 import Home from './pages/Home'
 import About from './pages/About'
@@ -54,6 +55,11 @@ class App extends Component {
 					<Route exact path="/" component={Home} />
 					<Route path="/about" component={About} />
 					<Route path="/discover" component={Discover} />
+
+					<Footer
+						authenticated={ UserStore.current_user === null ? false : true }
+						UserStore={UserStore}
+					/>
 				</div>
 			</Router>
 		);
