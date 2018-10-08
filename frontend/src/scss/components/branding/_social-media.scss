@@ -1,0 +1,15 @@
+.social-media {
+    ul {
+        @include clearfix();
+        li {
+            margin: 0;
+            float: left;
+            &:not(:first-child) {
+                margin-left: em(15px);
+            }
+            a, svg {
+                display: block;
+            }
+        }
+    }
+}
