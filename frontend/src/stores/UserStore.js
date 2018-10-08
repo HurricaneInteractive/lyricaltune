@@ -4,7 +4,7 @@ import { performAxiosCall, fetchApiData } from '../helpers/api'
 
 import globalStore from './GlobalStore'
 
-configure({ enforceActions: true })
+configure({ enforceActions: 'always' })
 
 /**
  * Store to handle all user related data

@@ -1,5 +1,5 @@
 import { action, observable, configure, computed } from 'mobx'
-configure({ enforceActions: true })
+configure({ enforceActions: 'always' })
 
 class GlobalStore {
     @observable second_chance = false
