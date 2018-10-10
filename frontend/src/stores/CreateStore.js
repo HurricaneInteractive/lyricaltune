@@ -6,7 +6,7 @@ configure({ enforceActions: 'always' })
 class CreateStore {
     @observable selectedArtist = 'eminem'
     @observable selectedSong = 'rap_god'
-    @observable selectedWords = ['rap', 'god', 'was', 'happen', 'slapbox']
+    @observable selectedWords = ['rap', 'god', 'happen', 'slapbox']
     @observable key = null
     @observable scale = null
     @observable key_pairs = null
@@ -60,6 +60,32 @@ class CreateStore {
         wrapped = wrapped.replace(word_pattern, "$1<span>$2</span>")
         
         return wrapped
+    }
+
+    @action
+    addWord(word) {
+        if (word.trim() === '' || typeof word !== 'string') {
+            throw new Error('Please provide a word')
+        }
+
+        if (this.selectedWords.length === 5) {
+            return false
+        }
+
+        runInAction(() => {
+            this.selectedWords.push(word.trim().toLowerCase())
+        })
+    }
+
+    @action
+    removeWord(key) {
+        if (!this.selectedWords.indexOf(key)) {
+            return false
+        }
+
+        runInAction(() => {
+            this.selectedWords.splice(key, 1);
+        })
     }
 }
 
