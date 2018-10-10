@@ -33,7 +33,18 @@ $colours: (
     'footer': rgba(255, 255, 255, 0.1),
     'black': #000000,
     'dark-blue': #182637,
-    'border': rgba(255, 255, 255, 0.1)
+    'border': rgba(255, 255, 255, 0.1),
+    'caption': rgba(255, 255, 255, 0.5),
+    'highlight': #ED1965,
+    'word-highlight': rgba(255, 255, 255, 0.2)
+);
+
+$lyrics-active-colours: (
+    '0': #FF6767,
+    '1': #5041FF,
+    '2': #FAB532,
+    '3': #31B24F,
+    '4': #6DB3EF
 );
 
 $transition-time: 300ms;

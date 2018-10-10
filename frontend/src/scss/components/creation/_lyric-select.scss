@@ -1,0 +1,33 @@
+.lyric-select-wrapper {
+    @include grid();
+    @include grid-column(auto 400px, 60px);
+    .lyric-wrapper {
+        width: 100%;
+        padding: em(40px);
+        border-radius: $border-radius;
+        background-color: get-colour('footer');
+        span {
+            cursor: pointer;
+            &:hover {
+                background: get-colour('word-highlight');
+                box-shadow: 2px 0 0 get-colour('word-highlight'), -2px 0 0 get-colour('word-highlight');
+            }
+            &.active {
+                @each $i, $colour in $lyrics-active-colours {
+                    &.no-#{$i} {
+                        background: $colour;
+                        box-shadow: 2px 0 0 $colour, -2px 0 0 $colour;
+                    }
+                }
+            }
+        }
+    }
+    .lyric-data {
+        .user-direction {
+            margin: 0 0 calc-em(35px, get-heading-size('h5'));
+            &.highlight {
+                margin-bottom: calc-em(35px, get-heading-size('h2'));
+            }
+        }
+    }
+}
