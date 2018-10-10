@@ -16,6 +16,10 @@
     @return map-get($colours, $c);
 }
 
+@function is-number($value) {
+    @return type-of($value) == 'number';
+}
+
 @mixin clearfix() {
     &:after {
         content: '';
@@ -61,14 +65,19 @@
 }
 .hide-text{ @include hide-text(); }
 
-@mixin grid($justify: 'flex-start', $align: 'middle') {
+@mixin grid($justify: flex-start, $align: flex-start) {
     display: grid;
     justify-content: $justify;
     align-items: $align;
 }
 
 @mixin grid-column($cols: 2, $gap: $container-padding) {
-    grid-template-columns: repeat($cols, 1fr);
+    @if is-number($cols) {
+        grid-template-columns: repeat($cols, 1fr);
+    }
+    @else {
+        grid-template-columns: $cols;
+    }
     grid-column-gap: calc-em($gap, $base-font-size);
 }
 

@@ -27,3 +27,8 @@
         text-transform: uppercase;
     }
 }
+
+.highlight {
+    border-bottom: 5px solid get-colour('highlight');
+    display: inline-block;
+}
