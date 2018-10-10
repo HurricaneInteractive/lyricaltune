@@ -1,7 +1,7 @@
 const http = require('http')
 const app = require('./api')
 
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 9000
 
 const server = http.createServer(app)
 

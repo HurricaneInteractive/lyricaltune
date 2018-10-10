@@ -28,5 +28,8 @@
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject"
   },
-  "proxy": "http://localhost:8000"
+  "proxy": "http://localhost:9000",
+  "devDependencies": {
+    "@types/react": "^16.4.16"
+  }
 }
