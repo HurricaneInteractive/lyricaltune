@@ -32,3 +32,15 @@
     border-bottom: 5px solid get-colour('highlight');
     display: inline-block;
 }
+
+.pill {
+    font-size: em($caption);
+    font-weight: $w-bold;
+    text-transform: uppercase;
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    border-radius: $border-radius;
+    line-height: 1;
+    padding: 5px 10px;
+    cursor: pointer;
+}
