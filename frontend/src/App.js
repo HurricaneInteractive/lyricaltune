@@ -11,6 +11,7 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import About from './pages/About'
 import Discover from './pages/Discover'
+import Create from './pages/Create'
 
 import SecondChanceAuth from './components/Auth/SecondChanceAuth'
 import ErrorPopup from './components/ErrorPopup'
@@ -19,6 +20,7 @@ import './App.css';
 
 @inject('UserStore')
 @inject('GlobalStore')
+@inject('CreateStore')
 @observer
 class App extends Component {
 	componentDidMount() {
@@ -32,7 +34,7 @@ class App extends Component {
 	}
 
 	render() {
-		const { UserStore, GlobalStore } = this.props;
+		const { UserStore, GlobalStore, CreateStore } = this.props;
 		console.log(UserStore.current_user)
 		return (
 			<Router>
@@ -55,6 +57,14 @@ class App extends Component {
 					<Route exact path="/" component={Home} />
 					<Route path="/about" component={About} />
 					<Route path="/discover" component={Discover} />
+					<Route path="/create" render={(routerProps) => {
+						return <Create
+							routerProps={routerProps}
+							authenticated={ UserStore.current_user === null ? false : true }
+							UserStore={UserStore}
+							CreateStore={CreateStore}
+						/>
+					}} />
 
 					<Footer
 						authenticated={ UserStore.current_user === null ? false : true }
