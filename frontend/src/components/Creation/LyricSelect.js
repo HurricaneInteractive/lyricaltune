@@ -16,16 +16,15 @@ export default class LyricSelect extends Component {
     }
 
     componentDidMount() {
-        // let that = this;
-        this.props.CreateStore.getLyrics()
-        //     .then(res => {
-        //         that.getLyricsDOM(res)
-        //     })
-        //     .catch(e => console.error(e))
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps)
+        let { CreateStore, routerProps } = this.props
+        if (CreateStore.lyrics.trim() === '') {
+            this.props.CreateStore.getLyrics()
+                .then(res => {
+                    if (!res) {
+                        routerProps.history.push('/create')
+                    }
+                })
+        }
     }
 
     getLyricsDOM() {
