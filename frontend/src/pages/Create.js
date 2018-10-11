@@ -15,14 +15,16 @@ export default class Create extends Component {
 
         return (
             <Fragment>
-                <Route exact path={`${routerProps.match.url}`} render={() => (
+                <Route exact path={`${routerProps.match.url}`} render={(routerProps) => (
                     <ArtistSelect
                         CreateStore={CreateStore}
+                        routerProps={routerProps}
                     />
                 )} />
-                <Route path={`${routerProps.match.url}/lyrics`} render={() => (
+                <Route path={`${routerProps.match.url}/lyrics`} render={(routerProps) => (
                     <LyricSelect
                         CreateStore={CreateStore}
+                        routerProps={routerProps}
                     />
                 )} />
                 <Route path={`${routerProps.match.url}/mixlab`} render={() => (
