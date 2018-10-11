@@ -4,9 +4,9 @@ import { keygen } from '../helpers/keygen'
 configure({ enforceActions: 'always' })
 
 class CreateStore {
-    @observable selectedArtist = 'eminem'
-    @observable selectedSong = 'rap_god'
-    @observable selectedWords = ['rap', 'god', 'happen', 'slapbox']
+    @observable selectedArtist = ''
+    @observable selectedSong = ''
+    @observable selectedWords = []
     @observable key = null
     @observable scale = null
     @observable key_pairs = null
@@ -18,15 +18,22 @@ class CreateStore {
             throw new Error('`song` is a required value and should be of type `string`')
         }
 
-        return import('../helpers/data/lyrics.json')
+        if (song === '') {
+            return false
+        }
+
+        return import(`../data/songs/${song}.json`)
             .then(res => {
                 if (!res.hasOwnProperty(song)) {
                     throw new Error('Song could not be found')
                 }
                 else {
                     runInAction(() => {
-                        // this.lyrics = this.wrapLyrics(res[song])
+                        this.selectedWords = []
                         this.lyrics = res[song]
+                        if (song !== this.selectedSong) {
+                            this.selectedSong = song
+                        }
                     })
                     
                     return this.lyrics
@@ -85,6 +92,17 @@ class CreateStore {
 
         runInAction(() => {
             this.selectedWords.splice(key, 1);
+        })
+    }
+
+    @action
+    setArtistName(name) {
+        if (name.trim() === '' || typeof name !== 'string') {
+            throw new Error('Please provide a valid value for the `name` arguement')
+        }
+
+        runInAction(() => {
+            this.selectedArtist = name
         })
     }
 }
