@@ -13,7 +13,7 @@ body {
 }
 
 @each $key, $size in $headings {
-    #{$key} {
+    #{$key}, .#{$key} {
         @include heading($key);
     }
 }

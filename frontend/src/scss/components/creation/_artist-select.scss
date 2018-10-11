@@ -1,0 +1,32 @@
+.artist-tiles {
+    @include grid();
+    @include grid-column(3, 0px);
+    .tile {
+        height: 365px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: em(30px);
+        transition: box-shadow $transition-time $transition-easing;
+        cursor: pointer;
+        p {
+            margin: 0;
+            text-align: center;
+            font-weight: $w-bold;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform $transition-time $transition-easing, opacity $transition-time $transition-easing;
+            text-shadow: 0 0 5px rgba(get-colour('black'), 0.5);
+        }
+        &:hover {
+            box-shadow: inset 0px 0px 0px em(20px) get-colour('white');
+            p {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    }
+}
