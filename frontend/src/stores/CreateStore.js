@@ -37,6 +37,8 @@ class CreateStore {
                 else {
                     runInAction(() => {
                         this.selectedWords = []
+                        this.key_pairs = null
+                        this.scale = null
                         this.lyrics = res[song]
                         if (song !== this.selectedSong) {
                             this.selectedSong = song
