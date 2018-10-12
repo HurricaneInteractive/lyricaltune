@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { X } from 'react-feather'
 import { inject, observer } from 'mobx-react';
+import { Link } from 'react-router-dom'
 
 import PageTitle from '../Pages/PageTitle'
 import PageWrapper from '../Pages/PageWrapper'
@@ -25,6 +26,39 @@ export default class LyricSelect extends Component {
                     }
                 })
         }
+
+        let lyric_data = document.querySelector(".lyric-select-wrapper .lyric-data")
+        let offset = lyric_data.offsetTop
+        let rect = lyric_data.getBoundingClientRect()
+
+        window.addEventListener('scroll', () => {
+            let windowPos = window.pageYOffset
+
+            if (windowPos + 25 > offset)  {
+                lyric_data.classList.add('fixed')
+                lyric_data.style.left = rect.left + 'px'
+            }
+            else {
+                lyric_data.classList.remove('fixed')
+                lyric_data.style.left = 'initial'
+            }
+        })
+
+        window.addEventListener('resize', () => {
+            offset = lyric_data.offsetTop
+            rect = lyric_data.getBoundingClientRect()
+        })
+    }
+
+    selectLyrics = (word, idx) => {
+        let { CreateStore } = this.props
+        if (idx !== -1) {
+            CreateStore.removeWord(idx)
+        }
+        else {
+            CreateStore.addWord(word)
+        }
+        CreateStore.generateKey();
     }
 
     getLyricsDOM() {
@@ -37,18 +71,41 @@ export default class LyricSelect extends Component {
             let word_pattern = /(^|<\/?[^>]+>|\s+)([^\s^,<]+)/g
             let wrapped = lyrics.replace(/\\n/g, '<br/> ');
             wrapped = wrapped.replace(/['?"()\\]/g, '');
-            
-            wrapped = wrapped.replace(word_pattern, function(p1, p2) {
-                let i = that.state.selectedWords.indexOf(p1.toLowerCase().trim());
-                return `${p2}<span class="${ i !== -1 ? `active no-${i}` : '' }">${p1}</span>`
-            })
 
-            return wrapped
+            let split = wrapped.split(word_pattern);
+            let dom = split.reduce((prev, current, i) => {
+                let match = current.match(word_pattern);
+                if (match !== null) {
+                    let idx = that.state.selectedWords.indexOf(match[0].toLowerCase().trim())
+                    return prev.concat(
+                        <span
+                            className={`${ idx !== -1 ? `active no-${idx}` : '' }`}
+                            key={i}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                that.selectLyrics(match[0], idx)
+                            }}
+                        >{match[0]}</span>
+                    )
+                }
+                else {
+                    let br_match = current.match(/<br\/>/g);
+                    if (br_match) {
+                        let brs = br_match.map((br, key) => <br key={`br-${i}-${key}`}/>)
+                        return prev.concat(brs)
+                    }
+                    else {
+                        return prev.concat(current)
+                    }
+                }
+            }, [])
+
+            return <p>{dom}</p>
         }
     }
 
     renderWordPills() {
-        let words = this.state.selectedWords;
+        let words = this.props.CreateStore.words;
         if (words.length === 0) {
             return false
         }
@@ -71,17 +128,28 @@ export default class LyricSelect extends Component {
                     <span className="artist c-caption">{capitalizeFirst(CreateStore.selectedArtist)}</span>
                 </PageTitle>
                 <div className="lyric-select-wrapper">
-                    <div className="lyric-wrapper" dangerouslySetInnerHTML={{ __html: this.getLyricsDOM() }} />
+                    <div className="lyric-wrapper">{ this.getLyricsDOM() }</div>
                     <div className="lyric-data">
                         <span className="c-caption">Word Selection</span>
                         {
-                            CreateStore.selectedWords.length === 0 ? (
+                            CreateStore.words.length === 0 ? (
                                 <h2 className="user-direction highlight">Please Select a Word</h2>
                             ) : (
-                                <h5 className="user-direction">Select Another Word - {CreateStore.selectedWords.length}/5</h5>
+                                <h5 className="user-direction">Select Another Word - {CreateStore.words.length}/5</h5>
                             )
                         }
                         { this.renderWordPills() }
+                        <div className={`lyric-actions ${CreateStore.key !== null ? 'has-key' : ''}`}>
+                            {
+                                this.state.selectedWords.length > 0 && CreateStore.key !== null ? (
+                                    <div className="generated-key">
+                                        <span className="c-caption">Creation Key</span>
+                                        <h3>{ CreateStore.key }</h3>
+                                    </div>
+                                ) : ('')
+                            }
+                            <Link className="cancel" to="/create">Cancel</Link>
+                        </div>
                     </div>
                 </div>
             </PageWrapper>
