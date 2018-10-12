@@ -1,18 +1,23 @@
 .lyric-select-wrapper {
-    @include grid();
-    @include grid-column(auto 400px, 60px);
+    @include grid(stretch);
+    @include grid-column(auto em(400px), 60px);
     .lyric-wrapper {
         width: 100%;
         padding: em(40px);
         border-radius: $border-radius;
         background-color: get-colour('footer');
+        position: relative;
         span {
             cursor: pointer;
+            line-height: 1.5;
             border-radius: 3px;
             &:hover {
                 background: get-colour('word-highlight');
                 box-shadow: 2px 0 0 get-colour('word-highlight'), -2px 0 0 get-colour('word-highlight');
             }
+        }
+        > p {
+            margin: 0;
         }
     }
     .lyric-data {
@@ -39,6 +44,34 @@
                     display: block;
                     margin-left: 5px;
                 }
+            }
+        }
+        &.fixed {
+            position: fixed;
+            top: 25px;
+            right: 0;
+            width: em(400px);
+        }
+    }
+
+    .lyric-actions {
+        margin-top: em(100px);
+        padding-top: em(15px);
+        border-top: 1px solid get-colour('border');
+        display: flex;
+        justify-content: flex-end;
+        align-content: center;
+        &.has-key {
+            justify-content: space-between;
+        }
+        .cancel {
+            font-weight: $w-bold;
+            color: get-colour('caption');
+            text-decoration: none;
+        }
+        .generated-key {
+            h3 {
+                margin: 0;
             }
         }
     }
