@@ -1,4 +1,4 @@
-import { action, observable, configure, runInAction } from 'mobx'
+import { action, observable, configure, runInAction, computed } from 'mobx'
 import { keygen } from '../helpers/keygen'
 
 configure({ enforceActions: 'always' })
@@ -7,10 +7,17 @@ class CreateStore {
     @observable selectedArtist = ''
     @observable selectedSong = ''
     @observable selectedWords = []
-    @observable key = null
     @observable scale = null
     @observable key_pairs = null
     @observable lyrics = ''
+
+    @computed get key() {
+        return this.key_pairs ? this.key_pairs.key : null
+    }
+
+    @computed get words() {
+        return this.selectedWords || null
+    }
 
     @action
     async getLyrics(song = this.selectedSong) {
@@ -49,8 +56,10 @@ class CreateStore {
         }
 
         let data = keygen(this.lyrics, this.selectedWords)
-        this.scale = data.scale;
-        this.key_pairs = data.key_pairs
+        runInAction(() => {
+            this.scale = data.scale;
+            this.key_pairs = data.key_pairs
+        })
     }
 
     @action
