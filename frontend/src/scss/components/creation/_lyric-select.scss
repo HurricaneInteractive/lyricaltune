@@ -56,7 +56,7 @@
 
     .lyric-actions {
         margin-top: em(100px);
-        padding-top: em(15px);
+        padding: em(15px) 0;
         border-top: 1px solid get-colour('border');
         display: flex;
         justify-content: flex-end;
@@ -73,6 +73,20 @@
             h3 {
                 margin: 0;
             }
+        }
+    }
+
+    .mixlab-cta {
+        display: block;
+        border-color: get-colour('highlight');
+        margin-top: em(25px);
+        font-size: em(get-heading-size('h5'));
+        text-align: center;
+        font-weight: $w-bold;
+        text-transform: uppercase;
+        border-width: 3px;
+        &:hover {
+            background-color: get-colour('highlight');
         }
     }
     

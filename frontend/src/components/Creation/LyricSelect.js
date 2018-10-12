@@ -150,6 +150,11 @@ export default class LyricSelect extends Component {
                             }
                             <Link className="cancel" to="/create">Cancel</Link>
                         </div>
+                        {
+                            CreateStore.key !== null ? (
+                                <Link to="/create/mixlab" className="btn mixlab-cta">Start mixing</Link>
+                            ) : ('')
+                        }
                     </div>
                 </div>
             </PageWrapper>
