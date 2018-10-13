@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react';
-import { Play, ChevronLeft, ChevronRight } from 'react-feather'
+import { Play, ChevronLeft, ChevronRight, Pause } from 'react-feather'
 
 @inject('CreateStore')
+@inject('AudioStore')
 @observer
 export default class Mixlab extends Component {
 
@@ -10,7 +11,7 @@ export default class Mixlab extends Component {
         super(props)
         this.state = {
             mixlab_data: {},
-            sidebar: true,
+            sidebar: false,
             effects: {
                 bpm: 100
             },
@@ -75,6 +76,11 @@ export default class Mixlab extends Component {
         })
     }
 
+    playTune = (e) => {
+        e.preventDefault();
+        this.props.AudioStore.playTune(this.state.mixlab_data)
+    }
+
     generateOctaveRows = (octave) => {
         let row = this.state.mixlab_data[octave].map((oct, key) => {
             return (
@@ -99,7 +105,7 @@ export default class Mixlab extends Component {
     }
 
     render() {
-        let { CreateStore, authenticated, routerProps } = this.props
+        let { CreateStore, authenticated, routerProps, AudioStore } = this.props
         let { sidebar, effects, effects_settings } = this.state
 
         let name_empty = CreateStore.projectName.trim() === ''
@@ -160,8 +166,8 @@ export default class Mixlab extends Component {
                     </div>
                     <div className="mixlab-controls">
                         <div className="time-controls">
-                            <div className="play">
-                                <Play />
+                            <div className="play" onClick={(e) => this.playTune(e)}>
+                                { AudioStore.isPlaying ? <Pause /> : <Play /> }
                             </div>
                         </div>
                         <div className="user-controls">
