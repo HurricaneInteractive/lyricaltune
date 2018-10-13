@@ -1,4 +1,4 @@
-input,
+input:not([type="range"]),
 select {
     display: block;
     width: 100%;

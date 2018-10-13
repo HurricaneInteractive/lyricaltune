@@ -15,4 +15,7 @@ button,
     cursor: pointer;
     -webkit-appearance: none;
     transition: background-color $transition-time $transition-easing, border-color $transition-time $transition-easing;
+    &.btn-highlight {
+        @include button('white', 'highlight', 'highlight');
+    }
 }

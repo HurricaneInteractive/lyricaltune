@@ -82,12 +82,42 @@
 }
 
 @mixin grid-row($rows: auto, $gap: $container-padding) {
-    grid-template-rows: $rows;
+    grid-template-rows: repeat($rows, 1fr);
     grid-row-gap: calc-em($gap, $base-font-size);
 }
 
 @mixin breakpoint($size: small) {
     @media screen and (min-width: #{map-get($breakpoints, $size)}) {
         @content;
+    }
+}
+
+@mixin placeholder($color: 'white', $size:"") {
+    &::-webkit-input-placeholder {
+        color: get-colour($color);
+        @if $size != "" {
+            font-size: em($size);
+        }
+    }
+
+    &:-moz-placeholder {
+        color: get-colour($color);
+        @if $size != "" {
+            font-size: em($size);
+        }
+    }
+
+    &::-moz-placeholder {
+        color: get-colour($color);
+        @if $size != "" {
+            font-size: em($size);
+        }
+    }
+
+    &:-ms-input-placeholder {
+        color: get-colour($color);
+        @if $size != "" {
+            font-size: em($size);
+        }
     }
 }
