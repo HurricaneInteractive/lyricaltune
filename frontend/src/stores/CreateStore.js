@@ -4,12 +4,22 @@ import { keygen } from '../helpers/keygen'
 configure({ enforceActions: 'always' })
 
 class CreateStore {
-    @observable selectedArtist = ''
-    @observable selectedSong = ''
-    @observable selectedWords = []
+    @observable selectedArtist = 'eminem'
+    @observable selectedSong = 'rap_god'
+    @observable selectedWords = ['rap', 'god']
     @observable scale = null
     @observable key_pairs = null
     @observable lyrics = ''
+    @observable mixlab_data = {}
+    @observable project_name = ''
+
+    @computed get mixlab_settings() {
+        return {
+            octaves: [6, 7],
+            bars: 2,
+            beats: 8
+        }
+    }
 
     @computed get key() {
         return this.key_pairs ? this.key_pairs.key : null
@@ -17,6 +27,38 @@ class CreateStore {
 
     @computed get words() {
         return this.selectedWords || null
+    }
+
+    @computed get data() {
+        let settings = this.mixlab_settings
+        let data = {}
+
+        if (!this.key_pairs) {
+            return false
+        }
+
+        settings.octaves.forEach((oct) => {
+            if (typeof data[oct] === 'undefined') {
+                data[oct] = []
+            }
+
+            this.key_pairs.notes.forEach((note) => {
+                let length = settings.bars * (settings.beats * 2),
+                    pattern = Array(length).fill(0)
+
+                data[oct].push({
+                    note: note,
+                    octave: oct,
+                    pattern: pattern
+                })
+            })
+        })
+
+        return data
+    }
+
+    @computed get projectName() {
+        return this.project_name
     }
 
     @action
@@ -114,6 +156,13 @@ class CreateStore {
 
         runInAction(() => {
             this.selectedArtist = name
+        })
+    }
+
+    @action
+    setProjectName(name) {
+        runInAction(() => {
+            this.project_name = name
         })
     }
 }
