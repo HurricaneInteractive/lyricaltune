@@ -21,6 +21,7 @@ import './App.css';
 @inject('UserStore')
 @inject('GlobalStore')
 @inject('CreateStore')
+@inject('AudioStore')
 @observer
 class App extends Component {
 	componentDidMount() {
@@ -34,7 +35,7 @@ class App extends Component {
 	}
 
 	render() {
-		const { UserStore, GlobalStore, CreateStore } = this.props;
+		const { UserStore, GlobalStore, CreateStore, AudioStore } = this.props;
 		console.log(UserStore.current_user)
 		return (
 			<Router>
@@ -63,6 +64,7 @@ class App extends Component {
 							authenticated={ UserStore.current_user === null ? false : true }
 							UserStore={UserStore}
 							CreateStore={CreateStore}
+							AudioStore={AudioStore}
 						/>
 					}} />
 

@@ -11,7 +11,7 @@ import Mixlab from '../components/Creation/Mixlab'
 @observer
 export default class Create extends Component {
     render() {
-        let { UserStore, routerProps, CreateStore } = this.props
+        let { UserStore, routerProps, CreateStore, AudioStore } = this.props
 
         return (
             <Fragment>
@@ -33,6 +33,7 @@ export default class Create extends Component {
                         routerProps={routerProps}
                         UserStore={UserStore}
                         authenticated={this.props.authenticated}
+                        AudioStore={AudioStore}
                     />
                 )} />
             </Fragment>
