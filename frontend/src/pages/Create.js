@@ -27,9 +27,12 @@ export default class Create extends Component {
                         routerProps={routerProps}
                     />
                 )} />
-                <Route path={`${routerProps.match.url}/mixlab`} render={() => (
+                <Route path={`${routerProps.match.url}/mixlab`} render={(routerProps) => (
                     <Mixlab
                         CreateStore={CreateStore}
+                        routerProps={routerProps}
+                        UserStore={UserStore}
+                        authenticated={this.props.authenticated}
                     />
                 )} />
             </Fragment>
