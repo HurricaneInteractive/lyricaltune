@@ -12,8 +12,7 @@ import { capitalizeFirst, removeUnderscore } from '../../helpers/typography'
 @observer
 export default class LyricSelect extends Component {
     state = {
-        lyrics: this.props.CreateStore.lyrics,
-        selectedWords: this.props.CreateStore.selectedWords
+        lyrics: this.props.CreateStore.lyrics
     }
 
     componentDidMount() {
@@ -76,7 +75,7 @@ export default class LyricSelect extends Component {
             let dom = split.reduce((prev, current, i) => {
                 let match = current.match(word_pattern);
                 if (match !== null) {
-                    let idx = that.state.selectedWords.indexOf(match[0].toLowerCase().trim())
+                    let idx = that.props.CreateStore.words.indexOf(match[0].toLowerCase().trim())
                     return prev.concat(
                         <span
                             className={`${ idx !== -1 ? `active no-${idx}` : '' }`}
@@ -141,7 +140,7 @@ export default class LyricSelect extends Component {
                         { this.renderWordPills() }
                         <div className={`lyric-actions ${CreateStore.key !== null ? 'has-key' : ''}`}>
                             {
-                                this.state.selectedWords.length > 0 && CreateStore.key !== null ? (
+                                CreateStore.words.length > 0 && CreateStore.key !== null ? (
                                     <div className="generated-key">
                                         <span className="c-caption">Creation Key</span>
                                         <h3>{ CreateStore.key }</h3>
