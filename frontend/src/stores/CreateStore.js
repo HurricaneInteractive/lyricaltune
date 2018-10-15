@@ -12,13 +12,49 @@ class CreateStore {
     @observable lyrics = ''
     @observable mixlab_data = {}
     @observable project_name = ''
+    @observable effects = {
+        bpm: 120
+    }
+
+    constructor() {
+        let settings = this.mixlab_settings,
+            data = {},
+            length = settings.bars * (settings.beats * 2)
+
+        settings.octaves.forEach((oct) => {
+            if (typeof data[oct] === 'undefined') {
+                data[oct] = []
+            }
+
+            for (var i = 0; i < 8; i++) {
+                let pattern = Array(length).fill(0)
+                data[oct].push({
+                    note: 'AST',
+                    octave: oct,
+                    pattern: pattern
+                })
+            }
+        })
+
+        runInAction(() => {
+            this.mixlab_data = data
+        })
+    }
 
     @computed get mixlab_settings() {
         return {
-            octaves: [6, 7],
+            octaves: [5, 2],
             bars: 2,
-            beats: 8
+            beats: 8,
+            bpm: {
+                min: 80,
+                max: 180
+            }
         }
+    }
+
+    @computed get BPM() {
+        return this.effects.bpm
     }
 
     @computed get key() {
@@ -29,32 +65,8 @@ class CreateStore {
         return this.selectedWords || null
     }
 
-    @computed get data() {
-        let settings = this.mixlab_settings
-        let data = {}
-
-        if (!this.key_pairs) {
-            return false
-        }
-
-        settings.octaves.forEach((oct) => {
-            if (typeof data[oct] === 'undefined') {
-                data[oct] = []
-            }
-
-            this.key_pairs.notes.forEach((note) => {
-                let length = settings.bars * (settings.beats * 2),
-                    pattern = Array(length).fill(0)
-
-                data[oct].push({
-                    note: note,
-                    octave: oct,
-                    pattern: pattern
-                })
-            })
-        })
-
-        return data
+    @computed get mixlabData() {
+        return this.mixlab_data
     }
 
     @computed get projectName() {
@@ -94,6 +106,37 @@ class CreateStore {
     }
 
     @action
+    toggleActiveBeat(octave, key, beat) {
+        let data = this.mixlab_data
+        data[octave][key].pattern[beat] === 0 ? data[octave][key].pattern[beat] = 1 : data[octave][key].pattern[beat] = 0
+
+        runInAction(() => {
+            this.mixlab_data = data
+        })
+    }
+
+    @action
+    mergeKeyPairsWithData() {
+        let data = {}
+
+        Object.keys(this.mixlab_data).forEach((key, i) => {
+            if (typeof data[key] === 'undefined') {
+                data[key] = this.mixlab_data[key]
+            }
+
+            this.key_pairs.notes.forEach((note, x) => {
+                if (this.mixlab_data[key][x].note !== note) {
+                    data[key][x].note = note
+                }
+            })
+        })
+
+        runInAction(() => {
+            this.mixlab_data = data
+        })
+    }
+
+    @action
     generateKey() {
         if (this.selectedWords.length === 0) {
             return false
@@ -103,6 +146,7 @@ class CreateStore {
         runInAction(() => {
             this.scale = data.scale;
             this.key_pairs = data.key_pairs
+            this.mergeKeyPairsWithData();
         })
     }
 
@@ -145,6 +189,9 @@ class CreateStore {
 
         runInAction(() => {
             this.selectedWords.splice(key, 1);
+            if (this.selectedWords.length === 0) {
+                this.key_pairs = null
+            }
         })
     }
 
@@ -163,6 +210,13 @@ class CreateStore {
     setProjectName(name) {
         runInAction(() => {
             this.project_name = name
+        })
+    }
+
+    @action
+    changeEffectSetting(effect, value) {
+        runInAction(() => {
+            this.effects[effect] = value
         })
     }
 }
