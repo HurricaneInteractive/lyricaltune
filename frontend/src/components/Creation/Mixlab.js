@@ -78,7 +78,16 @@ export default class Mixlab extends Component {
 
     playTune = (e) => {
         e.preventDefault();
-        this.props.AudioStore.playTune(this.state.mixlab_data)
+        let { AudioStore } = this.props
+
+        if (AudioStore.isPlaying) {
+            console.log('stop');
+            AudioStore.stopTransportLoop()
+        }
+        else {
+            console.log('start');
+            AudioStore.transportLoop(this.state.mixlab_data)
+        }
     }
 
     generateOctaveRows = (octave) => {
