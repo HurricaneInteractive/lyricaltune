@@ -11,6 +11,7 @@
             cursor: pointer;
             line-height: 1.5;
             border-radius: 3px;
+            transition: background $transition-time $transition-easing, box-shadow $transition-time $transition-easing;
             &:hover {
                 background: get-colour('word-highlight');
                 box-shadow: 2px 0 0 get-colour('word-highlight'), -2px 0 0 get-colour('word-highlight');

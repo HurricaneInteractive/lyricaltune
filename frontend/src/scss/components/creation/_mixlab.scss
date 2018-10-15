@@ -23,6 +23,7 @@
             .octave-label {
                 width: 100px;
                 position: relative;
+                user-select: none;
                 p {
                     margin: 0;
                     position: absolute;
@@ -48,6 +49,7 @@
                     .note {
                         width: 40px;
                         text-align: center;
+                        user-select: none;
                     }
                     .pattern {
                         flex-grow: 2;
@@ -69,6 +71,9 @@
                             }
                             &:hover {
                                 background: rgba(get-colour('highlight'), 0.5);
+                            }
+                            &.beat-active {
+                                background: get-colour('footer');
                             }
                             &.active {
                                 background: rgba(get-colour('highlight'), 0.75);
