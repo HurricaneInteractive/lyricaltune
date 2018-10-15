@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react';
 import { Play, ChevronLeft, ChevronRight, Pause } from 'react-feather'
+import classNames from 'classnames'
 
 @inject('CreateStore')
 @inject('AudioStore')
@@ -10,17 +11,7 @@ export default class Mixlab extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            mixlab_data: {},
-            sidebar: false,
-            effects: {
-                bpm: 100
-            },
-            effects_settings: {
-                bpm: {
-                    min: 80,
-                    max: 180
-                }
-            }
+            sidebar: false
         }
     }
     
@@ -28,21 +19,11 @@ export default class Mixlab extends Component {
         if (this.props.CreateStore.key === null) {
             this.props.routerProps.history.push('/create/lyrics')
         }
-        else {
-            this.setState({
-                mixlab_data: this.props.CreateStore.data
-            })
-        }
     }
 
     toggleActiveBeat = (e, octave, key, beat) => {
         e.preventDefault();
-        let data = this.state.mixlab_data
-        data[octave][key].pattern[beat] === 0 ? data[octave][key].pattern[beat] = 1 : data[octave][key].pattern[beat] = 0
-
-        this.setState({
-            mixlab_data: data
-        })
+        this.props.CreateStore.toggleActiveBeat(octave, key, beat)
     }
 
     toggleSidebar = (e) => {
@@ -58,52 +39,56 @@ export default class Mixlab extends Component {
     }
 
     onEffectSliderChange = (e, name) => {
+        let { CreateStore } = this.props
         if (typeof name === 'undefined') {
             name = e.target.name
         }
 
-        let effects = this.state.effects,
-            effects_settings = this.state.effects_settings,
+        let effects_settings = CreateStore.mixlab_settings,
             value = e.target.value
 
         value = value > effects_settings[name].max ? effects_settings[name].max : value
         value = value < effects_settings[name].min ? effects_settings[name].min : value
 
-        effects[name] = value
-
-        this.setState({
-            effects: effects
-        })
+        CreateStore.changeEffectSetting(name, value)
     }
 
     playTune = (e) => {
         e.preventDefault();
-        let { AudioStore } = this.props
+        let { AudioStore, CreateStore } = this.props
 
         if (AudioStore.isPlaying) {
-            console.log('stop');
             AudioStore.stopTransportLoop()
         }
         else {
-            console.log('start');
-            AudioStore.transportLoop(this.state.mixlab_data)
+            AudioStore.transportLoop(CreateStore.mixlabData)
         }
     }
 
     generateOctaveRows = (octave) => {
-        let row = this.state.mixlab_data[octave].map((oct, key) => {
+        let { AudioStore, CreateStore } = this.props
+
+        let row = CreateStore.mixlabData[octave].map((oct, key) => {
             return (
                 <div className="row" key={`${oct}-${key}`}>
                     <div className="note">{oct.note}</div>
                     <div className="pattern">
                         {
-                            oct.pattern.map((beat, i) => (
-                                <div 
-                                    className={`beat ${ beat !== 0 ? 'active' : ''}`}
-                                    key={`${key}-${i}`}
-                                    onClick={(e) => this.toggleActiveBeat(e, octave, key, i)}
-                                />
-                            ))
+                            oct.pattern.map((beat, i) => {
+                                let beatClass = classNames({
+                                    'beat': true,
+                                    'active': beat !== 0,
+                                    'beat-active': AudioStore.beatIndex === i && AudioStore.isPlaying
+                                })
+
+                                return (
+                                    <div 
+                                        className={beatClass}
+                                        key={`${key}-${i}`}
+                                        onClick={(e) => this.toggleActiveBeat(e, octave, key, i)}
+                                    />
+                                )
+                            })
                         }
                     </div>
                 </div>
@@ -115,16 +100,17 @@ export default class Mixlab extends Component {
 
     render() {
         let { CreateStore, authenticated, routerProps, AudioStore } = this.props
-        let { sidebar, effects, effects_settings } = this.state
+        let { sidebar } = this.state
+        let effects_settings = CreateStore.mixlab_settings
 
         let name_empty = CreateStore.projectName.trim() === ''
 
-        if (this.state.mixlab_data !== {}) {
+        if (CreateStore.mixlabData !== {}) {
             return (
                 <div className="mixlab">
                     <div className="octave-wrapper">
                         { 
-                            Object.keys(this.state.mixlab_data).map((oct, i) => (
+                            Object.keys(CreateStore.mixlabData).map((oct, i) => (
                                 <div className="octave" key={`octave-${oct}`}>
                                     <div className="octave-label">
                                         <p>Octave {oct}</p>
@@ -155,7 +141,7 @@ export default class Mixlab extends Component {
                                         id="bpm-numeric"
                                         className="bpm-numeric"
                                         onChange={(e) => this.onEffectSliderChange(e, 'bpm')}
-                                        value={effects.bpm}
+                                        value={CreateStore.BPM}
                                         min={effects_settings.bpm.min}
                                         max={effects_settings.bpm.max}
                                     />
@@ -166,7 +152,7 @@ export default class Mixlab extends Component {
                                         id="bpm"
                                         min={effects_settings.bpm.min}
                                         max={effects_settings.bpm.max}
-                                        value={effects.bpm}
+                                        value={CreateStore.BPM}
                                         onChange={(e) => this.onEffectSliderChange(e)}
                                     />
                                 </div>
@@ -184,7 +170,7 @@ export default class Mixlab extends Component {
                             <a href="#back" onClick={(e) => {
                                 e.preventDefault()
                                 routerProps.history.goBack()
-                            }}>Leave Project</a>
+                            }}>Lyric Select</a>
                         </div>
                     </div>
                 </div>
