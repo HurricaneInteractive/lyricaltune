@@ -61,7 +61,7 @@ export default class Mixlab extends Component {
             AudioStore.stopTransportLoop()
         }
         else {
-            AudioStore.transportLoop(CreateStore.mixlabData)
+            AudioStore.transportLoop(CreateStore.mixlabData, CreateStore.audioEffects, false)
         }
     }
 
