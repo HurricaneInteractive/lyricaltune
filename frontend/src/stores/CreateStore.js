@@ -13,7 +13,8 @@ class CreateStore {
     @observable mixlab_data = {}
     @observable project_name = ''
     @observable effects = {
-        bpm: 120
+        bpm: 120,
+        reverb: 8
     }
 
     constructor() {
@@ -49,8 +50,16 @@ class CreateStore {
             bpm: {
                 min: 80,
                 max: 180
+            },
+            reverb: {
+                min: 0.1,
+                max: 8
             }
         }
+    }
+
+    @computed get audioEffects() {
+        return this.effects
     }
 
     @computed get BPM() {
@@ -80,6 +89,10 @@ class CreateStore {
         }
 
         if (song === '') {
+            return false
+        }
+
+        if (song === this.selectedSong && this.lyrics !== '') {
             return false
         }
 
