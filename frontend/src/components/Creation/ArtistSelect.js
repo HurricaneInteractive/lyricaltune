@@ -29,7 +29,7 @@ export default class ArtistSelect extends Component {
                     style={{
                         backgroundImage: `url(${artist.coverImage})`
                     }}
-                    onMouseEnter={() => this.prefetchLyrics(artist.songKey, artist.artistName)}
+                    onMouseOver={() => this.prefetchLyrics(artist.songKey, artist.artistName)}
                     onClick={(e) => {
                         e.preventDefault();
                         this.props.routerProps.history.push('/create/lyrics')
