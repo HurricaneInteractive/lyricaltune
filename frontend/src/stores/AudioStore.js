@@ -52,46 +52,84 @@ class AudioStore {
         })
     }
 
+    setupAudioEffects(effects) {
+        if (effects.hasOwnProperty('bpm')) {
+            this.Transport.bpm.value = effects.bpm
+        }
+    }
+
+    /** @deprecated */
+    tickWithinRange(ticks) {
+        return ticks > 0 && ticks < 20
+    }
+
+    startTransport() {
+        this.Transport.start('+0.1');
+    }
+
     @action
-    transportLoop(chords) {
-        console.log('start')
-        // Tone.Master.volumn = 0.5;
-        let chords_array = this.chordSequence(chords)
+    transportLoop(chords, effects = null, loop = false) {
+        let chords_array = this.chordSequence(chords),
+            playbackStart = 0,
+            playbackEnd = Tone.Time(this.note_fraction) * 32,
+            reverb = new Tone.Reverb().toMaster(),
+            hasGenerated = false
+
+        reverb.decay = effects.reverb
         
         runInAction(() => {
             this.playing = true
+            this.Transport = Tone.Transport
         })
 
         this.Transport.scheduleRepeat((time) => {
-            let ticks = this.Transport.ticks
-            if (ticks > 0 && ticks < 20) {
-                runInAction(() => {
-                    this.currentBeat = 0
-                })
-            }
+            let chord = chords_array[this.beatIndex]
 
-            if (typeof chords_array[this.beatIndex] === 'undefined') {
+            if (typeof chord === 'undefined') {
                 this.stopTransportLoop();
                 return false;
             }
-
-            let chord = chords_array[this.beatIndex]
+            
             if (chord.length !== 0) {
-                let polySynth = new Tone.PolySynth(chord.length, Tone.Synth).toMaster();
-                polySynth.triggerAttackRelease(chord, this.note_fraction);
+                let polySynth = new Tone.PolySynth(chord.length, Tone.DuoSynth).toMaster();
+                polySynth.connect(reverb)
+
+                if (!hasGenerated) {
+                    reverb.generate().then(() => {
+                        polySynth.triggerAttackRelease(chord, this.note_fraction);
+                        hasGenerated = true
+                    })
+                }
+                else {
+                    polySynth.triggerAttackRelease(chord, this.note_fraction);
+                }
             }
 
             runInAction(() => {
                 this.currentBeat += 1
             })
-        }, this.note_fraction, 0, Tone.Time(this.note_fraction) * 32)
+        }, this.note_fraction, playbackStart, playbackEnd)
 
         this.Transport.loop = true
-        this.Transport.loopStart = 0
-        this.Transport.loopEnd = Tone.Time(this.note_fraction) * 32
-        this.Transport.bpm.value = 180
+        this.Transport.loopStart = playbackStart
+        this.Transport.loopEnd = playbackEnd
 
-        this.Transport.start('+0.1')
+        if (effects !== null) {
+            this.setupAudioEffects(effects)
+        }
+
+        this.startTransport();
+
+        this.Transport.on('loop', () => {
+            if (loop) {
+                runInAction(() => {
+                    this.currentBeat = 0;
+                })
+            }
+            else {
+                this.stopTransportLoop()
+            }
+        })
     }
 }
 
