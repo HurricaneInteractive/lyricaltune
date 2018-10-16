@@ -1,8 +1,8 @@
 .mixlab {
     min-height: calc(100vh - 106px);
-    // display: flex;
     display: grid;
     grid-template-rows: auto 65px;
+    overflow: hidden;
     .octave-wrapper {
         display: grid;
         @include grid-row(2, 0px);
