@@ -45,3 +45,31 @@ label {
     border-top: 1px solid get-colour('border');
     text-align: right;
 }
+
+.input-group.dial {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    .input-dial {
+        margin-bottom: em(5px);
+        .dial {
+            width: em(25px);
+            height: em(25px);
+            border-radius: 50%;
+            background: get-colour('white');
+            position: relative;
+            display: inline-block;
+            &:after {
+                content: '';
+                position: absolute;
+                width: em(2px);
+                height: em(12px);
+                top: 50%;
+                left: 50%;
+                background: get-colour('highlight');
+                transform: translateX(-50%);
+            }
+        }
+    }
+}
