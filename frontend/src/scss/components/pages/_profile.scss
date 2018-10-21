@@ -1,0 +1,46 @@
+.profile-header {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: em(80px);
+    .profile-image {
+        width: 165px;
+        height: 165px;
+        border-radius: 50%;
+        border: 1px solid get-colour('white');
+        margin-bottom: em(30px);
+    }
+    h4, h1 {
+        line-height: 1.2;
+    }
+    h4 {
+        margin: 0 0 calc-em(5px, get-heading-size('h4'));
+        font-weight: $w-normal;
+    }
+    h1 {
+        margin: 0 0 calc-em(20px, get-heading-size('h1'));
+    }
+    .social-media {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        @include clearfix();
+        li {
+            float: left;
+            margin: 0 em(10px);
+            a {
+                display: block;
+                &:hover {
+                    svg {
+                        stroke: get-colour('highlight');
+                    }
+                }
+                svg {
+                    display: block;
+                    transition: stroke $transition-time $transition-easing;
+                }
+            }
+        }
+    }
+}
