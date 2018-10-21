@@ -44,3 +44,11 @@
     padding: 5px 10px;
     cursor: pointer;
 }
+
+.separator {
+    width: 100%;
+    height: 1px;
+    background: get-colour('grey-blue');
+    margin: em(10px) 0;
+    display: block;
+}

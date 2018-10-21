@@ -12,7 +12,7 @@ select {
     background: transparent;
     outline: none;
     &::placeholder {
-        color: get-colour('grey-blue');
+        color: rgba(get-colour('grey-blue'), 0.25);
     }
 }
 

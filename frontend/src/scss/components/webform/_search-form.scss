@@ -8,6 +8,11 @@
             border-radius: 0;
             border-width: 0 0 1px 0;
         }
+        input {
+            &::placeholder {
+                color: rgba(get-colour('grey-blue'), 1);
+            }
+        }
         .form-actions {
             margin: 0;
             padding: 0;
