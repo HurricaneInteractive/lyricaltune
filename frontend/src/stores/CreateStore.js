@@ -14,7 +14,7 @@ class CreateStore {
     @observable project_name = ''
     @observable effects = {
         bpm: 120,
-        reverb: 8
+        reverb: 1
     }
 
     constructor() {
@@ -49,17 +49,23 @@ class CreateStore {
             beats: 8,
             bpm: {
                 min: 80,
-                max: 180
+                max: 180,
+                step: 1
             },
             reverb: {
                 min: 0.1,
-                max: 8
+                max: 8,
+                step: 0.1
             }
         }
     }
 
     @computed get audioEffects() {
         return this.effects
+    }
+
+    audioEffect(key) {
+        return computed(() => this.effects[key]).get()
     }
 
     @computed get BPM() {
