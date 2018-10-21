@@ -50,14 +50,22 @@ class App extends Component {
 							<ErrorPopup errors={GlobalStore.errors} dismiss={() => GlobalStore.dismissResponseError()} />
 						) : ('')
 					}
-					<Header
-						authenticated={ UserStore.current_user === null ? false : true }
-						UserStore={UserStore}
-					/>
+					<Route render={(routerProps) => (
+						<Header
+							authenticated={ UserStore.current_user === null ? false : true }
+							UserStore={UserStore}
+							routerProps={routerProps}
+						/>
+					)} />
 					
 					<Route exact path="/" component={Home} />
 					<Route path="/about" component={About} />
-					<Route path="/discover" component={Discover} />
+					<Route path="/discover" render={() => (
+						<Discover
+							UserStore={UserStore}
+							AudioStore={AudioStore}
+						/>
+					)} />
 					<Route path="/create" render={(routerProps) => {
 						return <Create
 							routerProps={routerProps}

@@ -6,7 +6,7 @@ import MainMenu from './Navigation/MainMenu'
 export default class Header extends React.PureComponent {
     render() {
         return (
-            <header>
+            <header className={ this.props.routerProps.match.isExact && this.props.routerProps.match.path === '/' ? 'home' : '' }>
                 <div className="container">
                     <Logo />
                     <MainMenu
