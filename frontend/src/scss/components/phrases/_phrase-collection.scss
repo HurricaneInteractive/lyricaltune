@@ -1,0 +1,7 @@
+.phrase-collection {
+    > .separator {
+        &:last-child {
+            display: none;
+        }
+    }
+}
