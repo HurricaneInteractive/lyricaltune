@@ -31,8 +31,8 @@ header {
                 a {
                     text-decoration: none;
                     display: block;
-                    padding-top: em($button-padding-v);
-                    padding-bottom: em($button-padding-v);
+                    padding-top: em(12px);
+                    padding-bottom: em(12px);
                 }
                 ul {
                     margin: 0;
@@ -51,7 +51,7 @@ header {
                     a {
                         color: get-colour('dark-blue');
                         margin: 0;
-                        padding: em($button-padding-v);
+                        padding: em(12px);
                         text-align: center;
                         font-size: calc-em($caption, $base-font-size);
                         text-transform: uppercase;
