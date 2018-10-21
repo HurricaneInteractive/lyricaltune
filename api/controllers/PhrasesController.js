@@ -4,5 +4,6 @@ module.exports = {
     deletePhrase: require('./Phrases/DeletePhrase'),
     getPhrase: require('./Phrases/GetPhrase'),
     updatePhrase: require('./Phrases/UpdatePhrase'),
-    likePhrase: require('./Phrases/LikePhrase')
+    likePhrase: require('./Phrases/LikePhrase'),
+    getPhrases: require('./Phrases/GetPhrases')
 }

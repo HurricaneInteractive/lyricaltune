@@ -177,6 +177,11 @@ const BeatUpdateSuccess = (res, data = {}) => {
     response.dispatch(res, data)
 }
 
+const FoundPhrases = (res, data = {}) => {
+    let response = new Success('Fetched phrases')
+    response.dispatch(res, data)
+}
+
 module.exports = {
     returnedError: ReturnedError,
     emailFound: EmailFound,
@@ -209,5 +214,6 @@ module.exports = {
     beatDeletedSuccessfully: BeatDeletedSuccessfully,
     userBeatsSuccess: UserBeatsSuccess,
     beatUpdateSuccess: BeatUpdateSuccess,
-    phraseLikeCompleted: PhraseLikeCompleted
+    phraseLikeCompleted: PhraseLikeCompleted,
+    foundPhrases: FoundPhrases
 }

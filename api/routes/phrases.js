@@ -10,6 +10,7 @@ router.post('/like', CheckAuthentication, PhrasesController.likePhrase)
 // GET
 router.get('/user/:id', PhrasesController.userPhrases)
 router.get('/:id', CheckAuthentication, PhrasesController.getPhrase)
+router.get('/', PhrasesController.getPhrases)
 
 // DELETE
 router.delete('/delete', CheckAuthentication, PhrasesController.deletePhrase)
