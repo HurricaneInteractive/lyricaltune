@@ -1,0 +1,64 @@
+.single-phrase {
+    display: flex;
+    align-items: center;
+    padding: em(20px) em(30px);
+    background-color: transparent;
+    transition: background-color $transition-time $transition-easing;
+    &:hover {
+        background-color: rgba(get-colour('grey-blue'), 0.75);
+    }
+    .play,
+    .actions {
+        width: 100px;
+    }
+    .play {
+        
+    }
+    h3 {
+        margin: 0;
+        flex-grow: 2;
+    }
+    .meta {
+        display: flex;
+        align-items: center;
+        margin: 0 em(20px);
+        .username {
+            font-size: em($caption);
+            text-decoration: none;
+            transition: color $transition-time $transition-easing;
+            &:hover {
+                color: get-colour('highlight');
+            }
+        }
+        .btn {
+            margin-left: 30px;
+            font-size: em(8px);
+            text-transform: uppercase;
+            padding: calc-em(4px, 8px) calc-em(10px, 8px);
+            line-height: 1;
+        }
+    }
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        a {
+            display: block;
+            width: 23px;
+            margin-right: 10px;
+            svg {
+                path {
+                    transition: stroke $transition-time $transition-easing;
+                }
+            }
+            &:hover {
+                svg path {
+                    stroke: get-colour('highlight');
+                }
+            }
+        }
+        .count {
+            color: get-colour('caption');
+        }
+    }
+}
