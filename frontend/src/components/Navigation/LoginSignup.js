@@ -38,6 +38,7 @@ export default class LoginSignup extends Component {
                 {
                     this.state.loginOpen ? (
                         <Modal close={(e) => this.triggerModal(e, 'loginOpen')}>
+                            <h2 className="text--center c-dark-blue">Login</h2>
                             <Login
                                 overrideSubmit={(values) => this.loginUser(values)}
                             />
