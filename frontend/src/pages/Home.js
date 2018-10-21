@@ -1,14 +1,20 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
-import PageWrapper from '../components/Pages/PageWrapper'
-import PageTitle from '../components/Pages/PageTitle'
+import create from '../images/create-bg.jpg'
+import discover from '../images/discover-bg.jpg'
 
 export default class Home extends Component {
     render() {
         return (
-            <PageWrapper>
-                <PageTitle title="Homepage"></PageTitle>
-            </PageWrapper>
+            <div className="homepage-wrapper">
+                <Link to="/create" style={{ backgroundImage: `url('${create}')` }}>
+                    <h2>Create</h2>
+                </Link>
+                <Link to="/discover" style={{ backgroundImage: `url('${discover}')` }}>
+                    <h2>Discover</h2>
+                </Link>
+            </div>
         )
     }
 }
