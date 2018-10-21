@@ -12,6 +12,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Discover from './pages/Discover'
 import Create from './pages/Create'
+import Profile from './pages/Profile'
 
 import SecondChanceAuth from './components/Auth/SecondChanceAuth'
 import ErrorPopup from './components/ErrorPopup'
@@ -75,6 +76,13 @@ class App extends Component {
 							AudioStore={AudioStore}
 						/>
 					}} />
+					<Route path="/profile/:id" render={(routerProps) => (
+						<Profile
+							routerProps={routerProps}
+							UserStore={UserStore}
+							current_user={UserStore.current_user}
+						/>
+					)} />
 
 					<Footer
 						authenticated={ UserStore.current_user === null ? false : true }
