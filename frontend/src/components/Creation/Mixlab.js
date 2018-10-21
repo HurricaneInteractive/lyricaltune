@@ -3,6 +3,8 @@ import { inject, observer } from 'mobx-react';
 import { Play, ChevronLeft, ChevronRight, Pause } from 'react-feather'
 import classNames from 'classnames'
 
+import Dial from '../Form/InputTypes/Dial'
+
 @inject('CreateStore')
 @inject('AudioStore')
 @observer
@@ -98,6 +100,22 @@ export default class Mixlab extends Component {
         return row
     }
 
+    getRotationDegree = (name) => {
+        let effect_val = this.props.CreateStore.audioEffect(name),
+            effects_settings = this.props.CreateStore.mixlab_settings,
+            min = effects_settings[name].min,
+            max = effects_settings[name].max
+
+        if (typeof effects_settings[name] !== 'undefined' && effect_val) {
+            let degree = Math.floor((360/(max-min)) * effect_val - (36/(max-min)))
+
+            return degree
+        }
+        else {
+            return 0
+        }
+    }
+
     render() {
         let { CreateStore, authenticated, routerProps, AudioStore } = this.props
         let { sidebar } = this.state
@@ -134,7 +152,7 @@ export default class Mixlab extends Component {
                             />
                             <div className="effect-settings">
                                 <p className="section-title">Adjustments</p>
-                                <div className="bpm">
+                                <div className="bpm input-group">
                                     <input
                                         type="number"
                                         name="bpm-numeric"
@@ -154,8 +172,17 @@ export default class Mixlab extends Component {
                                         max={effects_settings.bpm.max}
                                         value={CreateStore.BPM}
                                         onChange={(e) => this.onEffectSliderChange(e)}
+                                        step={effects_settings.bpm.step}
                                     />
                                 </div>
+                                <Dial
+                                    name='reverb'
+                                    value={CreateStore.audioEffect('reverb')}
+                                    onChange={(e) => this.onEffectSliderChange(e, 'reverb')}
+                                    degree={this.getRotationDegree('reverb')}
+                                    label='Reverb'
+                                    settings={effects_settings.reverb}
+                                />
                             </div>
                         </div>
                     </div>
