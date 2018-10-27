@@ -89,6 +89,20 @@ class CreateStore {
     }
 
     @action
+    publishData() {
+        return {
+            name: this.projectName,
+            key: this.key,
+            notes: this.key_pairs.notes,
+            phrases: this.mixlabData,
+            words_selected: this.selectedWords,
+            selected_artist: this.selectedArtist,
+            selected_song: this.selectedSong,
+            effects: this.audioEffects
+        }
+    }
+
+    @action
     async getLyrics(song = this.selectedSong) {
         if (typeof song === 'undefined' || typeof song !== 'string') {
             throw new Error('`song` is a required value and should be of type `string`')
