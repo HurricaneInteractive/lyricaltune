@@ -23,12 +23,16 @@ const phrasesSchema = new Schema({
         required: true,
         index: true
     },
-    phrases: [
-        {
-            note: String,
-            pattern: [String]
+    phrases: {
+        type: Map,
+        of: {
+            type: [{
+                note: String,
+                octave: String,
+                pattern: [Number]
+            }]
         }
-    ],
+    },
     words_selected: [String],
     selected_artist: {
         type: String,
