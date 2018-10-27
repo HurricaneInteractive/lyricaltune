@@ -36,6 +36,13 @@ export default class Mixlab extends Component {
         })
     }
 
+    savePhrase = (e) => {
+        e.preventDefault();
+        let data = this.props.CreateStore.publishData()
+
+        console.log(data);
+    }
+
     updateProjectName = (e) => {
         this.props.CreateStore.setProjectName(e.target.value)
     }
@@ -193,7 +200,7 @@ export default class Mixlab extends Component {
                             </div>
                         </div>
                         <div className="user-controls">
-                            { authenticated ? <button className="btn btn-highlight">Save</button> : '' }
+                            { authenticated ? <button className="btn btn-highlight" onClick={(e) => this.savePhrase(e)}>Save</button> : '' }
                             <a href="#back" onClick={(e) => {
                                 e.preventDefault()
                                 routerProps.history.goBack()
