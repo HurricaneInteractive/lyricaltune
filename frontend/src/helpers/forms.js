@@ -22,3 +22,17 @@ export const validatePassword = (password) => {
         valid: true
     }
 }
+
+export const validateUsername = (username) => {
+    const matches = /[\s\W]/gm;
+    if (matches.exec(username)) {
+        return {
+            valid: false,
+            message: 'Please remove any spaces or special characters'
+        }
+    }
+
+    return {
+        valid: true
+    }
+}
