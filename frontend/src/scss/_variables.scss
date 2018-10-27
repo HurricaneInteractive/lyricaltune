@@ -37,7 +37,10 @@ $colours: (
     'caption': rgba(255, 255, 255, 0.5),
     'highlight': #ED1965,
     'word-highlight': rgba(255, 255, 255, 0.2),
-    'creation-sidebar': #2F3C4B
+    'creation-sidebar': #2F3C4B,
+    'error': #e41352,
+    'warning': #ff6836,
+    'info': #2ea4ff
 );
 
 $lyrics-active-colours: (

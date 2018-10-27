@@ -1,0 +1,47 @@
+.error-popup {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    z-index: 9999;
+    background: get-colour('white');
+    border: 3px solid get-colour('error');
+    border-radius: $border-radius;
+    max-width: 320px;
+    width: 100%;
+    padding: em(20px);
+    padding-right: em(40px);
+    color: get-colour('dark-blue');
+    font-weight: $w-bold;
+    text-transform: uppercase;
+    font-size: em($caption);
+    &.error {
+        border-color: get-colour('error');
+        // color: get-colour('error');
+        background: lighten(get-colour('error'), 48%);
+    }
+    &.warning {
+        border-color: get-colour('warning');
+        // color: get-colour('warning');
+        background: lighten(get-colour('warning'), 35%);
+    }
+    &.info {
+        border-color: get-colour('info');
+        // color: get-colour('info');
+        background: lighten(get-colour('info'), 35%);
+    }
+    .close-modal {
+        color: get-colour('dark-blue');
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 5px;
+        width: 24px;
+        height: 24px;
+        & + * {
+            margin-top: 0;
+        }
+    }
+    > *:last-child {
+        margin-bottom: 0;
+    }
+}
