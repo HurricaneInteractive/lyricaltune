@@ -12,6 +12,7 @@ export default class Header extends React.PureComponent {
                     <MainMenu
                         authenticated={this.props.authenticated}
                         UserStore={this.props.UserStore}
+                        GlobalStore={this.props.GlobalStore}
                     />
                 </div>
             </header>
@@ -21,7 +22,8 @@ export default class Header extends React.PureComponent {
 
 Header.propTypes = {
     authenticated: PropTypes.bool,
-    UserStore: PropTypes.any.isRequired
+    UserStore: PropTypes.any.isRequired,
+    GlobalStore: PropTypes.any.isRequired
 }
 
 Header.defaultProps = {

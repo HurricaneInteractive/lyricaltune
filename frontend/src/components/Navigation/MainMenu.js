@@ -15,7 +15,7 @@ export default class MainMenu extends PureComponent {
                         this.props.authenticated ? (
                             <LoggedIn UserStore={this.props.UserStore} />
                         ) : (
-                            <LoginSignup UserStore={this.props.UserStore} />
+                            <LoginSignup UserStore={this.props.UserStore} GlobalStore={this.props.GlobalStore} />
                         )
                     }
                 </ul>
@@ -26,5 +26,6 @@ export default class MainMenu extends PureComponent {
 
 MainMenu.propTypes = {
     authenticated: PropTypes.bool.isRequired,
-    UserStore: PropTypes.any.isRequired
+    UserStore: PropTypes.any.isRequired,
+    GlobalStore: PropTypes.any.isRequired
 }

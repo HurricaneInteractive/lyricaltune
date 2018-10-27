@@ -56,6 +56,7 @@ class App extends Component {
 							authenticated={ UserStore.current_user === null ? false : true }
 							UserStore={UserStore}
 							routerProps={routerProps}
+							GlobalStore={GlobalStore}
 						/>
 					)} />
 					
@@ -87,6 +88,7 @@ class App extends Component {
 					<Footer
 						authenticated={ UserStore.current_user === null ? false : true }
 						UserStore={UserStore}
+						GlobalStore={GlobalStore}
 					/>
 				</div>
 			</Router>

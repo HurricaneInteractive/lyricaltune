@@ -18,7 +18,7 @@ export default class Footer extends PureComponent {
                                 this.props.authenticated ? (
                                     <LoggedIn UserStore={this.props.UserStore} />
                                 ) : (
-                                    <LoginSignup UserStore={this.props.UserStore} />
+                                    <LoginSignup UserStore={this.props.UserStore} GlobalStore={this.props.GlobalStore} />
                                 )
                             }
                             </ul>
@@ -41,7 +41,8 @@ export default class Footer extends PureComponent {
 
 Footer.propTypes = {
     authenticated: PropTypes.bool,
-    UserStore: PropTypes.any.isRequired
+    UserStore: PropTypes.any.isRequired,
+    GlobalStore: PropTypes.any.isRequired
 }
 
 Footer.defaultProps = {
