@@ -14,6 +14,9 @@ select {
     &::placeholder {
         color: rgba(get-colour('grey-blue'), 0.25);
     }
+    &.invalid {
+        border-color: get-colour('warning');
+    }
 }
 
 select {
@@ -33,9 +36,15 @@ label {
 }
 
 .input-group {
-    margin-bottom: em(20px);
+    margin-bottom: em(30px);
     & + .form-actions {
         margin-top: em(35px);
+    }
+    .form-group-help {
+        margin: em(5px) 0 em(30px);
+        font-size: calc-em($label, $base-font-size);
+        line-height: 1;
+        color: rgba(get-colour('grey-blue'), 0.75);
     }
 }
 

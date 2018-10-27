@@ -5,9 +5,9 @@ import FormGroup from '../FormGroup'
 
 export default class Input extends PureComponent {
     render() {
-        let { name, value, required, error, onChange, attributes } = this.props
+        let { name, value, required, error, onChange, attributes, help } = this.props
         return (
-            <FormGroup label={name}>
+            <FormGroup label={name} help={help ? help : null}>
                 <input
                     type="text"
                     required={required}
@@ -29,11 +29,13 @@ Input.propTypes = {
     onChange: PropTypes.func.isRequired,
     required: PropTypes.bool,
     error: PropTypes.string,
-    attributes: PropTypes.object
+    attributes: PropTypes.object,
+    help: PropTypes.string
 }
 
 Input.defaultProps = {
     required: false,
     error: '',
-    attributes: {}
+    attributes: {},
+    help: null
 }
