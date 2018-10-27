@@ -110,6 +110,28 @@ class UserStore {
             this.global_store.setResponseError(error)
         }
     }
+
+    @action
+    async registerUser(data) {
+        try {
+            let headers = this.axios_headers
+            const response = await performAxiosCall(`${this.prefix}/register`, data, 'post', headers, false, this.global_store)
+
+            // console.log(response);
+            runInAction(() => {
+                let data = response.data
+                if (data.error === null) {
+                    this.current_user = data.current_user
+                    this.set__authToken(data.token)
+                }
+            })
+
+            return response
+        }
+        catch(error) {
+            this.global_store.setResponseError(error)
+        }
+    }
 }
 
 export default new UserStore(globalStore)
