@@ -38,9 +38,15 @@ export default class Mixlab extends Component {
 
     savePhrase = (e) => {
         e.preventDefault();
-        let data = this.props.CreateStore.publishData()
+        let { UserStore, CreateStore } = this.props
+        let data = CreateStore.publishData()
+        let headers = UserStore.axiosHeaders
 
-        console.log(data);
+        CreateStore.publishPhraseChanges(data, headers)
+            .then(res => {
+                console.log('Success', res);
+            })
+            .catch(e => console.error(e))
     }
 
     updateProjectName = (e) => {
@@ -200,7 +206,15 @@ export default class Mixlab extends Component {
                             </div>
                         </div>
                         <div className="user-controls">
-                            { authenticated ? <button className="btn btn-highlight" onClick={(e) => this.savePhrase(e)}>Save</button> : '' }
+                            { 
+                                authenticated ? (
+                                    <button className="btn btn-highlight" onClick={(e) => this.savePhrase(e)}>
+                                        { CreateStore.hasCreated ? 'Update': 'Save' }
+                                    </button>
+                                ) : (
+                                    ''
+                                )
+                            }
                             <a href="#back" onClick={(e) => {
                                 e.preventDefault()
                                 routerProps.history.goBack()
