@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Play, Pause } from 'react-feather'
+import { Play } from 'react-feather'
 import { Link } from 'react-router-dom'
 
 import Lit from './Lit'

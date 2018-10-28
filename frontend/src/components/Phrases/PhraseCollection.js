@@ -5,7 +5,7 @@ import SinglePhrase from './SinglePhrase'
 export default class PhraseCollection extends PureComponent {
 
     renderAllPhrases = () => {
-        let { phrases, UserStore, AudioStore } = this.props
+        let { phrases, UserStore } = this.props
         let phraseList = phrases.map(phrase => {
             return (
                 <Fragment key={phrase._id}>

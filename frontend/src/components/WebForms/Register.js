@@ -57,7 +57,7 @@ export default class Register extends Component {
         })
         this.props.GlobalStore.dismissResponseError()
 
-        let { name, username, email, password, confirm_password } = this.state;
+        let { username, password, confirm_password } = this.state;
         let { GlobalStore } = this.props
 
         // Ensures data
