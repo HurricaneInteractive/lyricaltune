@@ -1,4 +1,4 @@
-import { action, observable, runInAction, configure } from 'mobx'
+import { action, observable, runInAction, configure, computed } from 'mobx'
 
 import { performAxiosCall, fetchApiData } from '../helpers/api'
 
@@ -41,6 +41,13 @@ class UserStore {
      */
     axios_headers = {
         'Content-Type': 'application/json'
+    }
+
+    @computed get axiosHeaders() {
+        return {
+            ...this.axios_headers,
+            'Authorization': `Bearer ${this.auth_token}`
+        }
     }
 
     constructor(globalStore) {
