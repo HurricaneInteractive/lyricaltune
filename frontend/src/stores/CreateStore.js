@@ -1,12 +1,15 @@
 import { action, observable, configure, runInAction, computed } from 'mobx'
 import { keygen } from '../helpers/keygen'
+import { performAxiosCall } from '../helpers/api'
+
+import globalStore from './GlobalStore'
 
 configure({ enforceActions: 'always' })
 
 class CreateStore {
     @observable selectedArtist = 'eminem'
     @observable selectedSong = 'rap_god'
-    @observable selectedWords = ['rap', 'god']
+    @observable selectedWords = []
     @observable scale = null
     @observable key_pairs = null
     @observable lyrics = ''
@@ -16,8 +19,12 @@ class CreateStore {
         bpm: 120,
         reverb: 1
     }
+    @observable has_created = false
+    @observable created_ID = null
 
-    constructor() {
+    constructor(globalStore) {
+        this.global_store = globalStore
+
         let settings = this.mixlab_settings,
             data = {},
             length = settings.bars * (settings.beats * 2)
@@ -40,6 +47,10 @@ class CreateStore {
         runInAction(() => {
             this.mixlab_data = data
         })
+    }
+
+    @computed get hasCreated() {
+        return this.has_created
     }
 
     @computed get mixlab_settings() {
@@ -252,6 +263,35 @@ class CreateStore {
             this.effects[effect] = value
         })
     }
+
+    @action
+    async publishPhraseChanges(data, headers, update = this.has_created, id = this.created_ID) {
+        try {
+            if (update === true && id === null) {
+                this.global_store.setResponseError({
+                    message: "Error updating, please try again"
+                })
+                return false;
+            }
+
+            let route = update === false ? '/phrases/create' : `/phrases/update/${id}`
+            let method = update === false ? 'post' : 'patch'
+
+            const response = await performAxiosCall(route, data, method, headers, false, this.global_store)
+
+            if (!response.data.hasOwnProperty('error')) {
+                runInAction(() => {
+                    this.has_created = true
+                    this.created_ID = response.data[response.data.length - 1]._id
+                })
+            }
+
+            return response;
+        }
+        catch(error) {
+            this.global_store.setResponseError(error)
+        }
+    }
 }
 
-export default new CreateStore()
+export default new CreateStore(globalStore)
