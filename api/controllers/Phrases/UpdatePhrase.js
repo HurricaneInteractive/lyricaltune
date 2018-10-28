@@ -17,19 +17,15 @@ module.exports = (req, res, next) => {
                 ResponseHelper.requestingDifferentUserPhrases(next)
             }
             else {
-                let name = req.body.name || String(doc.name),
-                    effects = typeof req.body.effects !== 'undefined' && req.body.effects !== null ? Object.assign({}, doc.toJSON().effects, req.body.effects) : doc.effects,
-                    phrases = typeof req.body.phrases !== 'undefined' && req.body.phrases !== null ? merge(doc.toJSON().phrases, req.body.phrases, 'note') : doc.toJSON().phrases,
-                    album_cover = req.body.album_cover || String(doc.album_cover),
-                    beat = req.body.beat || String(doc.beat)
+                // let name = req.body.name || String(doc.name),
+                //     effects = typeof req.body.effects !== 'undefined' && req.body.effects !== null ? Object.assign({}, doc.toJSON().effects, req.body.effects) : doc.effects,
+                //     phrases = typeof req.body.phrases !== 'undefined' && req.body.phrases !== null ? merge(doc.toJSON().phrases, req.body.phrases, 'note') : doc.toJSON().phrases,
+                //     album_cover = req.body.album_cover || String(doc.album_cover),
+                //     beat = req.body.beat || String(doc.beat)
 
                 Phrase.findOneAndUpdate({ _id: id }, {
                     $set: {
-                        name: name,
-                        effects: effects,
-                        phrases: phrases,
-                        album_cover: album_cover,
-                        beat: beat
+                        ...req.body
                     }
                 }, { new: true }).exec().then(response =>  {
                     ResponseHelper.phraseUpdateSuccess(res, { updated: response.toJSON() })
