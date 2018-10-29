@@ -52,3 +52,25 @@
     margin: em(10px) 0;
     display: block;
 }
+
+.load-more {
+    text-align: center;
+    margin-top: 50px;
+    a {
+        display: block;
+        max-width: 320px;
+        margin: 0 auto;
+        height: 52px;
+        position: relative;
+        .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            svg {
+                display: block;
+                margin: 0 auto;
+            }
+        }
+    }
+}
