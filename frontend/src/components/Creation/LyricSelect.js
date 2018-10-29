@@ -18,12 +18,13 @@ export default class LyricSelect extends Component {
     componentDidMount() {
         let { CreateStore, routerProps } = this.props
         if (CreateStore.lyrics.trim() === '') {
-            this.props.CreateStore.getLyrics()
-                .then(res => {
-                    if (!res) {
-                        routerProps.history.push('/create')
-                    }
-                })
+            routerProps.history.push('/create')
+            // this.props.CreateStore.getLyrics()
+            //     .then(res => {
+            //         if (!res) {
+            //             routerProps.history.push('/create')
+            //         }
+            //     })
         }
 
         let lyric_data = document.querySelector(".lyric-select-wrapper .lyric-data")
