@@ -21,12 +21,6 @@ export default class SearchForm extends Component {
     render() {
         const fields = [
             {
-                type: 'select',
-                name: 'type',
-                value: this.state.type,
-                options: ['all', 'user', 'phrase', 'phrase_user', 'by_song', 'by_artist']
-            },
-            {
                 type: 'text',
                 name: 'search',
                 value: this.state.search,

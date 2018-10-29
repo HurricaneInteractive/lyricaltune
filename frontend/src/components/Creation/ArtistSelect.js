@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import PageTitle from '../Pages/PageTitle'
 import PageWrapper from '../Pages/PageWrapper'
+import Search from '../WebForms/Search'
 
 import Eminem from '../../data/artists/eminem'
 import Panama from '../../data/artists/panama'
@@ -10,6 +11,10 @@ import KendrickLamar from '../../data/artists/kendrick_lamar'
 const artistList = [Eminem, Panama, KendrickLamar]
 
 export default class ArtistSelect extends Component {
+
+    state = {
+        results: null
+    }
 
     prefetchLyrics = (key, artist) => {
         const _that = this
@@ -45,9 +50,10 @@ export default class ArtistSelect extends Component {
 
     render() {
         return (
-            <PageWrapper>
+            <PageWrapper classnames={'artist-select'}>
                 <PageTitle title="Create" />
-                { this.renderArtistTiles() }
+                <Search />
+                { this.state.results ? this.renderArtistTiles() : '' }
             </PageWrapper>
         )
     }
