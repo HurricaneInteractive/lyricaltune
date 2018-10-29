@@ -45,6 +45,13 @@ header.home {
             z-index: 2;
             text-transform: uppercase;
             font-size: em(100px);
+            transition: color $transition-time $transition-easing, transform $transition-time $transition-easing;
+        }
+        &:hover {
+            h2 {
+                color: get-colour('highlight');
+                transform: scale(1.1);
+            }
         }
     }
 }
