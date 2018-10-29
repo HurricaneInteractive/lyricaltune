@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Login from '../WebForms/Login'
+import Modal from '../Modal'
 
 export default class SecondChanceAuth extends React.Component {
 
@@ -18,14 +19,17 @@ export default class SecondChanceAuth extends React.Component {
             })
     }
 
+    close = (e) => {
+        e.preventDefault();
+        this.props.GlobalStore.setSecondChance(false);
+    }
+
     render() {
         return (
-            <div className="second-chance-auth">
-                <div className="inner-wrapper">
-                    <p><button onClick={() => window.location = '/'}>Close</button> Closing will redirect you to the homepage</p>
-                    <Login overrideSubmit={(state) => this.onSubmit(state)} />
-                </div>
-            </div>
+            <Modal close={(e) => this.close(e)}>
+                <h2 className="text--center c-dark-blue">Login</h2>
+                <Login overrideSubmit={(state) => this.onSubmit(state)} />
+            </Modal>
         )
     }
 }
