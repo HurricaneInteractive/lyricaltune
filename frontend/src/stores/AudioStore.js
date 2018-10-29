@@ -10,6 +10,7 @@ class AudioStore {
     note_fraction = '16n'
     @observable currentBeat = 0;
     @observable playing = false
+    @observable playing_phrase_id = null
 
     @computed get isPlaying() {
         return this.playing
@@ -17,6 +18,10 @@ class AudioStore {
 
     @computed get beatIndex() {
         return this.currentBeat
+    }
+
+    @computed get playingPhrase() {
+        return this.playing_phrase_id
     }
 
     chordSequence(chords) {
@@ -39,6 +44,13 @@ class AudioStore {
         return chords_array
     }
 
+    @action 
+    setPlayingPhraseId(id) {
+        runInAction(() => {
+            this.playing_phrase_id = id
+        })
+    }
+
     @action
     stopTransportLoop() {
         console.log('stop');
@@ -49,6 +61,7 @@ class AudioStore {
             this.Transport = Tone.Transport
             this.playing = false
             this.currentBeat = 0
+            this.playing_phrase_id = null
         })
     }
 

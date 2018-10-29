@@ -1,19 +1,46 @@
-import React, { PureComponent } from 'react'
-import { Play } from 'react-feather'
+import React, { Component } from 'react'
+import { inject, observer } from 'mobx-react';
+import { Play, Pause } from 'react-feather'
 import { Link } from 'react-router-dom'
 
 import Lit from './Lit'
 
-export default class SinglePhrase extends PureComponent {
+import { performAxiosCall } from '../../helpers/api'
+
+@inject('AudioStore')
+@observer
+export default class SinglePhrase extends Component {
 
     likePhrase = (e, id) => {
         e.preventDefault();
         console.log('Like', id);
+        let { UserStore } = this.props
+        let headers = UserStore.axiosHeaders
+
+        performAxiosCall(`/phrases/like`, { id: id }, 'post', headers, true, UserStore.globalstore)
+            .then(({data}) => {
+                // console.log(res)
+                if (data.error === null) {
+                    this.props.pushUpdated(id, data.updated)
+                }
+            })
+            .catch(e => console.error(e))
     }
 
     followUser = (e, id) => {
         e.preventDefault();
         console.log('Follow', id);
+    }
+
+    playPhrase = (e, phrase) => {
+        e.preventDefault()
+
+        let { AudioStore } = this.props
+        if (AudioStore.isPlaying) {
+            AudioStore.stopTransportLoop()
+        }
+        AudioStore.setPlayingPhraseId(phrase._id)
+        AudioStore.transportLoop(phrase.phrases, phrase.effects, false)
     }
 
     renderMeta = () => {
@@ -58,12 +85,14 @@ export default class SinglePhrase extends PureComponent {
     }
 
     render() {
-        let { phrase } = this.props
+        let { phrase, AudioStore } = this.props
 
         return (
             <div className="single-phrase">
                 <div className="play">
-                    <Play />
+                    <a href="#start" onClick={(e) => this.playPhrase(e, phrase)}>
+                        { AudioStore.playingPhrase === phrase._id ? <Pause /> : <Play /> }
+                    </a>
                 </div>
                 <h3>{phrase.name}</h3>
                 { this.renderMeta() }
