@@ -50,6 +50,10 @@ class UserStore {
         }
     }
 
+    @computed get globalstore() {
+        return this.global_store
+    }
+
     constructor(globalStore) {
         this.global_store = globalStore
     }
