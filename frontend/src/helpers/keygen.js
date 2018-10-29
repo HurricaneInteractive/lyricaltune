@@ -12,7 +12,8 @@ const cleanLyrics = (song) => {
         { match: /(\\n|\n)/g, replace: ' ' },
         { match: /\s\s/g, replace: ' ' },
         { match: /(\\"|[^a-zA-z0-9 \0])/g, replace: '' },
-        { match: /N W A/, replace: 'nwa' }
+        { match: /N W A/, replace: 'nwa' },
+        { match: /(\*\*\*\*\*\*\* This Lyrics is NOT for Commercial use \*\*\*\*\*\*\*)/, replace: '' }
     ]
     let cleaned = song
 
