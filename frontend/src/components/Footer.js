@@ -31,7 +31,7 @@ export default class Footer extends PureComponent {
                         </div>
                     </div>
                     <div className="col credit text--right">
-                        <p>Built by <a href="http://www.google.com.au" target="_blank" rel="noopener noreferrer">Sunset Studios</a></p>
+                        <p>Built by <a href="https://sunset-studios.netlify.com/" target="_blank" rel="noopener noreferrer">Sunset Studios</a></p>
                     </div>
                 </div>
             </footer>
