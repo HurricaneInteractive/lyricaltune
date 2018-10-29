@@ -34,5 +34,52 @@
 .artist-select {
     .search-form {
         max-width: 100%;
+        input {
+            &::-webkit-input-placeholder {
+                color: rgba(get-colour('white'), 0.5);
+            }
+        }
+    }
+    .available-tracks {
+        .track {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: em(20px) em(30px);
+            background-color: transparent;
+            transition: background-color $transition-time $transition-easing;
+            &:hover {
+                background-color: rgba(get-colour('grey-blue'), 0.75);
+            }
+            .content {
+                h3 {
+                    margin: 0;
+                    line-height: 1.1;
+                }
+                p {
+                    margin: 0;
+                    font-size: $caption;
+                    color: get-colour('caption');
+                }
+            }
+            .actions {
+                a {
+                    display: inline-block;
+                    background: transparent;
+                    border-width: 2px;
+                    padding: 0;
+                    width: 25px;
+                    height: 25px;
+                    &:hover {
+                        background: get-colour('highlight');
+                    }
+                }
+            }
+        }
+        > .separator {
+            &:last-child {
+                display: none;
+            }
+        }
     }
 }
