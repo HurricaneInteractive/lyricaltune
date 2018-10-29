@@ -2,18 +2,25 @@ const Phrase = require('../../models/Phrases');
 const ResponseHelper = require('../../helpers/ResponseHelper');
 
 module.exports = (req, res, next) => {
-    const limit = 50;
     let defaults = {
-        limit: limit
+        limit: 5,
+        offset: 0
     }
 
-    let settings = Object.assign(defaults, req.body.settings);
+    let settings = Object.assign(defaults, req.query);
 
-    Phrase.find().sort({'data': -1}).limit(settings.limit).exec()
+    console.log(settings);
+
+    Phrase.find().sort({'createdAt': -1}).limit(parseInt(settings.limit)).skip(parseInt(settings.offset)).exec()
         .then(docs => {
-            ResponseHelper.foundPhrases(res, {
-                phrases: docs
-            })
+            Phrase.estimatedDocumentCount().exec()
+                .then(count => {
+                    ResponseHelper.foundPhrases(res, {
+                        phrases: docs,
+                        next: parseInt(settings.limit) + parseInt(settings.offset),
+                        count: count
+                    })
+                })
         })
         .catch(e => ResponseHelper.returnedError(res, e))
 }
