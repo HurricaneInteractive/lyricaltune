@@ -7,8 +7,8 @@ import globalStore from './GlobalStore'
 configure({ enforceActions: 'always' })
 
 class CreateStore {
-    @observable selectedArtist = 'eminem'
-    @observable selectedSong = 'rap_god'
+    @observable selectedArtist = ''
+    @observable selectedSong = ''
     @observable selectedWords = []
     @observable scale = null
     @observable key_pairs = null
@@ -114,7 +114,7 @@ class CreateStore {
     }
 
     @action
-    async getLyrics(song = this.selectedSong) {
+    setLyricsWithMetadata(lyrics, artist, song) {
         if (typeof song === 'undefined' || typeof song !== 'string') {
             throw new Error('`song` is a required value and should be of type `string`')
         }
@@ -127,27 +127,53 @@ class CreateStore {
             return false
         }
 
-        return import(`../data/songs/${song}.json`)
-            .then(res => {
-                if (!res.hasOwnProperty(song)) {
-                    throw new Error('Song could not be found')
-                }
-                else {
-                    runInAction(() => {
-                        this.selectedWords = []
-                        this.key_pairs = null
-                        this.scale = null
-                        this.lyrics = res[song]
-                        if (song !== this.selectedSong) {
-                            this.selectedSong = song
-                        }
-                    })
-                    
-                    return this.lyrics
-                }
-            })
-            .catch(e => console.error(e))
+        runInAction(() => {
+            this.selectedWords = []
+            this.key_pairs = null
+            this.scale = null
+            this.selectedArtist = artist
+            this.lyrics = lyrics
+            if (song !== this.selectedSong) {
+                this.selectedSong = song
+            }
+        })
     }
+
+    // @action
+    // async getLyrics(song = this.selectedSong) {
+    //     if (typeof song === 'undefined' || typeof song !== 'string') {
+    //         throw new Error('`song` is a required value and should be of type `string`')
+    //     }
+
+    //     if (song === '') {
+    //         return false
+    //     }
+
+    //     if (song === this.selectedSong && this.lyrics !== '') {
+    //         return false
+    //     }
+
+    //     return import(`../data/songs/${song}.json`)
+    //         .then(res => {
+    //             if (!res.hasOwnProperty(song)) {
+    //                 throw new Error('Song could not be found')
+    //             }
+    //             else {
+    //                 runInAction(() => {
+    //                     this.selectedWords = []
+    //                     this.key_pairs = null
+    //                     this.scale = null
+    //                     this.lyrics = res[song]
+    //                     if (song !== this.selectedSong) {
+    //                         this.selectedSong = song
+    //                     }
+    //                 })
+                    
+    //                 return this.lyrics
+    //             }
+    //         })
+    //         .catch(e => console.error(e))
+    // }
 
     @action
     toggleActiveBeat(octave, key, beat) {
@@ -205,6 +231,7 @@ class CreateStore {
         let word_pattern = /(^|<\/?[^>]+>|\s+)([^\s^,<]+)/g
         let wrapped = lyrics.replace(/\\n/g, '<br/>');
         wrapped = wrapped.replace(/['?"()\\]/g, '');
+        wrapped = wrapped.replace(/(\*\*\*\*\*\*\* This Lyrics is NOT for Commercial use \*\*\*\*\*\*\*)/g, '')
         wrapped = wrapped.replace(word_pattern, "$1<span>$2</span>")
         
         return wrapped
