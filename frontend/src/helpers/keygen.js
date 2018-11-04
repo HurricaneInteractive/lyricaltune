@@ -126,6 +126,9 @@ export const keygen = (lyrics, words) => {
     let scale = count >= half ? 'major' : 'minor',
         index = ( ( ((count / 2) / half) * 100 ) / ratio ) - 1
         index = index < 0 ? 0 : Math.round(index)
+
+    if (index < 0) index = 0
+    if (index >= key_pairs[scale].length) index = key_pairs[scale].length - 1
  
     // Returns the scale and key/notes values
     return {
