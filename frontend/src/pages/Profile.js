@@ -4,6 +4,8 @@ import { performAxiosCall } from '../helpers/api'
 import PageWrapper from '../components/Pages/PageWrapper'
 import ProfileHeader from '../components/Pages/Profile/ProfileHeader'
 
+import Loading from '../components/Loading'
+
 export default class Profile extends PureComponent {
     state = {
         user: null
@@ -34,7 +36,7 @@ export default class Profile extends PureComponent {
                             <ProfileHeader user={user} />
                         </Fragment>
                     ) : (
-                        'Loading...'
+                        <Loading />
                     )
                 }
             </PageWrapper>

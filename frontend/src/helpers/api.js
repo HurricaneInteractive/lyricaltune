@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const base_url = "https://cors-anywhere.herokuapp.com/https://lyricalapi.herokuapp.com"
+
 /**
  * If a request returns a 401, it will set the second_chance variable to true,
  * otherwise it will simply return the error response
@@ -54,7 +56,7 @@ export const enableSecondChance = (store, response, type = 'axios') => {
 export const performAxiosCall = async (route, data = {}, method = 'GET', headers = {}, secondChance = false, store = null) => {
     const config = {
         method: method,
-        url: route,
+        url: `${base_url}${route}`,
         data: data,
         headers: headers
     }
@@ -90,7 +92,7 @@ export const fetchApiData = async (route, headers = {}, method = 'GET', secondCh
         headers: headers
     }
 
-    const response = await fetch(route, init)
+    const response = await fetch(`${base_url}${route}`, init)
         .then(res => res.json())
         .catch(error => error)
 
