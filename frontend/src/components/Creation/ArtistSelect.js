@@ -38,8 +38,8 @@ export default class ArtistSelect extends Component {
     }
 
     fetchLyrics = () => {
-        let url = `${this.base_url}chart.tracks.get?page_size=50&f_has_lyrics=1&apikey=66ccca8900016be9e55889bfe1566261`
-        performAxiosCall(url)
+        let url = `${this.base_url}chart.tracks.get?page_size=20&f_has_lyrics=1&apikey=66ccca8900016be9e55889bfe1566261`
+        axios.get(url)
             .then(res => {
                 let tracks = res.data.message.body.track_list
                 window.sessionStorage.setItem('results', JSON.stringify(tracks))
